@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xpress Auto | Showroom Stock Manager</title>
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 1.2rem 1rem 5rem 1rem;
+    }
+
+    .admin-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .admin-header-card {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .admin-title-box h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      margin-bottom: 0.25rem;
+    }
+
+    .admin-title-box p {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-main-add {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 0.75rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s;
+    }
+
+    .btn-main-add:hover { background: #1d4ed8; }
+
+    .btn-sync-cloud {
+      background: #059669;
+      color: #ffffff;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s;
+    }
+
+    .btn-sync-cloud:hover { background: #047857; }
+
+    .btn-backup {
+      background: #334155;
+      border: 1px solid #475569;
+      color: #f8fafc;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s;
+    }
+
+    .btn-backup:hover { background: #475569; }
+
+    /* KPI Summary Stat Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .kpi-label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
+    }
+
+    .kpi-value {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .kpi-value.text-green { color: #16a34a; }
+    .kpi-value.text-red { color: #dc2626; }
+    .kpi-value.text-gold { color: #b45309; }
+
+    .search-filter-card {
+      background: #ffffff;
+      padding: 0.9rem;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 1.2rem;
+    }
+
+    .admin-search-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .admin-search-input:focus { border-color: #2563eb; }
+
+    .inventory-container {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      padding: 1.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .inventory-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid #f1f5f9;
+      margin-bottom: 0.8rem;
+    }
+
+    .inventory-header h2 {
+      font-size: 1.1rem;
+      color: #0f172a;
+      font-weight: 800;
+    }
+
+    .car-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      margin-bottom: 0.8rem;
+      background: #ffffff;
+      gap: 1rem;
+    }
+
+    .car-row.is-sold-row {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    .car-left-details {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .car-thumbnail {
+      width: 96px;
+      min-width: 96px;
+      max-width: 96px;
+      height: 68px;
+      min-height: 68px;
+      max-height: 68px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #0f172a;
+      border: 1px solid #cbd5e1;
+      display: block;
+    }
+
+    .car-meta-details h3 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    }
+
+    .car-meta-price-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .car-meta-price {
+      font-size: 1rem;
+      font-weight: 900;
+      color: #b45309;
+    }
+
+    .btn-edit-price {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      transition: all 0.2s;
+    }
+
+    .btn-edit-price:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+
+    .car-meta-sub {
+      font-size: 0.78rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .car-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Re-order Buttons Group */
+    .order-btn-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      background: #f8fafc;
+      padding: 0.25rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-order-action {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+      line-height: 1;
+    }
+
+    .btn-order-action:hover:not(:disabled) {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+
+    .btn-order-action:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .btn-toggle-status {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .state-available { background: #16a34a; color: #ffffff; }
+    .state-sold { background: #dc2626; color: #ffffff; }
+
+    .btn-delete-item {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #64748b;
+      padding: 0.75rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .btn-delete-item:hover {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-window {
+      background: #ffffff;
+      width: 100%;
+      max-width: 650px;
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+      border: none;
+      background: none;
+      font-weight: 700;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+      margin-top: 1.2rem;
+    }
+
+    .form-full { grid-column: 1 / -1; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .btn-submit-publish {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 1.2rem;
+    }
+
+    #lockScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0f172a;
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .lock-card {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 350px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .pin-input {
+      font-size: 1.5rem;
+      letter-spacing: 0.5rem;
+      text-align: center;
+      padding: 0.6rem;
+      width: 100%;
+      margin: 1rem 0;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .car-row { flex-direction: column; align-items: flex-start; }
+      .car-right-actions { width: 100%; justify-content: space-between; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+  <!-- PIN LOCK SCREEN -->
+  <div id="lockScreen">
+    <div class="lock-card">
+      <h2 style="color: #0f172a; margin-bottom: 0.3rem;">Showroom Admin</h2>
+      <p style="color: #64748b; font-size: 0.85rem;">Enter 4-digit PIN to access:</p>
+      <input type="password" id="pinCodeInput" class="pin-input" maxlength="4" placeholder="••••" autofocus>
+      <button type="button" class="btn-submit-publish" onclick="verifyPin()">Unlock Dashboard</button>
+      <p id="pinError" style="color: #dc2626; font-size: 0.8rem; margin-top: 0.5rem; display: none;">Incorrect PIN. Try again.</p>
+    </div>
+  </div>
+
+  <div class="admin-wrapper" id="adminMainContent" style="display: none;">
+    
+    <!-- Top Header -->
+    <header class="admin-header-card">
+      <div class="admin-title-box">
+        <h1>Xpress Auto • Showroom Manager</h1>
+        <p>Live Real-Time Inventory Control</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn-sync-cloud" onclick="safeSyncFromLocalFile()">
+          ⚡ Sync cars.js
+        </button>
+        <button type="button" class="btn-backup" onclick="exportCloudData()">
+          💾 Download Backup
+        </button>
+        <button type="button" class="btn-main-add" onclick="openAddCarModal()">
+          ➕ Add New Car
+        </button>
+      </div>
+    </header>
+
+    <!-- KPI Summary Stat Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">🟢 Available Units</span>
+        <span class="kpi-value text-green" id="kpiAvailable">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">🔴 Units Sold</span>
+        <span class="kpi-value text-red" id="kpiSold">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">💰 Active Inventory Value</span>
+        <span class="kpi-value text-gold" id="kpiValue">RM 0</span>
+      </div>
+    </div>
+
+    <!-- Search Inventory Bar -->
+    <div class="search-filter-card">
+      <input type="text" id="adminSearchInput" class="admin-search-input" placeholder="🔍 Search vehicle name, brand, or year..." oninput="filterAdminList()">
+    </div>
+
+    <!-- Live Showroom List -->
+    <main class="inventory-container">
+      <div class="inventory-header">
+        <h2>Showroom Inventory (<span id="totalCarsCount">0</span>)</h2>
+        <span id="connStatus" style="font-size: 0.8rem; color: #16a34a; font-weight: 700;">🟢 Live Connected</span>
+      </div>
+
+      <div id="adminCarList">
+        <div style="text-align: center; padding: 2rem; color: #64748b;">Connecting to cloud database...</div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ADD NEW CAR MODAL -->
+  <div id="addCarModal" class="modal-overlay">
+    <div class="modal-window">
+      <button type="button" class="modal-close-btn" onclick="closeAddCarModal()">&times;</button>
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.3rem;">Add New Vehicle Listing</h2>
+      <p style="font-size: 0.85rem; color: #64748b;">Complete vehicle details including all photos, badges, and highlights.</p>
+
+      <form id="addCarForm" onsubmit="handleSaveCar(event)">
+        <div class="form-grid">
+          
+          <div class="form-group form-full">
+            <label for="carTitle">Full Vehicle Title *</label>
+            <input type="text" id="carTitle" placeholder="e.g. 2022 Tesla MODEL 3 LONG RANGE (AWD) (A)" required>
+          </div>
+
+          <div class="form-group">
+            <label for="carBrand">Brand *</label>
+            <input type="text" id="carBrand" placeholder="e.g. Tesla, Proton, Toyota" required>
+          </div>
+
+          <div class="form-group">
+            <label for="carBody">Body Type *</label>
+            <select id="carBody" required>
+              <option value="Sedan">Sedan</option>
+              <option value="SUV">SUV</option>
+              <option value="Hatchback">Hatchback</option>
+              <option value="MPV">MPV / 7-Seater</option>
+              <option value="Coupe">Coupe</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="carPrice">Selling Price (RM) *</label>
+            <input type="number" id="carPrice" placeholder="125000" required>
+          </div>
+
+          <div class="form-group">
+            <label for="carYear">Manufacture Year *</label>
+            <input type="number" id="carYear" placeholder="2022" required>
+          </div>
+
+          <div class="form-group">
+            <label for="carMileage">Mileage</label>
+            <input type="text" id="carMileage" placeholder="65,000 - 69,000 km">
+          </div>
+
+          <div class="form-group">
+            <label for="carEngine">Engine Specification</label>
+            <input type="text" id="carEngine" placeholder="Dual Motor AWD (Electric)">
+          </div>
+
+          <div class="form-group">
+            <label for="carBadge">Custom Badge</label>
+            <input type="text" id="carBadge" placeholder="e.g. Long Range AWD, Low Mileage">
+          </div>
+
+          <div class="form-group">
+            <label for="carTrans">Transmission</label>
+            <input type="text" id="carTrans" value="Automatic">
+          </div>
+
+          <div class="form-group form-full">
+            <label for="carSalesPhone">Salesperson WhatsApp Phone Number (Leave blank for default)</label>
+            <input type="text" id="carSalesPhone" placeholder="e.g. 60162300198">
+          </div>
+
+          <div class="form-group form-full">
+            <label for="carImage">Main Cover Image URL *</label>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+              <input type="url" id="carImage" placeholder="https://cdn.rnudah.com/..." required oninput="previewLiveImage(this.value)">
+              <img id="imagePreviewBox" src="assets/brand/logo.png" style="width: 56px; height: 42px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; flex-shrink: 0; background: #0f172a;" alt="Preview" onerror="this.src='assets/brand/logo.png'">
+            </div>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="carGallery">Gallery Images (Paste all URLs separated by spaces or lines)</label>
+            <textarea id="carGallery" rows="3" placeholder="https://cdn.rnudah.com/image1.jpg&#10;https://cdn.rnudah.com/image2.jpg"></textarea>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="carHighlights">Key Highlights (1 per line)</label>
+            <textarea id="carHighlights" rows="3" placeholder="1st Careful Owner&#10;100% Non-Flooded & Accident-Free&#10;Autopilot & 360 Camera"></textarea>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="carDesc">Description</label>
+            <textarea id="carDesc" rows="2" placeholder="Vehicle condition details..."></textarea>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn-submit-publish">🚀 Publish Vehicle to Live Website</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="cars.js"></script>
+
+  <script>
+    const ADMIN_PIN = "8888";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBm8-nZfajStErxzDQpbABdrY4ivBLEETg",
+      authDomain: "xpress-auto.firebaseapp.com",
+      projectId: "xpress-auto",
+      storageBucket: "xpress-auto.firebasestorage.app",
+      messagingSenderId: "946329347755",
+      appId: "1:946329347755:web:ba70ca8185b8e240ee39ee"
+    };
+
+    let db = null;
+    let allCloudCars = [];
+    let isSeeding = false;
+
+    function verifyPin() {
+      const entered = document.getElementById("pinCodeInput").value.trim();
+      if (entered === ADMIN_PIN) {
+        localStorage.setItem("xpress_admin_auth", "true");
+        document.getElementById("lockScreen").style.display = "none";
+        document.getElementById("adminMainContent").style.display = "block";
+        initFirebase();
+      } else {
+        document.getElementById("pinError").style.display = "block";
+      }
+    }
+
+    document.getElementById("pinCodeInput").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") verifyPin();
+    });
+
+    function checkExistingAuth() {
+      if (localStorage.getItem("xpress_admin_auth") === "true") {
+        document.getElementById("lockScreen").style.display = "none";
+        document.getElementById("adminMainContent").style.display = "block";
+        initFirebase();
+      }
+    }
+
+    function initFirebase() {
+      try {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+        startRealTimeSync();
+      } catch (err) {
+        console.error("Firebase Init Error:", err);
+      }
+    }
+
+    function createCarSlug(title) {
+      return "car_" + title.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+    }
+
+    function previewLiveImage(url) {
+      const box = document.getElementById("imagePreviewBox");
+      if (box && url.trim().startsWith("http")) {
+        box.src = url.trim();
+      }
+    }
+
+    function startRealTimeSync() {
+      if (!db) return;
+      
+      db.collection("cars").onSnapshot(async (snapshot) => {
+        if (snapshot.empty && !isSeeding && typeof carsData !== "undefined" && Array.isArray(carsData)) {
+          isSeeding = true;
+          await autoSeedInitialData();
+          isSeeding = false;
+          return;
+        }
+
+        allCloudCars = [];
+        snapshot.forEach((doc) => {
+          allCloudCars.push({ docId: doc.id, ...doc.data() });
+        });
+
+        allCloudCars.sort((a, b) => {
+          const orderA = a.orderIndex !== undefined ? a.orderIndex : 9999;
+          const orderB = b.orderIndex !== undefined ? b.orderIndex : 9999;
+          if (orderA !== orderB) return orderA - orderB;
+          if (a.createdAt && b.createdAt) return b.createdAt.toMillis() - a.createdAt.toMillis();
+          return 0;
+        });
+
+        renderAdminCars(allCloudCars);
+      }, (error) => {
+        console.error("Firestore Error:", error);
+      });
+    }
+
+    async function autoSeedInitialData() {
+      try {
+        const batch = db.batch();
+        carsData.forEach((car, index) => {
+          const docId = createCarSlug(car.title || "untitled");
+          const docRef = db.collection("cars").doc(docId);
+
+          batch.set(docRef, {
+            orderIndex: index,
+            title: car.title || "Untitled Vehicle",
+            brand: car.brand || "Other",
+            bodyType: car.bodyType || "Sedan",
+            price: Number(car.price) || 0,
+            salesPhone: car.salesPhone || "60163360198",
+            year: Number(car.year) || 2020,
+            mileage: car.mileage || "N/A",
+            engine: car.engine || "Standard",
+            transmission: car.transmission || "Automatic",
+            fuel: car.fuel || "Petrol",
+            seats: Number(car.seats) || 5,
+            status: car.status || "Available",
+            badge: car.badge || "",
+            mainImage: car.mainImage || "",
+            gallery: Array.isArray(car.gallery) && car.gallery.length > 0 ? car.gallery : [car.mainImage || ""],
+            description: car.description || "Puspakom inspected and test-drive ready.",
+            highlights: Array.isArray(car.highlights) && car.highlights.length > 0 ? car.highlights : ["100% Flood Free Guaranteed"],
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+        });
+
+        await batch.commit();
+      } catch (err) {
+        console.error("Auto-seed error:", err);
+      }
+    }
+
+    async function safeSyncFromLocalFile() {
+      if (typeof carsData === "undefined" || !Array.isArray(carsData)) {
+        alert("cars.js was not loaded properly.");
+        return;
+      }
+
+      const inputPin = prompt(`⚠️ CLEAN SYNC TO DATABASE\n\nThis will reset the cloud database to the exact ${carsData.length} cars in cars.js in order.\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
+      if (inputPin !== ADMIN_PIN) {
+        if (inputPin !== null) alert("❌ Incorrect PIN. Sync cancelled.");
+        return;
+      }
+
+      try {
+        const existingStatusMap = {};
+        allCloudCars.forEach(c => {
+          existingStatusMap[createCarSlug(c.title)] = c.status;
+        });
+
+        const snapshot = await db.collection("cars").get();
+        const deleteBatch = db.batch();
+        snapshot.docs.forEach(doc => deleteBatch.delete(doc.ref));
+        await deleteBatch.commit();
+
+        const insertBatch = db.batch();
+        carsData.forEach((car, index) => {
+          const docId = createCarSlug(car.title || "untitled");
+          const docRef = db.collection("cars").doc(docId);
+          const preservedStatus = existingStatusMap[docId] || car.status || "Available";
+
+          insertBatch.set(docRef, {
+            orderIndex: index,
+            title: car.title || "Untitled Vehicle",
+            brand: car.brand || "Other",
+            bodyType: car.bodyType || "Sedan",
+            price: Number(car.price) || 0,
+            salesPhone: car.salesPhone || "60163360198",
+            year: Number(car.year) || 2020,
+            mileage: car.mileage || "N/A",
+            engine: car.engine || "Standard",
+            transmission: car.transmission || "Automatic",
+            fuel: car.fuel || "Petrol",
+            seats: Number(car.seats) || 5,
+            status: preservedStatus,
+            badge: car.badge || "",
+            mainImage: car.mainImage || "",
+            gallery: Array.isArray(car.gallery) && car.gallery.length > 0 ? car.gallery : [car.mainImage || ""],
+            description: car.description || "Puspakom inspected and test-drive ready.",
+            highlights: Array.isArray(car.highlights) && car.highlights.length > 0 ? car.highlights : ["100% Flood Free Guaranteed"],
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        });
+
+        await insertBatch.commit();
+        alert(`🎉 Clean sync complete! Showroom inventory reset to exactly ${carsData.length} cars in correct order.`);
+      } catch (err) {
+        alert("Sync failed: " + err.message);
+      }
+    }
+
+    function renderAdminCars(carList) {
+      const container = document.getElementById("adminCarList");
+      const countDisplay = document.getElementById("totalCarsCount");
+      container.innerHTML = "";
+      countDisplay.innerText = carList.length;
+
+      // Update KPI summary cards
+      const availableList = carList.filter(c => !c.status || c.status.toLowerCase() !== "sold");
+      const soldList = carList.filter(c => c.status && c.status.toLowerCase() === "sold");
+      const totalAvailableValue = availableList.reduce((acc, c) => acc + (Number(c.price) || 0), 0);
+
+      document.getElementById("kpiAvailable").innerText = `${availableList.length} Units`;
+      document.getElementById("kpiSold").innerText = `${soldList.length} Units`;
+      document.getElementById("kpiValue").innerText = `RM ${totalAvailableValue.toLocaleString()}`;
+
+      if (carList.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b;"><p>No vehicles found.</p></div>`;
+        return;
+      }
+
+      carList.forEach((car) => {
+        const isSold = car.status && car.status.toLowerCase() === "sold";
+        const safeTitle = (car.title || "Vehicle").replace(/'/g, "\\'");
+        
+        // Find true overall index in allCloudCars for reliable re-ordering
+        const trueIndex = allCloudCars.findIndex(c => c.docId === car.docId);
+        const isFirst = trueIndex === 0;
+        const isLast = trueIndex === allCloudCars.length - 1;
+        
+        const row = document.createElement("div");
+        row.className = `car-row ${isSold ? "is-sold-row" : ""}`;
+        row.innerHTML = `
+          <div class="car-left-details">
+            <img src="${car.mainImage || 'assets/brand/logo.png'}" alt="${car.title}" class="car-thumbnail" onerror="this.src='assets/brand/logo.png'">
+            <div class="car-meta-details">
+              <h3>${car.title}</h3>
+              <div class="car-meta-price-row">
+                <span class="car-meta-price">RM ${parseInt(car.price || 0).toLocaleString()}</span>
+                <button type="button" class="btn-edit-price" onclick="editCarPrice('${car.docId}', ${car.price || 0}, '${safeTitle}')" title="Edit Vehicle Price">
+                  ✏️ Edit Price
+                </button>
+              </div>
+              <div class="car-meta-sub">📅 ${car.year} • 🛣️ ${car.mileage} • 📞 ${car.salesPhone || 'Default'}</div>
+            </div>
+          </div>
+
+          <div class="car-right-actions">
+            <!-- Order Controls -->
+            <div class="order-btn-group">
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveCarOrder('${car.docId}', -1)" title="Move Up">▲</button>
+              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveCarOrder('${car.docId}', 1)" title="Move Down">▼</button>
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="bumpCarToTop('${car.docId}', '${safeTitle}')" title="Bump to Top of Showroom">🔝 Top</button>
+            </div>
+
+            <button type="button" 
+                    class="btn-toggle-status ${isSold ? 'state-sold' : 'state-available'}" 
+                    onclick="toggleStatus('${car.docId}', '${car.status}')">
+              ${isSold ? '🔴 SOLD (Relist)' : '🟢 AVAILABLE'}
+            </button>
+
+            <button type="button" 
+                    class="btn-delete-item" 
+                    onclick="removeCarWithPin('${car.docId}', '${safeTitle}')" 
+                    title="Delete Listing (PIN Protected)">
+              🗑️
+            </button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // ✏️ EDIT PRICE FUNCTION
+    async function editCarPrice(docId, currentPrice, carTitle) {
+      const input = prompt(
+        `✏️ UPDATE SELLING PRICE\n\nVehicle:\n"${carTitle}"\n\nCurrent Price: RM ${parseInt(currentPrice || 0).toLocaleString()}\n\nEnter new selling price in RM:`,
+        currentPrice
+      );
+
+      if (input === null) return;
+      const cleanNum = parseFloat(input.replace(/[^0-9.]/g, ''));
+      if (isNaN(cleanNum) || cleanNum <= 0) {
+        alert("❌ Invalid price entered. Please enter numbers only.");
+        return;
+      }
+
+      try {
+        await db.collection("cars").doc(docId).update({ price: cleanNum });
+      } catch (err) {
+        alert("Failed to update price: " + err.message);
+      }
+    }
+
+    // 🔄 RE-ORDER: MOVE UP / DOWN
+    async function moveCarOrder(docId, direction) {
+      const index = allCloudCars.findIndex(c => c.docId === docId);
+      if (index === -1) return;
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= allCloudCars.length) return;
+
+      const currentList = [...allCloudCars];
+      const temp = currentList[index];
+      currentList[index] = currentList[targetIndex];
+      currentList[targetIndex] = temp;
+
+      const batch = db.batch();
+      currentList.forEach((c, idx) => {
+        if (c.orderIndex !== idx) {
+          batch.update(db.collection("cars").doc(c.docId), { orderIndex: idx });
+        }
+      });
+
+      try {
+        await batch.commit();
+      } catch (err) {
+        alert("Failed to re-order: " + err.message);
+      }
+    }
+
+    // 🔝 BUMP CAR TO VERY TOP OF SHOWROOM
+    async function bumpCarToTop(docId, carTitle) {
+      const index = allCloudCars.findIndex(c => c.docId === docId);
+      if (index <= 0) return;
+
+      if (!confirm(`Bring "${carTitle}" to the very top of your showroom inventory?`)) return;
+
+      const currentList = [...allCloudCars];
+      const [item] = currentList.splice(index, 1);
+      currentList.unshift(item);
+
+      const batch = db.batch();
+      currentList.forEach((c, idx) => {
+        if (c.orderIndex !== idx) {
+          batch.update(db.collection("cars").doc(c.docId), { orderIndex: idx });
+        }
+      });
+
+      try {
+        await batch.commit();
+      } catch (err) {
+        alert("Failed to bump car to top: " + err.message);
+      }
+    }
+
+    async function toggleStatus(docId, currentStatus) {
+      if (!db) return;
+      const newStatus = (currentStatus && currentStatus.toLowerCase() === "sold") ? "Available" : "Sold";
+      try {
+        await db.collection("cars").doc(docId).update({ status: newStatus });
+      } catch (err) {
+        alert("Failed to update status: " + err.message);
+      }
+    }
+
+    async function handleSaveCar(e) {
+      e.preventDefault();
+      if (!db) return;
+
+      const title = document.getElementById("carTitle").value.trim();
+      const docId = createCarSlug(title);
+      const mainImg = document.getElementById("carImage").value.trim();
+      
+      const rawGallery = document.getElementById("carGallery").value.split(/\s+/).filter(u => u.startsWith("http"));
+      const gallery = rawGallery.length > 0 ? rawGallery : [mainImg];
+      
+      const rawHighlights = document.getElementById("carHighlights").value.split("\n").map(h => h.trim()).filter(Boolean);
+      const highlights = rawHighlights.length > 0 ? rawHighlights : ["100% Non-Flooded & Accident-Free"];
+
+      const newCar = {
+        orderIndex: -1,
+        title: title,
+        brand: document.getElementById("carBrand").value.trim(),
+        bodyType: document.getElementById("carBody").value,
+        price: parseFloat(document.getElementById("carPrice").value) || 0,
+        salesPhone: document.getElementById("carSalesPhone").value.trim() || "60163360198",
+        year: parseInt(document.getElementById("carYear").value) || 2020,
+        mileage: document.getElementById("carMileage").value.trim() || "N/A",
+        engine: document.getElementById("carEngine").value.trim() || "N/A",
+        transmission: document.getElementById("carTrans").value.trim() || "Automatic",
+        fuel: "Petrol",
+        seats: 5,
+        status: "Available",
+        badge: document.getElementById("carBadge").value.trim(),
+        mainImage: mainImg,
+        gallery: gallery,
+        description: document.getElementById("carDesc").value.trim() || "Puspakom inspected & 100% flood-free guaranteed.",
+        highlights: highlights,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        await db.collection("cars").doc(docId).set(newCar, { merge: true });
+        document.getElementById("addCarForm").reset();
+        document.getElementById("imagePreviewBox").src = "assets/brand/logo.png";
+        closeAddCarModal();
+        alert("✅ Listing published to the top of your showroom!");
+      } catch (err) {
+        alert("Failed to add car: " + err.message);
+      }
+    }
+
+    async function removeCarWithPin(docId, carTitle) {
+      if (!db) return;
+      
+      const inputPin = prompt(
+        `⚠️ PERMANENT DELETE CONFIRMATION\n\nAre you sure you want to delete:\n"${carTitle}"?\n\nEnter the 4-digit Admin PIN (${ADMIN_PIN}) to confirm:`
+      );
+
+      if (inputPin === null) return;
+      if (inputPin.trim() !== ADMIN_PIN) {
+        alert("❌ Incorrect PIN. Deletion cancelled.");
+        return;
+      }
+
+      try {
+        await db.collection("cars").doc(docId).delete();
+        alert(`✅ "${carTitle}" was permanently deleted.`);
+      } catch (err) {
+        alert("Failed to delete from database: " + err.message);
+      }
+    }
+
+    function exportCloudData() {
+      if (allCloudCars.length === 0) {
+        alert("No vehicle records found in database to export.");
+        return;
+      }
+
+      // Format each car with clean, readable property ordering
+      const cleanData = allCloudCars.map((c) => ({
+        title: c.title || "",
+        brand: c.brand || "",
+        bodyType: c.bodyType || "Sedan",
+        price: Number(c.price) || 0,
+        salesPhone: c.salesPhone || "60163360198",
+        year: Number(c.year) || 2020,
+        mileage: c.mileage || "N/A",
+        engine: c.engine || "Standard",
+        transmission: c.transmission || "Automatic",
+        fuel: c.fuel || "Petrol",
+        seats: Number(c.seats) || 5,
+        status: c.status || "Available",
+        badge: c.badge || "",
+        description: c.description || "",
+        highlights: Array.isArray(c.highlights) ? c.highlights : [],
+        mainImage: c.mainImage || "",
+        gallery: Array.isArray(c.gallery) ? c.gallery : []
+      }));
+
+      const dataStr =
+        "// =======================================================\n" +
+        "// XPRESS AUTO ENTERPRISE - SHOWROOM CAR DATABASE\n" +
+        "// =======================================================\n\n" +
+        "const carsData = " + JSON.stringify(cleanData, null, 2) + ";\n";
+
+      const blob = new Blob([dataStr], { type: "text/javascript" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "cars.js";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function filterAdminList() {
+      const q = document.getElementById("adminSearchInput").value.toLowerCase().trim();
+      const filtered = allCloudCars.filter(c => 
+        (c.title && c.title.toLowerCase().includes(q)) || 
+        (c.brand && c.brand.toLowerCase().includes(q)) || 
+        (c.year && c.year.toString().includes(q))
+      );
+      renderAdminCars(filtered);
+    }
+
+    function openAddCarModal() { document.getElementById("addCarModal").style.display = "flex"; }
+    function closeAddCarModal() { document.getElementById("addCarModal").style.display = "none"; }
+
+    document.addEventListener("DOMContentLoaded", checkExistingAuth);
+  </script>
+</body>
+</html>

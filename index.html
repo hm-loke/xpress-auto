@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Xpress Auto Enterprise - Verified used car dealer in Seksyen 15, Shah Alam since 2009. Quality pre-owned cars, VIP number plates, and financing.">
+  <title>Xpress Auto Enterprise | Used Cars & VIP Plates Shah Alam</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Open Graph / Social Sharing Previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://xpress-auto.pages.dev/">
+  <meta property="og:title" content="Xpress Auto Enterprise | Used Cars & VIP Plates Shah Alam">
+  <meta property="og:description" content="Quality 100% flood-free pre-owned cars, VIP number plates, high trade-in valuation & fast loan financing in Shah Alam.">
+  <meta property="og:image" content="https://xpress-auto.pages.dev/assets/brand/logo.webp">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/brand/logo.png">
+  <link rel="apple-touch-icon" href="assets/brand/logo.png">
+
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="e9C1QM2eINaFvSh_Bi1LnctEsgRkiXKBYMbSce1OuEk" />
+</head>
+<body>
+
+  <!-- 1. TOP ANNOUNCEMENT BAR -->
+  <div class="top-bar">
+    <span>📍 Lot 6 AutoCity Sek15, PT3 Jalan Kikir 15/10, 40000 Shah Alam | 🏢 ROC: 001793213-V</span>
+    <div class="top-phones">
+      <a href="tel:+60163360198">📞 016-336 0198</a>
+      <a href="tel:+60162300198">📞 016-230 0198</a>
+    </div>
+  </div>
+
+  <!-- 2. STICKY NAVIGATION HEADER -->
+  <header>
+    <div class="brand-header">
+      <img src="assets/brand/logo.webp" alt="Xpress Auto Enterprise Logo" class="brand-logo-img" onerror="this.src='assets/brand/logo.png'">
+      <div class="brand-text">
+        <div class="logo-title">Xpress Auto</div>
+        <span class="logo-subtitle">Enterprise • Shah Alam (Since 2009)</span>
+      </div>
+    </div>
+
+    <nav>
+      <a href="#inventory" onclick="switchViewCategory('cars')">Cars In Stock</a>
+      <a href="#inventory" onclick="switchViewCategory('plates')">VIP Plates</a>
+      <a href="#services">Services</a>
+      <a href="#calculator">Loan Calculator</a>
+      <a href="#tradein">Trade-In</a>
+      <a href="#contact">Location</a>
+      <button type="button" onclick="openCareerModal()" class="btn-career-nav">💼 Careers / Jawatan Kosong</button>
+      <a href="https://wa.me/60163360198" class="btn-wa-header" target="_blank" rel="noopener">💬 WhatsApp Sales</a>
+    </nav>
+  </header>
+
+  <!-- 3. HERO BANNER -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="badge-verified">✓ Mudah.my Verified Dealer Since 2009</div>
+      <h1>Quality Pre-Owned Cars & VIP Plates in Shah Alam</h1>
+      <p>Dealing in Quality Used/New Vehicles, Trade-In Services, JPJ Interchange Transfer, Puspakom & Fast Bank Loan Financing.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" id="heroCarCount">30+</span><span>Cars In Stock</span></div>
+        <div class="stat"><span class="stat-num">15+</span><span>Years in Shah Alam</span></div>
+        <div class="stat"><span class="stat-num">100%</span><span>Flood-Free Guaranteed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. VERIFIED DEALER PROFILE & CHANNELS -->
+  <section class="dealer-profile-section">
+    <div class="dealer-profile-card">
+      
+      <!-- Top Row -->
+      <div class="dealer-badge-header">
+        <div class="dealer-title-wrapper">
+          <img src="assets/brand/logo.png" alt="Xpress Auto Logo" class="dealer-avatar-img" onerror="this.src='assets/brand/logo.webp'">
+          <div class="dealer-title-group">
+            <h3>Xpress Auto Enterprise</h3>
+            <span class="badge-verified-pill">✓ Verified Dealer</span>
+          </div>
+        </div>
+        <div class="dealer-phone-actions">
+          <a href="tel:+60163360198" class="btn-phone-call">📞 016-336 0198 (Sales)</a>
+          <a href="tel:+60162300198" class="btn-phone-call">📞 016-230 0198 (Office)</a>
+        </div>
+      </div>
+
+      <!-- Middle Row -->
+      <div class="dealer-meta-grid">
+        <div>🪪 <strong>ROC:</strong> 001793213-V</div>
+        <div>📍 <strong>Location:</strong> Shah Alam, Selangor</div>
+        <div>📅 <strong>PRO Niaga:</strong> Since 21 Dec 2009</div>
+        <div>🛡️ <strong>Verified:</strong> SSM • Email • Mobile</div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="share-profile-container">
+        <span class="share-label">OFFICIAL CHANNELS & SHARE:</span>
+        <div class="share-btn-group">
+          <a href="https://www.tiktok.com/@xpressauto3?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener" class="share-icon-btn btn-share-tt">
+            📱 TikTok
+          </a>
+          <a href="https://www.instagram.com/xpressusedcarsale/" target="_blank" rel="noopener" class="share-icon-btn btn-share-ig">
+            📷 Instagram
+          </a>
+          <a href="https://www.facebook.com/xpressusedcarsale" target="_blank" rel="noopener" class="share-icon-btn btn-share-fb">
+            📘 Facebook
+          </a>
+          <button type="button" class="share-icon-btn btn-share-wa" onclick="shareShowroom('whatsapp')">
+            💬 WhatsApp
+          </button>
+          <button type="button" class="share-icon-btn btn-share-copy" onclick="copyShowroomLink()">
+            🔗 Copy Link
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. CATEGORY TOGGLE -->
+  <div class="category-toggle-container">
+    <button type="button" id="tabCars" class="cat-tab-btn active" onclick="switchViewCategory('cars')">
+      🚗 Cars In Stock (<span id="countCarsBadge">0</span>)
+    </button>
+    <button type="button" id="tabPlates" class="cat-tab-btn" onclick="switchViewCategory('plates')">
+      🔢 VIP Number Plates (<span id="countPlatesBadge">0</span>)
+    </button>
+  </div>
+
+  <!-- 6. SEARCH & FILTER CONTROLS -->
+  <section id="carFilterWrapper" class="filter-wrapper">
+    <div class="filter-card">
+      <div class="filter-item">
+        <label for="searchInput">Search Model / Keyword</label>
+        <input type="text" id="searchInput" placeholder="Search Jazz, Bezza, CLA45, Voxy..." oninput="handleFilterChange()">
+      </div>
+
+      <div class="filter-item">
+        <label for="brandFilter">Brand</label>
+        <select id="brandFilter" onchange="handleFilterChange()">
+          <option value="All">All Brands</option>
+          <option value="Honda">Honda</option>
+          <option value="Toyota">Toyota</option>
+          <option value="Perodua">Perodua</option>
+          <option value="Proton">Proton</option>
+          <option value="Mazda">Mazda</option>
+          <option value="Mercedes-Benz">Mercedes-Benz</option>
+          <option value="Maxus">Maxus</option>
+          <option value="Tesla">Tesla</option>
+          <option value="Kia">Kia</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label for="bodyFilter">Body Type</label>
+        <select id="bodyFilter" onchange="handleFilterChange()">
+          <option value="All">All Body Types</option>
+          <option value="Hatchback">Hatchback</option>
+          <option value="Sedan">Sedan</option>
+          <option value="MPV">MPV / 7-Seater</option>
+          <option value="SUV">SUV</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label for="statusFilter">Availability</label>
+        <select id="statusFilter" onchange="handleFilterChange()">
+          <option value="All">All Units</option>
+          <option value="Available">Available Stock</option>
+          <option value="Sold">Sold Units</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label for="budgetFilter">Max Budget: <strong>RM <span id="budgetValue">180,000</span></strong></label>
+        <input type="range" id="budgetFilter" min="10000" max="180000" step="5000" value="180000" oninput="handleFilterChange()">
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. INVENTORY DISPLAY -->
+  <section id="inventory" class="inventory-section">
+    
+    <!-- 7A. CARS VIEW -->
+    <div id="carsViewContainer">
+      <div class="section-heading">
+        <h2>Available Showroom Stock</h2>
+        <p id="resultsCount">Showing vehicles with full Puspakom inspection and JPJ documentation.</p>
+        <div style="margin-top: 1rem;">
+          <a href="https://www.mudah.my/joanne-xpress-transport-enterprise-shah-alam" target="_blank" rel="noopener" class="btn-mudah-badge">
+            🏬 View Full Inventory on Official Mudah Store (35 Ads) ↗
+          </a>
+        </div>
+      </div>
+
+      <div class="car-grid" id="carGrid"></div>
+      <div class="pagination-container" id="paginationControls"></div>
+    </div>
+
+    <!-- 7B. VIP PLATES VIEW -->
+    <div id="platesViewContainer" class="hidden">
+      <div class="section-heading">
+        <h2>Exclusive VIP Number Plates</h2>
+        <p>Prestige registration numbers ready for vehicle interchange or direct JPJ registration.</p>
+      </div>
+
+      <div class="plates-grid" id="platesGrid"></div>
+    </div>
+
+  </section>
+
+  <!-- 8. VEHICLE DETAILS MODAL -->
+  <div id="detailModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <span class="modal-close" onclick="closeCarModal()" aria-label="Close modal">&times;</span>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- 9. CAREER / HIRING MODAL -->
+  <div id="careerModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-box career-modal-box">
+      <span class="modal-close" onclick="closeCareerModal()" aria-label="Close modal">&times;</span>
+      <div id="careerModalContent"></div>
+    </div>
+  </div>
+
+  <!-- 10. SERVICES SECTION -->
+  <section id="services" class="services-section">
+    <div class="services-container">
+      <h2>Complete One-Stop Auto Services</h2>
+      <p>Over 15 years serving Shah Alam and Klang Valley drivers with complete transparency.</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🚗</div>
+          <h3>Used & New Cars</h3>
+          <p>Carefully curated, tested, and certified vehicles ready for immediate driving.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔄</div>
+          <h3>High Trade-In Value</h3>
+          <p>Instant market appraisal for your existing car with fast same-day settlement.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🏦</div>
+          <h3>Hire Purchase Loans</h3>
+          <p>Strong bank panel ties with Maybank, Public Bank, CIMB & Aeon Credit for fast approval.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">📋</div>
+          <h3>JPJ & Insurance</h3>
+          <p>Hassle-free ownership transfer, interchange plate registration, Puspakom inspection & auto insurance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. LOAN COMMITMENT CALCULATOR -->
+  <section id="calculator" class="calc-section">
+    <div class="calc-card">
+      <h2>Monthly Installment Calculator</h2>
+      <p class="calc-note">Estimate your monthly commitment based on standard bank interest rates (3.0% - 3.8%).</p>
+      
+      <div class="calc-inputs">
+        <div class="input-field">
+          <label for="calcPrice">Car Price (RM)</label>
+          <input type="number" id="calcPrice" value="57800" step="1000" oninput="runLoanCalculation()">
+        </div>
+        <div class="input-field">
+          <label for="calcDown">Down Payment (RM)</label>
+          <input type="number" id="calcDown" value="5800" step="500" oninput="runLoanCalculation()">
+        </div>
+        <div class="input-field">
+          <label for="calcRate">Interest Rate (% p.a.)</label>
+          <input type="number" id="calcRate" value="3.5" step="0.1" oninput="runLoanCalculation()">
+        </div>
+        <div class="input-field">
+          <label for="calcYears">Loan Period</label>
+          <select id="calcYears" onchange="runLoanCalculation()">
+            <option value="5">5 Years (60 Months)</option>
+            <option value="7">7 Years (84 Months)</option>
+            <option value="9" selected>9 Years (108 Months)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-display" id="calcResultDisplay">
+        Estimated Monthly Payment: <strong>RM 596 / month</strong>
+      </div>
+
+      <div class="loan-docs-box">
+        <h4>📄 Documents Required for Loan Submission:</h4>
+        <div class="loan-docs-grid">
+          <div class="doc-col">
+            <strong>👤 Individual / Employed:</strong>
+            <ul>
+              <li>IC & Valid Driving License</li>
+              <li>Latest 3 Months Salary Slips</li>
+              <li>Latest 3 Months Bank Statements</li>
+              <li>Latest EPF (KWSP) Statement</li>
+            </ul>
+          </div>
+          <div class="doc-col">
+            <strong>🏢 Enterprise / Company:</strong>
+            <ul>
+              <li>Director IC & Driving License</li>
+              <li>Full SSM Registration Form (3 Copies)</li>
+              <li>Latest 6 Months Company Bank Statements</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 12. TRADE-IN LEAD FORM -->
+  <section id="tradein" class="tradein-section">
+    <div class="tradein-card">
+      <h2>Trade-In Appraisal & Loan Pre-Check</h2>
+      <p>Submit your car information directly to our sales team for an instant valuation via WhatsApp.</p>
+      <form onsubmit="submitTradeIn(event)">
+        <div class="form-row">
+          <input type="text" id="custName" placeholder="Your Name" required>
+          <input type="tel" id="custPhone" placeholder="WhatsApp Phone Number" required>
+        </div>
+        <div class="form-row">
+          <input type="text" id="tradeModel" placeholder="Trade-in Car Model (e.g. 2016 Vios 1.5E)" required>
+          <select id="monthlyIncome" required>
+            <option value="">Monthly Salary Tier</option>
+            <option value="RM 2,500 - RM 3,500">RM 2,500 - RM 3,500</option>
+            <option value="RM 3,500 - RM 5,000">RM 3,500 - RM 5,000</option>
+            <option value="RM 5,000+">RM 5,000+</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-tradein">Get WhatsApp Valuation</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 13. LOCATION & GOOGLE MAPS EMBED -->
+  <section id="contact" class="location-section">
+    <h2>Visit Our Showroom in Seksyen 15</h2>
+    <p><strong>Xpress Auto Enterprise</strong> (ROC: 001793213-V)</p>
+    <p>Lot 6 AutoCity Sek15, PT3 Jalan Kikir 15/10, 40000 Shah Alam, Selangor</p>
+    <p><strong>Operating Hours:</strong> Monday – Sunday: 9:00 AM – 7:00 PM (Open Daily)</p>
+    
+    <div class="contact-actions-row">
+      <a href="https://waze.com/ul?q=Auto%20City%20Seksyen%2015%20Shah%20Alam&navigate=yes" target="_blank" rel="noopener" class="btn-nav-action btn-waze">
+        🚙 Drive with Waze
+      </a>
+      <a href="https://maps.app.goo.gl/i9GFWKh4maffkiQP8" target="_blank" rel="noopener" class="btn-nav-action btn-gmaps">
+        📍 Open in Google Maps
+      </a>
+      <a href="https://wa.me/60163360198" target="_blank" rel="noopener" class="btn-contact-action">
+        💬 WhatsApp: 016-336 0198 (Sales Team)
+      </a>
+    </div>
+
+    <div class="map-frame-wrapper">
+      <iframe 
+        src="https://maps.google.com/maps?q=Lot%206%20AutoCity%20Sek15%20PT3%20Jalan%20Kikir%2015/10%20Shah%20Alam&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+        width="100%" 
+        height="360" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        title="Xpress Auto Showroom Location">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- 14. FOOTER -->
+  <footer>
+    <div style="margin-bottom: 0.9rem; display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap;">
+      <a href="https://www.tiktok.com/@xpressauto3?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener" style="color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 0.88rem;">📱 TikTok</a>
+      <a href="https://www.instagram.com/xpressusedcarsale/" target="_blank" rel="noopener" style="color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 0.88rem;">📷 Instagram</a>
+      <a href="https://www.facebook.com/xpressusedcarsale" target="_blank" rel="noopener" style="color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 0.88rem;">📘 Facebook</a>
+      <a href="https://wa.me/60163360198" target="_blank" rel="noopener" style="color: #4ade80; text-decoration: none; font-weight: 700; font-size: 0.88rem;">💬 WhatsApp</a>
+    </div>
+    <p>&copy; 2009 - 2026 Xpress Auto Enterprise (001793213-V). Verified Auto Dealer in Shah Alam.</p>
+  </footer>
+
+  <!-- 15. MOBILE STICKY BAR -->
+  <div class="mobile-sticky-bar">
+    <a href="tel:+60163360198" class="sticky-call">📞 Call Sales</a>
+    <a href="https://wa.me/60163360198" target="_blank" rel="noopener" class="sticky-wa">💬 WhatsApp Sales</a>
+  </div>
+
+  <!-- 16. DESKTOP FLOATING WHATSAPP -->
+  <a href="https://wa.me/60163360198" target="_blank" rel="noopener" class="floating-wa-btn" title="Chat with Sales Team on WhatsApp">
+    <span>💬</span>
+    <span>Chat with Sales</span>
+  </a>
+
+  <!-- Toast Notification Container -->
+  <div id="copyToast" class="copy-toast hidden">Link copied to clipboard!</div>
+
+  <!-- Firebase Cloud SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <!-- Scripts -->
+  <script src="cars.js"></script>
+  <script src="plates.js"></script>
+  <script src="careers.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "8d8df5f9a29843b2aa7c3645f7cf6d1e"}'></script>
+</body>
+</html>
