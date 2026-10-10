@@ -281,7 +281,6 @@
       flex-wrap: wrap;
     }
 
-    /* Re-order Buttons Group */
     .order-btn-group {
       display: inline-flex;
       align-items: center;
@@ -488,7 +487,6 @@
 
   <div class="admin-wrapper" id="adminMainContent" style="display: none;">
     
-    <!-- Top Header -->
     <header class="admin-header-card">
       <div class="admin-title-box">
         <h1>Xpress Auto • Showroom Manager</h1>
@@ -507,7 +505,6 @@
       </div>
     </header>
 
-    <!-- KPI Summary Stat Cards -->
     <div class="kpi-grid">
       <div class="kpi-card">
         <span class="kpi-label">🟢 Available Units</span>
@@ -523,12 +520,10 @@
       </div>
     </div>
 
-    <!-- Search Inventory Bar -->
     <div class="search-filter-card">
       <input type="text" id="adminSearchInput" class="admin-search-input" placeholder="🔍 Search vehicle name, brand, or year..." oninput="filterAdminList()">
     </div>
 
-    <!-- Live Showroom List -->
     <main class="inventory-container">
       <div class="inventory-header">
         <h2>Showroom Inventory (<span id="totalCarsCount">0</span>)</h2>
@@ -554,12 +549,12 @@
           
           <div class="form-group form-full">
             <label for="carTitle">Full Vehicle Title *</label>
-            <input type="text" id="carTitle" placeholder="e.g. 2022 Tesla MODEL 3 LONG RANGE (AWD) (A)" required>
+            <input type="text" id="carTitle" placeholder="e.g. 2024 Honda CITY HATCHBACK 1.5 V MY21 GN5 (A)" required>
           </div>
 
           <div class="form-group">
             <label for="carBrand">Brand *</label>
-            <input type="text" id="carBrand" placeholder="e.g. Tesla, Proton, Toyota" required>
+            <input type="text" id="carBrand" placeholder="e.g. Honda, Toyota, Perodua" required>
           </div>
 
           <div class="form-group">
@@ -575,27 +570,27 @@
 
           <div class="form-group">
             <label for="carPrice">Selling Price (RM) *</label>
-            <input type="number" id="carPrice" placeholder="125000" required>
+            <input type="number" id="carPrice" placeholder="67800" required>
           </div>
 
           <div class="form-group">
             <label for="carYear">Manufacture Year *</label>
-            <input type="number" id="carYear" placeholder="2022" required>
+            <input type="number" id="carYear" placeholder="2024" required>
           </div>
 
           <div class="form-group">
             <label for="carMileage">Mileage</label>
-            <input type="text" id="carMileage" placeholder="65,000 - 69,000 km">
+            <input type="text" id="carMileage" placeholder="30,000 - 34,000 km">
           </div>
 
           <div class="form-group">
             <label for="carEngine">Engine Specification</label>
-            <input type="text" id="carEngine" placeholder="Dual Motor AWD (Electric)">
+            <input type="text" id="carEngine" placeholder="1.5L DOHC i-VTEC">
           </div>
 
           <div class="form-group">
             <label for="carBadge">Custom Badge</label>
-            <input type="text" id="carBadge" placeholder="e.g. Long Range AWD, Low Mileage">
+            <input type="text" id="carBadge" placeholder="e.g. Near New 2024, Low Mileage">
           </div>
 
           <div class="form-group">
@@ -605,25 +600,28 @@
 
           <div class="form-group form-full">
             <label for="carSalesPhone">Salesperson WhatsApp Phone Number (Leave blank for default)</label>
-            <input type="text" id="carSalesPhone" placeholder="e.g. 60162300198">
+            <input type="text" id="carSalesPhone" placeholder="e.g. 60163360198">
           </div>
 
           <div class="form-group form-full">
             <label for="carImage">Main Cover Image URL *</label>
             <div style="display: flex; gap: 0.8rem; align-items: center;">
-              <input type="url" id="carImage" placeholder="https://cdn.rnudah.com/..." required oninput="previewLiveImage(this.value)">
+              <input type="text" id="carImage" placeholder="Paste main image link" required oninput="previewLiveImage(this.value)">
               <img id="imagePreviewBox" src="assets/brand/logo.png" style="width: 56px; height: 42px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; flex-shrink: 0; background: #0f172a;" alt="Preview" onerror="this.src='assets/brand/logo.png'">
             </div>
           </div>
 
           <div class="form-group form-full">
-            <label for="carGallery">Gallery Images (Paste all URLs separated by spaces or lines)</label>
-            <textarea id="carGallery" rows="3" placeholder="https://cdn.rnudah.com/image1.jpg&#10;https://cdn.rnudah.com/image2.jpg"></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+              <label for="carGallery" style="margin-bottom: 0;">Gallery Images</label>
+              <span id="galleryCountBadge" style="font-size: 0.78rem; color: #2563eb; font-weight: 700;"></span>
+            </div>
+            <textarea id="carGallery" rows="4" placeholder="Paste image links here. Glued URLs, spaces, and line breaks are handled automatically." oninput="updateGalleryCount(this.value)"></textarea>
           </div>
 
           <div class="form-group form-full">
             <label for="carHighlights">Key Highlights (1 per line)</label>
-            <textarea id="carHighlights" rows="3" placeholder="1st Careful Owner&#10;100% Non-Flooded & Accident-Free&#10;Autopilot & 360 Camera"></textarea>
+            <textarea id="carHighlights" rows="3" placeholder="1st Careful Owner (100% Accident Free)&#10;100% Non-Flooded Vehicle"></textarea>
           </div>
 
           <div class="form-group form-full">
@@ -654,7 +652,15 @@
 
     let db = null;
     let allCloudCars = [];
-    let isSeeding = false;
+
+    function extractUrls(str) {
+      if (!str) return [];
+      return str
+        .replace(/(https?:\/\/)/gi, "\n$1")
+        .split(/\s+/)
+        .map(u => u.trim())
+        .filter(u => u.startsWith("http"));
+    }
 
     function verifyPin() {
       const entered = document.getElementById("pinCodeInput").value.trim();
@@ -696,24 +702,26 @@
       return "car_" + title.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
     }
 
-    function previewLiveImage(url) {
+    function previewLiveImage(val) {
+      const urls = extractUrls(val);
       const box = document.getElementById("imagePreviewBox");
-      if (box && url.trim().startsWith("http")) {
-        box.src = url.trim();
+      if (box && urls.length > 0) {
+        box.src = urls[0];
+      }
+    }
+
+    function updateGalleryCount(val) {
+      const urls = extractUrls(val);
+      const badge = document.getElementById("galleryCountBadge");
+      if (badge) {
+        badge.innerText = urls.length > 0 ? `(${urls.length} photos detected)` : "";
       }
     }
 
     function startRealTimeSync() {
       if (!db) return;
       
-      db.collection("cars").onSnapshot(async (snapshot) => {
-        if (snapshot.empty && !isSeeding && typeof carsData !== "undefined" && Array.isArray(carsData)) {
-          isSeeding = true;
-          await autoSeedInitialData();
-          isSeeding = false;
-          return;
-        }
-
+      db.collection("cars").onSnapshot((snapshot) => {
         allCloudCars = [];
         snapshot.forEach((doc) => {
           allCloudCars.push({ docId: doc.id, ...doc.data() });
@@ -731,42 +739,6 @@
       }, (error) => {
         console.error("Firestore Error:", error);
       });
-    }
-
-    async function autoSeedInitialData() {
-      try {
-        const batch = db.batch();
-        carsData.forEach((car, index) => {
-          const docId = createCarSlug(car.title || "untitled");
-          const docRef = db.collection("cars").doc(docId);
-
-          batch.set(docRef, {
-            orderIndex: index,
-            title: car.title || "Untitled Vehicle",
-            brand: car.brand || "Other",
-            bodyType: car.bodyType || "Sedan",
-            price: Number(car.price) || 0,
-            salesPhone: car.salesPhone || "60163360198",
-            year: Number(car.year) || 2020,
-            mileage: car.mileage || "N/A",
-            engine: car.engine || "Standard",
-            transmission: car.transmission || "Automatic",
-            fuel: car.fuel || "Petrol",
-            seats: Number(car.seats) || 5,
-            status: car.status || "Available",
-            badge: car.badge || "",
-            mainImage: car.mainImage || "",
-            gallery: Array.isArray(car.gallery) && car.gallery.length > 0 ? car.gallery : [car.mainImage || ""],
-            description: car.description || "Puspakom inspected and test-drive ready.",
-            highlights: Array.isArray(car.highlights) && car.highlights.length > 0 ? car.highlights : ["100% Flood Free Guaranteed"],
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          }, { merge: true });
-        });
-
-        await batch.commit();
-      } catch (err) {
-        console.error("Auto-seed error:", err);
-      }
     }
 
     async function safeSyncFromLocalFile() {
@@ -834,7 +806,6 @@
       container.innerHTML = "";
       countDisplay.innerText = carList.length;
 
-      // Update KPI summary cards
       const availableList = carList.filter(c => !c.status || c.status.toLowerCase() !== "sold");
       const soldList = carList.filter(c => c.status && c.status.toLowerCase() === "sold");
       const totalAvailableValue = availableList.reduce((acc, c) => acc + (Number(c.price) || 0), 0);
@@ -852,10 +823,10 @@
         const isSold = car.status && car.status.toLowerCase() === "sold";
         const safeTitle = (car.title || "Vehicle").replace(/'/g, "\\'");
         
-        // Find true overall index in allCloudCars for reliable re-ordering
         const trueIndex = allCloudCars.findIndex(c => c.docId === car.docId);
         const isFirst = trueIndex === 0;
         const isLast = trueIndex === allCloudCars.length - 1;
+        const photoCount = Array.isArray(car.gallery) ? car.gallery.length : 1;
         
         const row = document.createElement("div");
         row.className = `car-row ${isSold ? "is-sold-row" : ""}`;
@@ -870,12 +841,11 @@
                   ✏️ Edit Price
                 </button>
               </div>
-              <div class="car-meta-sub">📅 ${car.year} • 🛣️ ${car.mileage} • 📞 ${car.salesPhone || 'Default'}</div>
+              <div class="car-meta-sub">📅 ${car.year} • 🛣️ ${car.mileage} • 📷 ${photoCount} Photos • 📞 ${car.salesPhone || 'Default'}</div>
             </div>
           </div>
 
           <div class="car-right-actions">
-            <!-- Order Controls -->
             <div class="order-btn-group">
               <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveCarOrder('${car.docId}', -1)" title="Move Up">▲</button>
               <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveCarOrder('${car.docId}', 1)" title="Move Down">▼</button>
@@ -900,10 +870,9 @@
       });
     }
 
-    // ✏️ EDIT PRICE FUNCTION
     async function editCarPrice(docId, currentPrice, carTitle) {
       const input = prompt(
-        `✏️ UPDATE SELLING PRICE\n\nVehicle:\n"${carTitle}"\n\nCurrent Price: RM ${parseInt(currentPrice || 0).toLocaleString()}\n\nEnter new selling price in RM:`,
+        `✏️️ UPDATE SELLING PRICE\n\nVehicle:\n"${carTitle}"\n\nCurrent Price: RM ${parseInt(currentPrice || 0).toLocaleString()}\n\nEnter new selling price in RM:`,
         currentPrice
       );
 
@@ -921,7 +890,6 @@
       }
     }
 
-    // 🔄 RE-ORDER: MOVE UP / DOWN
     async function moveCarOrder(docId, direction) {
       const index = allCloudCars.findIndex(c => c.docId === docId);
       if (index === -1) return;
@@ -947,7 +915,6 @@
       }
     }
 
-    // 🔝 BUMP CAR TO VERY TOP OF SHOWROOM
     async function bumpCarToTop(docId, carTitle) {
       const index = allCloudCars.findIndex(c => c.docId === docId);
       if (index <= 0) return;
@@ -988,10 +955,18 @@
 
       const title = document.getElementById("carTitle").value.trim();
       const docId = createCarSlug(title);
-      const mainImg = document.getElementById("carImage").value.trim();
       
-      const rawGallery = document.getElementById("carGallery").value.split(/\s+/).filter(u => u.startsWith("http"));
-      const gallery = rawGallery.length > 0 ? rawGallery : [mainImg];
+      const rawMainUrls = extractUrls(document.getElementById("carImage").value);
+      const gallery = extractUrls(document.getElementById("carGallery").value);
+      
+      let mainImg = rawMainUrls.length > 0 ? rawMainUrls[0] : "";
+      if (!mainImg && gallery.length > 0) mainImg = gallery[0];
+      if (mainImg && !gallery.includes(mainImg)) gallery.unshift(mainImg);
+
+      if (!mainImg) {
+        alert("Please provide at least one valid image URL for the car.");
+        return;
+      }
       
       const rawHighlights = document.getElementById("carHighlights").value.split("\n").map(h => h.trim()).filter(Boolean);
       const highlights = rawHighlights.length > 0 ? rawHighlights : ["100% Non-Flooded & Accident-Free"];
@@ -1022,6 +997,7 @@
         await db.collection("cars").doc(docId).set(newCar, { merge: true });
         document.getElementById("addCarForm").reset();
         document.getElementById("imagePreviewBox").src = "assets/brand/logo.png";
+        document.getElementById("galleryCountBadge").innerText = "";
         closeAddCarModal();
         alert("✅ Listing published to the top of your showroom!");
       } catch (err) {
@@ -1056,7 +1032,6 @@
         return;
       }
 
-      // Format each car with clean, readable property ordering
       const cleanData = allCloudCars.map((c) => ({
         title: c.title || "",
         brand: c.brand || "",
