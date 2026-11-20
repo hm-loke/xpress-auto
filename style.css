@@ -1607,3 +1607,146 @@ html, body {
     display: none;
   }
 }
+
+/* ============================================= */
+/* 17. BOOKING CTA & APPOINTMENT MODAL           */
+/* ============================================= */
+.hero-cta-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-hero-book {
+  background: var(--gold);
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.35);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn-hero-book:hover {
+  background: #b45309;
+  transform: translateY(-2px);
+}
+
+.btn-hero-browse {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 0.85rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-hero-browse:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+.btn-book-appointment {
+  background: var(--gold);
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.95rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.btn-book-appointment:hover {
+  background: #b45309;
+  transform: translateY(-1px);
+}
+
+.btn-modal-book {
+  flex: 1.5;
+  min-width: 170px;
+  text-align: center;
+  background: var(--gold);
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.btn-modal-book:hover {
+  background: #b45309;
+}
+
+.booking-modal-box {
+  max-width: 520px;
+}
+
+.booking-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.booking-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.btn-booking-submit {
+  background: var(--green-wa);
+  color: #ffffff;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.98rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  transition: background 0.2s;
+}
+
+.btn-booking-submit:hover {
+  background: var(--green-wa-hover);
+}
+
+.plate-card.is-sold-plate {
+  opacity: 0.8;
+  border-color: #334155;
+}
+
+.sticky-book {
+  background: var(--gold);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 0.7rem 0.4rem;
+  flex: 1.2;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .booking-two-col {
+    grid-template-columns: 1fr;
+  }
+  .btn-book-appointment {
+    grid-column: 1 / -1;
+    padding: 0.65rem;
+    font-size: 0.85rem;
+  }
+}
