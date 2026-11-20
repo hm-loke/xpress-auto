@@ -55,6 +55,7 @@
       display: flex;
       gap: 0.6rem;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     /* Navigation Tabs */
@@ -171,6 +172,23 @@
     }
 
     .btn-settings:hover { background: #334155; }
+
+    .btn-logout {
+      background: #7f1d1d;
+      border: 1px solid #991b1b;
+      color: #fecaca;
+      padding: 0.72rem 0.95rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: #991b1b; color: #ffffff; }
 
     /* KPI Summary Stat Cards */
     .kpi-grid {
@@ -601,6 +619,7 @@
     }
 
     .btn-submit-publish:hover { background: #1d4ed8; }
+    .btn-submit-publish:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .hidden { display: none !important; }
 
@@ -620,23 +639,37 @@
 
     .lock-card {
       background: #ffffff;
-      padding: 2rem;
+      padding: 2.2rem 2rem;
       border-radius: 12px;
-      text-align: center;
-      max-width: 350px;
+      max-width: 390px;
       width: 100%;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
-    .pin-input {
-      font-size: 1.5rem;
-      letter-spacing: 0.5rem;
-      text-align: center;
-      padding: 0.6rem;
+    .auth-field {
+      text-align: left;
+      margin-top: 0.9rem;
+    }
+
+    .auth-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 0.3rem;
+    }
+
+    .auth-input {
+      font-size: 0.95rem;
+      padding: 0.75rem 0.9rem;
       width: 100%;
-      margin: 1rem 0;
-      border: 2px solid #cbd5e1;
+      border: 1.5px solid #cbd5e1;
       border-radius: 8px;
+      outline: none;
+    }
+
+    .auth-input:focus {
+      border-color: #2563eb;
     }
 
     @media (max-width: 768px) {
@@ -646,20 +679,36 @@
     }
   </style>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDKs (App, Auth & Firestore) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
-  <!-- PIN LOCK SCREEN -->
+  <!-- FIREBASE AUTH LOGIN SCREEN -->
   <div id="lockScreen">
     <div class="lock-card">
-      <h2 style="color: #0f172a; margin-bottom: 0.3rem;">Showroom Admin</h2>
-      <p style="color: #64748b; font-size: 0.85rem;">Enter 4-digit PIN to access:</p>
-      <input type="password" id="pinCodeInput" class="pin-input" maxlength="4" placeholder="••••" autofocus>
-      <button type="button" class="btn-submit-publish" onclick="verifyPin()">Unlock Dashboard</button>
-      <p id="pinError" style="color: #dc2626; font-size: 0.8rem; margin-top: 0.5rem; display: none;">Incorrect PIN. Try again.</p>
+      <div style="text-align: center; margin-bottom: 0.8rem;">
+        <h2 style="color: #0f172a; margin-bottom: 0.25rem;">Showroom Admin</h2>
+        <p style="color: #64748b; font-size: 0.85rem;">Sign in with your authorized admin account</p>
+      </div>
+
+      <form onsubmit="handleAdminLogin(event)">
+        <div class="auth-field">
+          <label for="adminEmailInput">Admin Email</label>
+          <input type="email" id="adminEmailInput" class="auth-input" placeholder="admin@xpressauto.com" required autofocus>
+        </div>
+
+        <div class="auth-field">
+          <label for="adminPasswordInput">Password</label>
+          <input type="password" id="adminPasswordInput" class="auth-input" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" id="loginSubmitBtn" class="btn-submit-publish">Sign In to Dashboard</button>
+      </form>
+
+      <p id="authStatusMsg" style="color: #dc2626; font-size: 0.8rem; margin-top: 0.7rem; text-align: center; display: none;"></p>
     </div>
   </div>
 
@@ -669,7 +718,7 @@
     <header class="admin-header-card">
       <div class="admin-title-box">
         <h1>Xpress Auto • Showroom Manager</h1>
-        <p>Live Cloud Control for Cars, VIP Plates & Careers</p>
+        <p id="signedInUserLabel">Live Cloud Control for Cars, VIP Plates & Careers</p>
       </div>
       <div class="header-actions">
         <button type="button" class="btn-settings" onclick="openSettingsModal()">
@@ -677,6 +726,9 @@
         </button>
         <button type="button" class="btn-backup" onclick="exportAllBackups()">
           📦 Download All Backups
+        </button>
+        <button type="button" class="btn-logout" onclick="handleAdminLogout()">
+          🚪 Sign Out
         </button>
       </div>
     </header>
@@ -1065,8 +1117,6 @@
   <script src="careers.js"></script>
 
   <script>
-    const ADMIN_PIN = "8888";
-
     const firebaseConfig = {
       apiKey: "AIzaSyBm8-nZfajStErxzDQpbABdrY4ivBLEETg",
       authDomain: "xpress-auto.firebaseapp.com",
@@ -1076,10 +1126,17 @@
       appId: "1:946329347755:web:ba70ca8185b8e240ee39ee"
     };
 
-    let db = null;
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
     let allCloudCars = [];
     let allCloudPlates = [];
     let allCloudCareers = [];
+    let listenersStarted = false;
     let showroomSettings = {
       salesPhone1: "60163360198",
       salesPhone2: "60162300198"
@@ -1090,41 +1147,55 @@
     let editingCareerDocId = null;
 
     // ==========================================
-    // 1. AUTH & INITIALIZATION
+    // 1. FIREBASE AUTHENTICATION LIFECYCLE
     // ==========================================
-    function verifyPin() {
-      const entered = document.getElementById("pinCodeInput").value.trim();
-      if (entered === ADMIN_PIN) {
-        localStorage.setItem("xpress_admin_auth", "true");
-        document.getElementById("lockScreen").style.display = "none";
-        document.getElementById("adminMainContent").style.display = "block";
-        initFirebase();
-      } else {
-        document.getElementById("pinError").style.display = "block";
-      }
-    }
+    auth.onAuthStateChanged((user) => {
+      const lockScreen = document.getElementById("lockScreen");
+      const mainContent = document.getElementById("adminMainContent");
 
-    document.getElementById("pinCodeInput").addEventListener("keypress", (e) => {
-      if (e.key === "Enter") verifyPin();
+      if (user) {
+        lockScreen.style.display = "none";
+        mainContent.style.display = "block";
+        document.getElementById("signedInUserLabel").innerText = `Signed in as ${user.email} • Live Cloud Control`;
+        if (!listenersStarted) {
+          listenersStarted = true;
+          startAllListeners();
+        }
+      } else {
+        lockScreen.style.display = "flex";
+        mainContent.style.display = "none";
+      }
     });
 
-    function checkExistingAuth() {
-      if (localStorage.getItem("xpress_admin_auth") === "true") {
-        document.getElementById("lockScreen").style.display = "none";
-        document.getElementById("adminMainContent").style.display = "block";
-        initFirebase();
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("adminEmailInput").value.trim();
+      const password = document.getElementById("adminPasswordInput").value;
+      const statusMsg = document.getElementById("authStatusMsg");
+      const btn = document.getElementById("loginSubmitBtn");
+
+      statusMsg.style.display = "none";
+      btn.disabled = true;
+      btn.innerText = "Signing in...";
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        document.getElementById("adminPasswordInput").value = "";
+      } catch (err) {
+        statusMsg.innerText = "Sign-in failed: Invalid email or password.";
+        statusMsg.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Sign In to Dashboard";
       }
     }
 
-    function initFirebase() {
+    async function handleAdminLogout() {
+      if (!confirm("Sign out of Showroom Admin?")) return;
       try {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        db = firebase.firestore();
-        startAllListeners();
+        await auth.signOut();
       } catch (err) {
-        console.error("Firebase Init Error:", err);
+        alert("Sign out error: " + err.message);
       }
     }
 
@@ -1145,16 +1216,12 @@
     // 2. REAL-TIME LISTENERS (READ-ONLY ON LOAD)
     // ==========================================
     function startAllListeners() {
-      if (!db) return;
-
-      // Settings listener
       db.collection("settings").doc("general").onSnapshot((doc) => {
         if (doc.exists) {
           showroomSettings = { ...showroomSettings, ...doc.data() };
         }
       });
 
-      // Cars listener
       db.collection("cars").onSnapshot((snapshot) => {
         allCloudCars = [];
         snapshot.forEach((doc) => {
@@ -1165,7 +1232,6 @@
         filterAdminList();
       });
 
-      // Plates listener
       db.collection("plates").onSnapshot((snapshot) => {
         allCloudPlates = [];
         snapshot.forEach((doc) => {
@@ -1176,7 +1242,6 @@
         filterPlatesList();
       });
 
-      // Careers listener
       db.collection("careers").onSnapshot((snapshot) => {
         allCloudCareers = [];
         snapshot.forEach((doc) => {
@@ -1319,7 +1384,7 @@
               ${isSold ? '🔴 SOLD (Relist)' : '🟢 AVAILABLE'}
             </button>
 
-            <button type="button" class="btn-delete-item" onclick="deleteDocWithPin('cars', '${car.docId}', '${safeTitle}')" title="Delete Listing">🗑️</button>
+            <button type="button" class="btn-delete-item" onclick="deleteDocConfirmed('cars', '${car.docId}', '${safeTitle}')" title="Delete Listing">🗑️</button>
           </div>
         `;
         container.appendChild(row);
@@ -1413,8 +1478,6 @@
 
     async function handleSaveCar(e) {
       e.preventDefault();
-      if (!db) return;
-
       const title = document.getElementById("carTitle").value.trim();
       const docId = editingCarDocId || createSlug("car", title);
       const rawMainUrls = extractUrls(document.getElementById("carImage").value);
@@ -1497,13 +1560,11 @@
 
       let parsedCars = [];
       try {
-        // Strip trailing commas before closing braces/brackets so copied JS snippets work seamlessly
         const cleaned = raw.replace(/,\s*([}\]])/g, "$1");
         let parsed;
         if (cleaned.startsWith("[")) {
           parsed = JSON.parse(cleaned);
         } else {
-          // Wrap one or multiple comma-separated objects in an array
           parsed = JSON.parse("[" + cleaned + "]");
         }
         parsedCars = Array.isArray(parsed) ? parsed : [parsed];
@@ -1628,7 +1689,7 @@
               ${isSold ? '🔴 SOLD' : '🟢 AVAILABLE'}
             </button>
 
-            <button type="button" class="btn-delete-item" onclick="deleteDocWithPin('plates', '${p.docId}', '${safePlate}')" title="Delete Plate">🗑️</button>
+            <button type="button" class="btn-delete-item" onclick="deleteDocConfirmed('plates', '${p.docId}', '${safePlate}')" title="Delete Plate">🗑️</button>
           </div>
         `;
         container.appendChild(row);
@@ -1757,7 +1818,7 @@
               ${isClosed ? '🔴 CLOSED' : '🟢 HIRING'}
             </button>
 
-            <button type="button" class="btn-delete-item" onclick="deleteDocWithPin('careers', '${job.docId}', '${safeTitle}')" title="Delete Job">🗑️</button>
+            <button type="button" class="btn-delete-item" onclick="deleteDocConfirmed('careers', '${job.docId}', '${safeTitle}')" title="Delete Job">🗑️</button>
           </div>
         `;
         container.appendChild(row);
@@ -1868,15 +1929,10 @@
     }
 
     // ==========================================
-    // 9. PIN-PROTECTED DELETE
+    // 9. AUTHENTICATED DELETE
     // ==========================================
-    async function deleteDocWithPin(collectionName, docId, label) {
-      const inputPin = prompt(`⚠️ PERMANENT DELETE CONFIRMATION\n\nDelete "${label}"?\n\nEnter 4-digit Admin PIN (${ADMIN_PIN}) to confirm:`);
-      if (inputPin === null) return;
-      if (inputPin.trim() !== ADMIN_PIN) {
-        alert("❌ Incorrect PIN. Deletion cancelled.");
-        return;
-      }
+    async function deleteDocConfirmed(collectionName, docId, label) {
+      if (!confirm(`⚠️ PERMANENT DELETE CONFIRMATION\n\nAre you sure you want to permanently delete "${label}"?`)) return;
       try {
         await db.collection(collectionName).doc(docId).delete();
         alert(`✅ "${label}" was permanently deleted.`);
@@ -1886,15 +1942,14 @@
     }
 
     // ==========================================
-    // 10. SYNC FROM LOCAL .JS FILES (PIN GATED)
+    // 10. SYNC FROM LOCAL .JS FILES
     // ==========================================
     async function syncCarsFromLocal() {
       if (typeof carsData === "undefined" || !Array.isArray(carsData)) {
         alert("cars.js was not loaded.");
         return;
       }
-      const inputPin = prompt(`⚠️ SYNC CARS DATABASE\n\nOverwrite cloud cars with the ${carsData.length} cars in cars.js?\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
-      if (inputPin !== ADMIN_PIN) return;
+      if (!confirm(`⚠️ SYNC CARS DATABASE\n\nOverwrite cloud cars with the ${carsData.length} cars in cars.js?`)) return;
 
       try {
         const snapshot = await db.collection("cars").get();
@@ -1923,8 +1978,7 @@
         alert("plates.js was not loaded.");
         return;
       }
-      const inputPin = prompt(`⚠️ SYNC VIP PLATES DATABASE\n\nOverwrite cloud plates with the ${numberPlatesData.length} plates in plates.js?\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
-      if (inputPin !== ADMIN_PIN) return;
+      if (!confirm(`⚠️ SYNC VIP PLATES DATABASE\n\nOverwrite cloud plates with the ${numberPlatesData.length} plates in plates.js?`)) return;
 
       try {
         const snapshot = await db.collection("plates").get();
@@ -1955,8 +2009,7 @@
         alert("careers.js was not loaded.");
         return;
       }
-      const inputPin = prompt(`⚠️ SYNC CAREERS DATABASE\n\nOverwrite cloud jobs with the ${sourceJobs.length} listings in careers.js?\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
-      if (inputPin !== ADMIN_PIN) return;
+      if (!confirm(`⚠️ SYNC CAREERS DATABASE\n\nOverwrite cloud jobs with the ${sourceJobs.length} listings in careers.js?`)) return;
 
       try {
         const snapshot = await db.collection("careers").get();
@@ -2084,8 +2137,6 @@
       setTimeout(() => { if (allCloudPlates.length > 0) exportPlatesBackup(); }, 350);
       setTimeout(() => { if (allCloudCareers.length > 0) exportCareersBackup(); }, 700);
     }
-
-    document.addEventListener("DOMContentLoaded", checkExistingAuth);
   </script>
 </body>
 </html>
