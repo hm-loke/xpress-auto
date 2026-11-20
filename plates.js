@@ -11,6 +11,7 @@ const numberPlatesData = [
     type: "2-Digit VIP (Selangor)",
     package: "Plate Number Only",
     badge: "Hot VIP 2-Digit",
+    status: "Available",
     description: "Exclusive 2-digit Selangor series plate WYH 24. Ready for interchange or new vehicle registration at JPJ."
   },
   {
@@ -20,6 +21,7 @@ const numberPlatesData = [
     type: "Super VIP 2-Digit (Kuala Lumpur)",
     package: "Includes Dayang DY 90 (2020, 86cc)",
     badge: "Complete Combo",
+    status: "Available",
     description: "Prestige 2-digit series plate WBJ 12. Sold complete with registered 2020 Dayang DY90 motorcycle for fast, hassle-free JPJ ownership interchange."
   },
   {
@@ -29,6 +31,7 @@ const numberPlatesData = [
     type: "2-Digit VIP (Selangor)",
     package: "Plate Number Only",
     badge: "Best Value 2-Digit",
+    status: "Available",
     description: "Golden 2-digit plate BKX 92. Perfect for luxury sedans, sports cars, and SUVs. Immediate interchange processing."
   },
   {
@@ -38,6 +41,7 @@ const numberPlatesData = [
     type: "Double-Digit Master (11)",
     package: "Includes Yamaha Ego Gear 125cc (2024)",
     badge: "Ultra Prestige",
+    status: "Available",
     description: "Top-tier double digit 11 VIP plate WEK 11. Complete package with registered 2024 Yamaha Ego Gear 125cc motorcycle for immediate ownership transfer."
   }
 ];
