@@ -672,11 +672,106 @@
       border-color: #2563eb;
     }
 
-    @media (max-width: 768px) {
-      .car-row { flex-direction: column; align-items: flex-start; }
-      .car-right-actions { width: 100%; justify-content: space-between; }
-      .form-grid { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    body {
+      padding: 0.75rem 0.65rem 4.5rem 0.65rem;
     }
+    .admin-header-card {
+      padding: 1.1rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .header-actions {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .header-actions .btn-logout {
+      grid-column: 1 / -1;
+      justify-content: center;
+    }
+    .header-actions button {
+      justify-content: center;
+      font-size: 0.8rem;
+      padding: 0.65rem 0.6rem;
+    }
+    .admin-tabs {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 0.35rem;
+    }
+    .admin-tab-btn {
+      flex: 0 0 auto;
+      padding: 0.65rem 0.95rem;
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
+    .kpi-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .kpi-grid .kpi-card:last-child {
+      grid-column: 1 / -1;
+    }
+    .section-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .toolbar-btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .toolbar-btn-group .btn-main-add {
+      grid-column: 1 / -1;
+      justify-content: center;
+    }
+    .toolbar-btn-group button {
+      justify-content: center;
+    }
+    .car-row {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0.85rem;
+    }
+    .car-left-details {
+      min-width: 0;
+    }
+    .car-right-actions {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      padding-top: 0.65rem;
+      border-top: 1px dashed #e2e8f0;
+    }
+    .order-btn-group {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      width: 100%;
+    }
+    .btn-order-action {
+      text-align: center;
+      padding: 0.55rem 0.3rem;
+    }
+    .btn-edit-full {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+    .btn-toggle-status {
+      justify-content: center;
+    }
+    .form-grid, .entry-mode-tabs {
+       grid-template-columns: 1fr;
+    }
+    .modal-window {
+      padding: 1.25rem;
+    }
+  }
   </style>
 
   <!-- Firebase SDKs (App, Auth & Firestore) -->
