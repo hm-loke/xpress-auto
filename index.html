@@ -27,8 +27,8 @@
   <div class="top-bar">
     <span>📍 Lot 6 AutoCity Sek15, PT3 Jalan Kikir 15/10, 40000 Shah Alam | 🏢 ROC: 001793213-V</span>
     <div class="top-phones">
-      <a href="tel:+60163360198">📞 016-336 0198</a>
-      <a href="tel:+60162300198">📞 016-230 0198</a>
+      <a href="tel:+60163360198" data-sales-tel>📞 016-336 0198</a>
+      <a href="tel:+60162300198" data-office-tel>📞 016-230 0198</a>
     </div>
   </div>
 
@@ -50,7 +50,7 @@
       <a href="#tradein">Trade-In</a>
       <a href="#contact">Location</a>
       <button type="button" onclick="openCareerModal()" class="btn-career-nav">💼 Careers / Jawatan Kosong</button>
-      <a href="https://wa.me/60163360198" class="btn-wa-header" target="_blank" rel="noopener">💬 WhatsApp Sales</a>
+      <a href="https://wa.me/60163360198" data-sales-wa class="btn-wa-header" target="_blank" rel="noopener">💬 WhatsApp Sales</a>
     </nav>
   </header>
 
@@ -60,6 +60,16 @@
       <div class="badge-verified">✓ Mudah.my Verified Dealer Since 2009</div>
       <h1>Quality Pre-Owned Cars & VIP Plates in Shah Alam</h1>
       <p>Dealing in Quality Used/New Vehicles, Trade-In Services, JPJ Interchange Transfer, Puspakom & Fast Bank Loan Financing.</p>
+
+      <div class="hero-cta-row">
+        <button type="button" onclick="openBookingModal()" class="btn-hero-book">
+          📅 Book Test Drive / Appointment
+        </button>
+        <a href="#inventory" onclick="switchViewCategory('cars')" class="btn-hero-browse">
+          🚗 View Showroom Stock
+        </a>
+      </div>
+
       <div class="hero-stats">
         <div class="stat"><span class="stat-num" id="heroCarCount">30+</span><span>Cars In Stock</span></div>
         <div class="stat"><span class="stat-num">15+</span><span>Years in Shah Alam</span></div>
@@ -82,8 +92,9 @@
           </div>
         </div>
         <div class="dealer-phone-actions">
-          <a href="tel:+60163360198" class="btn-phone-call">📞 016-336 0198 (Sales)</a>
-          <a href="tel:+60162300198" class="btn-phone-call">📞 016-230 0198 (Office)</a>
+          <button type="button" onclick="openBookingModal()" class="btn-book-appointment">📅 Book Session</button>
+          <a href="tel:+60163360198" data-sales-tel class="btn-phone-call">📞 016-336 0198 (Sales)</a>
+          <a href="tel:+60162300198" data-office-tel class="btn-phone-call">📞 016-230 0198 (Office)</a>
         </div>
       </div>
 
@@ -142,15 +153,6 @@
         <label for="brandFilter">Brand</label>
         <select id="brandFilter" onchange="handleFilterChange()">
           <option value="All">All Brands</option>
-          <option value="Honda">Honda</option>
-          <option value="Toyota">Toyota</option>
-          <option value="Perodua">Perodua</option>
-          <option value="Proton">Proton</option>
-          <option value="Mazda">Mazda</option>
-          <option value="Mercedes-Benz">Mercedes-Benz</option>
-          <option value="Maxus">Maxus</option>
-          <option value="Tesla">Tesla</option>
-          <option value="Kia">Kia</option>
         </select>
       </div>
 
@@ -191,7 +193,7 @@
         <p id="resultsCount">Showing vehicles with full Puspakom inspection and JPJ documentation.</p>
         <div style="margin-top: 1rem;">
           <a href="https://www.mudah.my/joanne-xpress-transport-enterprise-shah-alam" target="_blank" rel="noopener" class="btn-mudah-badge">
-            🏬 View Full Inventory on Official Mudah Store (35 Ads) ↗
+            🏬 View Full Inventory on Official Mudah Store ↗
           </a>
         </div>
       </div>
@@ -225,6 +227,63 @@
     <div class="modal-box career-modal-box">
       <span class="modal-close" onclick="closeCareerModal()" aria-label="Close modal">&times;</span>
       <div id="careerModalContent"></div>
+    </div>
+  </div>
+
+  <!-- 9B. TEST DRIVE & APPOINTMENT BOOKING MODAL -->
+  <div id="bookingModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-box booking-modal-box">
+      <span class="modal-close" onclick="closeBookingModal()" aria-label="Close modal">&times;</span>
+      <h2 style="color: var(--accent); font-size: 1.35rem; margin-bottom: 0.3rem;">📅 Book Test Drive / Showroom Visit</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">
+        Select your preferred session details below. Your complete booking request will open directly in WhatsApp for instant confirmation.
+      </p>
+
+      <form onsubmit="submitBooking(event)" class="booking-form-grid">
+        <div class="input-field">
+          <label for="bookPurpose">Purpose of Visit *</label>
+          <select id="bookPurpose" required>
+            <option value="Test Drive / Pandu Uji">🚗 Test Drive / Pandu Uji</option>
+            <option value="Showroom Car Viewing">👀 Showroom Car Viewing</option>
+            <option value="Trade-In & Car Valuation">🔄 Trade-In & Car Valuation</option>
+            <option value="VIP Number Plate Consultation">🔢 VIP Number Plate Consultation</option>
+            <option value="Hire Purchase Loan Consultation">🏦 Hire Purchase Loan Consultation</option>
+          </select>
+        </div>
+
+        <div class="input-field">
+          <label for="bookVehicle">Car Model / Plate Interested (Optional)</label>
+          <input type="text" id="bookVehicle" placeholder="e.g. 2024 Nissan Serena / WYH 24">
+        </div>
+
+        <div class="booking-two-col">
+          <div class="input-field">
+            <label for="bookDate">Preferred Date *</label>
+            <input type="date" id="bookDate" required>
+          </div>
+
+          <div class="input-field">
+            <label for="bookTime">Preferred Time (9 AM – 7 PM) *</label>
+            <select id="bookTime" required>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:30 AM">11:30 AM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="2:30 PM" selected>2:30 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:30 PM">5:30 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-field">
+          <label for="bookName">Your Name *</label>
+          <input type="text" id="bookName" placeholder="Enter your name" required>
+        </div>
+
+        <button type="submit" class="btn-booking-submit">
+          💬 Send Booking via WhatsApp
+        </button>
+      </form>
     </div>
   </div>
 
@@ -349,14 +408,17 @@
     <p><strong>Operating Hours:</strong> Monday – Sunday: 9:00 AM – 7:00 PM (Open Daily)</p>
     
     <div class="contact-actions-row">
+      <button type="button" onclick="openBookingModal()" class="btn-nav-action" style="background: var(--gold); color: #ffffff; border: none; cursor: pointer;">
+        📅 Book Showroom Appointment
+      </button>
       <a href="https://waze.com/ul?q=Auto%20City%20Seksyen%2015%20Shah%20Alam&navigate=yes" target="_blank" rel="noopener" class="btn-nav-action btn-waze">
         🚙 Drive with Waze
       </a>
       <a href="https://maps.app.goo.gl/i9GFWKh4maffkiQP8" target="_blank" rel="noopener" class="btn-nav-action btn-gmaps">
         📍 Open in Google Maps
       </a>
-      <a href="https://wa.me/60163360198" target="_blank" rel="noopener" class="btn-contact-action">
-        💬 WhatsApp: 016-336 0198 (Sales Team)
+      <a href="https://wa.me/60163360198" data-sales-wa target="_blank" rel="noopener" class="btn-contact-action">
+        💬 WhatsApp Sales Team
       </a>
     </div>
 
@@ -379,19 +441,20 @@
       <a href="https://www.tiktok.com/@xpressauto3?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener" style="color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 0.88rem;">📱 TikTok</a>
       <a href="https://www.instagram.com/xpressusedcarsale/" target="_blank" rel="noopener" style="color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 0.88rem;">📷 Instagram</a>
       <a href="https://www.facebook.com/xpressusedcarsale" target="_blank" rel="noopener" style="color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 0.88rem;">📘 Facebook</a>
-      <a href="https://wa.me/60163360198" target="_blank" rel="noopener" style="color: #4ade80; text-decoration: none; font-weight: 700; font-size: 0.88rem;">💬 WhatsApp</a>
+      <a href="https://wa.me/60163360198" data-sales-wa target="_blank" rel="noopener" style="color: #4ade80; text-decoration: none; font-weight: 700; font-size: 0.88rem;">💬 WhatsApp</a>
     </div>
     <p>&copy; 2009 - 2026 Xpress Auto Enterprise (001793213-V). Verified Auto Dealer in Shah Alam.</p>
   </footer>
 
   <!-- 15. MOBILE STICKY BAR -->
   <div class="mobile-sticky-bar">
-    <a href="tel:+60163360198" class="sticky-call">📞 Call Sales</a>
-    <a href="https://wa.me/60163360198" target="_blank" rel="noopener" class="sticky-wa">💬 WhatsApp Sales</a>
+    <button type="button" onclick="openBookingModal()" class="sticky-book">📅 Book Visit</button>
+    <a href="tel:+60163360198" data-sales-tel class="sticky-call">📞 Call</a>
+    <a href="https://wa.me/60163360198" data-sales-wa target="_blank" rel="noopener" class="sticky-wa">💬 WhatsApp</a>
   </div>
 
   <!-- 16. DESKTOP FLOATING WHATSAPP -->
-  <a href="https://wa.me/60163360198" target="_blank" rel="noopener" class="floating-wa-btn" title="Chat with Sales Team on WhatsApp">
+  <a href="https://wa.me/60163360198" data-sales-wa target="_blank" rel="noopener" class="floating-wa-btn" title="Chat with Sales Team on WhatsApp">
     <span>💬</span>
     <span>Chat with Sales</span>
   </a>
