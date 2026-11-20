@@ -20,7 +20,7 @@
     }
 
     .admin-wrapper {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
     }
 
@@ -57,14 +57,61 @@
       flex-wrap: wrap;
     }
 
+    /* Navigation Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-tab-btn {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      color: #334155;
+      padding: 0.75rem 1.3rem;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .admin-tab-btn:hover {
+      border-color: #2563eb;
+      color: #1d4ed8;
+    }
+
+    .admin-tab-btn.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    .tab-badge {
+      background: rgba(148, 163, 184, 0.25);
+      padding: 0.15rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.78rem;
+    }
+
+    .admin-tab-btn.active .tab-badge {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
     .btn-main-add {
       background: #2563eb;
       color: #ffffff;
       border: none;
-      padding: 0.75rem 1.2rem;
+      padding: 0.72rem 1.15rem;
       border-radius: 8px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -78,7 +125,7 @@
       background: #059669;
       color: #ffffff;
       border: none;
-      padding: 0.75rem 1rem;
+      padding: 0.72rem 1rem;
       border-radius: 8px;
       font-weight: 700;
       font-size: 0.85rem;
@@ -95,7 +142,7 @@
       background: #334155;
       border: 1px solid #475569;
       color: #f8fafc;
-      padding: 0.75rem 1rem;
+      padding: 0.72rem 1rem;
       border-radius: 8px;
       font-weight: 700;
       font-size: 0.85rem;
@@ -107,6 +154,23 @@
     }
 
     .btn-backup:hover { background: #475569; }
+
+    .btn-settings {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #facc15;
+      padding: 0.72rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s;
+    }
+
+    .btn-settings:hover { background: #334155; }
 
     /* KPI Summary Stat Cards */
     .kpi-grid {
@@ -145,24 +209,36 @@
     .kpi-value.text-red { color: #dc2626; }
     .kpi-value.text-gold { color: #b45309; }
 
-    .search-filter-card {
+    .section-toolbar {
       background: #ffffff;
       padding: 0.9rem;
       border-radius: 10px;
       border: 1px solid #cbd5e1;
       margin-bottom: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
     }
 
     .admin-search-input {
-      width: 100%;
-      padding: 0.8rem 1rem;
+      flex: 1;
+      min-width: 220px;
+      padding: 0.72rem 1rem;
       border: 2px solid #e2e8f0;
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       outline: none;
     }
 
     .admin-search-input:focus { border-color: #2563eb; }
+
+    .toolbar-btn-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
 
     .inventory-container {
       background: #ffffff;
@@ -179,6 +255,8 @@
       padding-bottom: 0.8rem;
       border-bottom: 2px solid #f1f5f9;
       margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
     .inventory-header h2 {
@@ -227,6 +305,40 @@
       display: block;
     }
 
+    .plate-mini-badge {
+      width: 110px;
+      min-width: 110px;
+      height: 62px;
+      background: #0f172a;
+      color: #ffffff;
+      border: 2px solid #475569;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Arial Black', Impact, sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+      text-align: center;
+      padding: 0.3rem;
+      flex-shrink: 0;
+    }
+
+    .job-mini-badge {
+      width: 64px;
+      min-width: 64px;
+      height: 64px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
     .car-meta-details h3 {
       font-size: 0.98rem;
       font-weight: 800;
@@ -239,6 +351,7 @@
       align-items: center;
       gap: 0.5rem;
       margin-bottom: 0.25rem;
+      flex-wrap: wrap;
     }
 
     .car-meta-price {
@@ -247,13 +360,13 @@
       color: #b45309;
     }
 
-    .btn-edit-price {
+    .btn-edit-inline {
       background: #eff6ff;
       border: 1px solid #bfdbfe;
       color: #1d4ed8;
-      padding: 0.2rem 0.55rem;
+      padding: 0.25rem 0.6rem;
       border-radius: 6px;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
@@ -262,7 +375,7 @@
       transition: all 0.2s;
     }
 
-    .btn-edit-price:hover {
+    .btn-edit-inline:hover {
       background: #2563eb;
       color: #ffffff;
       border-color: #2563eb;
@@ -277,7 +390,7 @@
     .car-right-actions {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       flex-wrap: wrap;
     }
 
@@ -295,9 +408,9 @@
       background: #ffffff;
       border: 1px solid #cbd5e1;
       color: #334155;
-      padding: 0.45rem 0.6rem;
+      padding: 0.45rem 0.55rem;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.15s;
@@ -315,16 +428,34 @@
       cursor: not-allowed;
     }
 
+    .btn-edit-full {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      padding: 0.68rem 0.85rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-edit-full:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+
     .btn-toggle-status {
-      padding: 0.75rem 1rem;
+      padding: 0.68rem 0.9rem;
       border-radius: 8px;
       font-weight: 800;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       cursor: pointer;
       border: none;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
@@ -335,10 +466,10 @@
       background: #ffffff;
       border: 1px solid #cbd5e1;
       color: #64748b;
-      padding: 0.75rem 0.8rem;
+      padding: 0.68rem 0.75rem;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       transition: all 0.2s;
     }
 
@@ -348,6 +479,7 @@
       border-color: #ef4444;
     }
 
+    /* Modals */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -365,11 +497,11 @@
     .modal-window {
       background: #ffffff;
       width: 100%;
-      max-width: 650px;
+      max-width: 680px;
       border-radius: 12px;
       padding: 1.8rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      max-height: 90vh;
+      max-height: 92vh;
       overflow-y: auto;
       position: relative;
     }
@@ -386,11 +518,49 @@
       font-weight: 700;
     }
 
+    /* Mode Switcher inside Add Car Modal */
+    .entry-mode-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin: 1rem 0 1.2rem 0;
+      background: #f1f5f9;
+      padding: 0.35rem;
+      border-radius: 10px;
+    }
+
+    .entry-mode-btn {
+      padding: 0.65rem 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: transparent;
+      color: #475569;
+      transition: all 0.2s;
+    }
+
+    .entry-mode-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .code-paste-box {
+      font-family: "Fira Code", Consolas, Monaco, monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      background: #0f172a !important;
+      color: #38bdf8 !important;
+      border: 1.5px solid #334155 !important;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.9rem;
-      margin-top: 1.2rem;
+      margin-top: 1rem;
     }
 
     .form-full { grid-column: 1 / -1; }
@@ -405,12 +575,16 @@
 
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.72rem;
       border: 1.5px solid #cbd5e1;
       border-radius: 8px;
       font-size: 0.9rem;
       color: #0f172a;
       outline: none;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: #2563eb;
     }
 
     .btn-submit-publish {
@@ -425,6 +599,10 @@
       cursor: pointer;
       margin-top: 1.2rem;
     }
+
+    .btn-submit-publish:hover { background: #1d4ed8; }
+
+    .hidden { display: none !important; }
 
     #lockScreen {
       position: fixed;
@@ -487,66 +665,148 @@
 
   <div class="admin-wrapper" id="adminMainContent" style="display: none;">
     
+    <!-- TOP HEADER -->
     <header class="admin-header-card">
       <div class="admin-title-box">
         <h1>Xpress Auto • Showroom Manager</h1>
-        <p>Live Real-Time Inventory Control</p>
+        <p>Live Cloud Control for Cars, VIP Plates & Careers</p>
       </div>
       <div class="header-actions">
-        <button type="button" class="btn-sync-cloud" onclick="safeSyncFromLocalFile()">
-          ⚡ Sync cars.js
+        <button type="button" class="btn-settings" onclick="openSettingsModal()">
+          ⚙️ WhatsApp Settings
         </button>
-        <button type="button" class="btn-backup" onclick="exportCloudData()">
-          💾 Download Backup
-        </button>
-        <button type="button" class="btn-main-add" onclick="openAddCarModal()">
-          ➕ Add New Car
+        <button type="button" class="btn-backup" onclick="exportAllBackups()">
+          📦 Download All Backups
         </button>
       </div>
     </header>
 
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <span class="kpi-label">🟢 Available Units</span>
-        <span class="kpi-value text-green" id="kpiAvailable">0</span>
-      </div>
-      <div class="kpi-card">
-        <span class="kpi-label">🔴 Units Sold</span>
-        <span class="kpi-value text-red" id="kpiSold">0</span>
-      </div>
-      <div class="kpi-card">
-        <span class="kpi-label">💰 Active Inventory Value</span>
-        <span class="kpi-value text-gold" id="kpiValue">RM 0</span>
-      </div>
+    <!-- CATEGORY TABS -->
+    <div class="admin-tabs">
+      <button type="button" id="adminTabCars" class="admin-tab-btn active" onclick="switchAdminTab('cars')">
+        🚗 Cars Inventory <span class="tab-badge" id="tabBadgeCars">0</span>
+      </button>
+      <button type="button" id="adminTabPlates" class="admin-tab-btn" onclick="switchAdminTab('plates')">
+        🔢 VIP Plates <span class="tab-badge" id="tabBadgePlates">0</span>
+      </button>
+      <button type="button" id="adminTabCareers" class="admin-tab-btn" onclick="switchAdminTab('careers')">
+        💼 Careers / Jawatan Kosong <span class="tab-badge" id="tabBadgeCareers">0</span>
+      </button>
     </div>
 
-    <div class="search-filter-card">
-      <input type="text" id="adminSearchInput" class="admin-search-input" placeholder="🔍 Search vehicle name, brand, or year..." oninput="filterAdminList()">
+    <!-- ========================================== -->
+    <!-- TAB 1: CARS INVENTORY                      -->
+    <!-- ========================================== -->
+    <div id="tabSectionCars">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">🟢 Available Units</span>
+          <span class="kpi-value text-green" id="kpiAvailable">0</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">🔴 Units Sold</span>
+          <span class="kpi-value text-red" id="kpiSold">0</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">💰 Active Inventory Value</span>
+          <span class="kpi-value text-gold" id="kpiValue">RM 0</span>
+        </div>
+      </div>
+
+      <div class="section-toolbar">
+        <input type="text" id="adminSearchInput" class="admin-search-input" placeholder="🔍 Search vehicle name, brand, or year..." oninput="filterAdminList()">
+        <div class="toolbar-btn-group">
+          <button type="button" class="btn-sync-cloud" onclick="syncCarsFromLocal()">⚡ Sync cars.js</button>
+          <button type="button" class="btn-backup" onclick="exportCarsBackup()">💾 Download cars.js</button>
+          <button type="button" class="btn-main-add" onclick="openAddCarModal()">➕ Add New Car</button>
+        </div>
+      </div>
+
+      <main class="inventory-container">
+        <div class="inventory-header">
+          <h2>Showroom Cars (<span id="totalCarsCount">0</span>)</h2>
+          <span style="font-size: 0.8rem; color: #16a34a; font-weight: 700;">🟢 Live Connected</span>
+        </div>
+        <div id="adminCarList">
+          <div style="text-align: center; padding: 2rem; color: #64748b;">Connecting to cloud database...</div>
+        </div>
+      </main>
     </div>
 
-    <main class="inventory-container">
-      <div class="inventory-header">
-        <h2>Showroom Inventory (<span id="totalCarsCount">0</span>)</h2>
-        <span id="connStatus" style="font-size: 0.8rem; color: #16a34a; font-weight: 700;">🟢 Live Connected</span>
+    <!-- ========================================== -->
+    <!-- TAB 2: VIP NUMBER PLATES                   -->
+    <!-- ========================================== -->
+    <div id="tabSectionPlates" class="hidden">
+      <div class="section-toolbar">
+        <input type="text" id="plateSearchInput" class="admin-search-input" placeholder="🔍 Search plate number or package..." oninput="filterPlatesList()">
+        <div class="toolbar-btn-group">
+          <button type="button" class="btn-sync-cloud" onclick="syncPlatesFromLocal()">⚡ Sync plates.js</button>
+          <button type="button" class="btn-backup" onclick="exportPlatesBackup()">💾 Download plates.js</button>
+          <button type="button" class="btn-main-add" onclick="openPlateModal()">➕ Add New Plate</button>
+        </div>
       </div>
 
-      <div id="adminCarList">
-        <div style="text-align: center; padding: 2rem; color: #64748b;">Connecting to cloud database...</div>
+      <main class="inventory-container">
+        <div class="inventory-header">
+          <h2>VIP Number Plates (<span id="totalPlatesCount">0</span>)</h2>
+          <span style="font-size: 0.8rem; color: #16a34a; font-weight: 700;">🟢 Live Connected</span>
+        </div>
+        <div id="adminPlateList">
+          <div style="text-align: center; padding: 2rem; color: #64748b;">Loading VIP plates...</div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: CAREERS / JAWATAN KOSONG            -->
+    <!-- ========================================== -->
+    <div id="tabSectionCareers" class="hidden">
+      <div class="section-toolbar">
+        <div style="font-size: 0.88rem; color: #475569; font-weight: 600;">
+          Manage "Jawatan Kosong / We Are Hiring!" listings & salaries
+        </div>
+        <div class="toolbar-btn-group">
+          <button type="button" class="btn-sync-cloud" onclick="syncCareersFromLocal()">⚡ Sync careers.js</button>
+          <button type="button" class="btn-backup" onclick="exportCareersBackup()">💾 Download careers.js</button>
+          <button type="button" class="btn-main-add" onclick="openCareerAdminModal()">➕ Add New Job</button>
+        </div>
       </div>
-    </main>
+
+      <main class="inventory-container">
+        <div class="inventory-header">
+          <h2>Active & Closed Job Vacancies (<span id="totalCareersCount">0</span>)</h2>
+          <span style="font-size: 0.8rem; color: #16a34a; font-weight: 700;">🟢 Live Connected</span>
+        </div>
+        <div id="adminCareerList">
+          <div style="text-align: center; padding: 2rem; color: #64748b;">Loading job vacancies...</div>
+        </div>
+      </main>
+    </div>
 
   </div>
 
-  <!-- ADD NEW CAR MODAL -->
+  <!-- ========================================== -->
+  <!-- MODAL 1: ADD / EDIT CAR (DUAL MODE)        -->
+  <!-- ========================================== -->
   <div id="addCarModal" class="modal-overlay">
     <div class="modal-window">
       <button type="button" class="modal-close-btn" onclick="closeAddCarModal()">&times;</button>
-      <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.3rem;">Add New Vehicle Listing</h2>
-      <p style="font-size: 0.85rem; color: #64748b;">Complete vehicle details including all photos, badges, and highlights.</p>
+      <h2 id="carModalHeading" style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.25rem;">Add New Vehicle Listing</h2>
+      <p id="carModalSub" style="font-size: 0.85rem; color: #64748b;">Choose between the guided form or quick code paste.</p>
 
+      <!-- Dual Mode Switcher -->
+      <div id="carEntryModeTabs" class="entry-mode-tabs">
+        <button type="button" id="modeEasyBtn" class="entry-mode-btn active" onclick="switchCarEntryMode('easy')">
+          📝 Easy Form (User-Friendly)
+        </button>
+        <button type="button" id="modeCodeBtn" class="entry-mode-btn" onclick="switchCarEntryMode('code')">
+          ⚡ Quick Code Paste (JSON)
+        </button>
+      </div>
+
+      <!-- MODE A: USER-FRIENDLY FORM -->
       <form id="addCarForm" onsubmit="handleSaveCar(event)">
         <div class="form-grid">
-          
           <div class="form-group form-full">
             <label for="carTitle">Full Vehicle Title *</label>
             <input type="text" id="carTitle" placeholder="e.g. 2024 Honda CITY HATCHBACK 1.5 V MY21 GN5 (A)" required>
@@ -599,7 +859,7 @@
           </div>
 
           <div class="form-group form-full">
-            <label for="carSalesPhone">Salesperson WhatsApp Phone Number (Leave blank for default)</label>
+            <label for="carSalesPhone">Salesperson WhatsApp Phone (Leave blank for default showroom number)</label>
             <input type="text" id="carSalesPhone" placeholder="e.g. 60163360198">
           </div>
 
@@ -628,15 +888,181 @@
             <label for="carDesc">Description</label>
             <textarea id="carDesc" rows="2" placeholder="Vehicle condition details..."></textarea>
           </div>
-
         </div>
 
-        <button type="submit" class="btn-submit-publish">🚀 Publish Vehicle to Live Website</button>
+        <button type="submit" id="carSubmitBtn" class="btn-submit-publish">🚀 Publish Vehicle to Live Website</button>
+      </form>
+
+      <!-- MODE B: QUICK CODE / JSON PASTE -->
+      <div id="quickCodePasteSection" class="hidden">
+        <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.8rem; margin-bottom: 0.8rem; font-size: 0.82rem; color: #334155;">
+          <strong>⚡ Fast Bulk/Single Import:</strong> Paste one car object <code>{ "title": "...", ... }</code> (with or without a trailing comma) or an array <code>[ {...}, {...} ]</code> of multiple cars directly below.
+          <button type="button" onclick="fillSampleCarJson()" style="margin-left: 0.5rem; background: #e2e8f0; border: none; padding: 0.25rem 0.55rem; border-radius: 5px; font-weight: 700; cursor: pointer; font-size: 0.76rem;">
+            📋 Insert Format Example
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="carJsonInput">Paste Car Object(s) Here *</label>
+          <textarea id="carJsonInput" class="code-paste-box" rows="13" placeholder='{
+  "title": "2024 Honda CITY HATCHBACK 1.5 V (A)",
+  "brand": "Honda",
+  "bodyType": "Hatchback",
+  "price": 67800,
+  "year": 2024,
+  "mileage": "30,000 - 34,000 km",
+  "engine": "1.5L DOHC i-VTEC",
+  "transmission": "Automatic",
+  "status": "Available",
+  "badge": "Near New 2024",
+  "description": "1st Owner unit...",
+  "highlights": ["1st Careful Owner", "100% Non-Flooded"],
+  "mainImage": "https://...",
+  "gallery": ["https://..."]
+}'></textarea>
+        </div>
+
+        <button type="button" class="btn-submit-publish" onclick="handleQuickPastePublish()">⚡ Import & Publish Car(s) Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 2: ADD / EDIT VIP PLATE              -->
+  <!-- ========================================== -->
+  <div id="plateModal" class="modal-overlay">
+    <div class="modal-window">
+      <button type="button" class="modal-close-btn" onclick="closePlateModal()">&times;</button>
+      <h2 id="plateModalHeading" style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.25rem;">Add VIP Number Plate</h2>
+      <p style="font-size: 0.85rem; color: #64748b;">Manage registration number details and pricing.</p>
+
+      <form id="plateForm" onsubmit="handleSavePlate(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="plateNumber">Plate Number *</label>
+            <input type="text" id="plateNumber" placeholder="e.g. WYH 24" required style="text-transform: uppercase; font-weight: 800;">
+          </div>
+
+          <div class="form-group">
+            <label for="platePrice">Selling Price (RM) *</label>
+            <input type="number" id="platePrice" placeholder="18000" required>
+          </div>
+
+          <div class="form-group">
+            <label for="plateType">Series / Category *</label>
+            <input type="text" id="plateType" placeholder="e.g. 2-Digit VIP (Selangor)" required>
+          </div>
+
+          <div class="form-group">
+            <label for="plateBadge">Highlight Badge</label>
+            <input type="text" id="plateBadge" placeholder="e.g. Hot VIP 2-Digit">
+          </div>
+
+          <div class="form-group form-full">
+            <label for="platePackage">Package Details *</label>
+            <input type="text" id="platePackage" placeholder="e.g. Plate Number Only OR Includes Yamaha Ego Gear 125cc" required>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="plateDesc">Description</label>
+            <textarea id="plateDesc" rows="3" placeholder="JPJ interchange transfer details..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" id="plateSubmitBtn" class="btn-submit-publish">🚀 Save VIP Number Plate</button>
       </form>
     </div>
   </div>
 
+  <!-- ========================================== -->
+  <!-- MODAL 3: ADD / EDIT CAREER / JOB           -->
+  <!-- ========================================== -->
+  <div id="careerAdminModal" class="modal-overlay">
+    <div class="modal-window">
+      <button type="button" class="modal-close-btn" onclick="closeCareerAdminModal()">&times;</button>
+      <h2 id="careerModalHeading" style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.25rem;">Add Job Vacancy</h2>
+      <p style="font-size: 0.85rem; color: #64748b;">Edit job title, salary range, benefits, responsibilities & requirements.</p>
+
+      <form id="careerForm" onsubmit="handleSaveCareer(event)">
+        <div class="form-grid">
+          <div class="form-group form-full">
+            <label for="jobTitle">Job Title *</label>
+            <input type="text" id="jobTitle" placeholder="e.g. Used Car Sales Executive (Salesman / Salesgirl)" required>
+          </div>
+
+          <div class="form-group">
+            <label for="jobType">Employment Type *</label>
+            <input type="text" id="jobType" value="Full-Time (Sepenuh Masa)" required>
+          </div>
+
+          <div class="form-group">
+            <label for="jobStatus">Status</label>
+            <select id="jobStatus">
+              <option value="Hiring">Hiring (Visible on Website)</option>
+              <option value="Closed">Closed (Hidden on Website)</option>
+            </select>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="jobSalary">Salary Range & Commission Info *</label>
+            <input type="text" id="jobSalary" placeholder="e.g. RM 2,000 - RM 10,000+ / month (Basic + Commission + Incentives)" required>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="jobBenefits">Keistimewaan & Faedah / Benefits (1 per line) *</label>
+            <textarea id="jobBenefits" rows="3" placeholder="Gaji Pokok RM2,000 + Komisen Jualan Lumayan&#10;Caruman lengkap: KWSP (EPF), PERKESO (SOCSO) & EIS" required></textarea>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="jobResponsibilities">Skop Kerja / Responsibilities (1 per line) *</label>
+            <textarea id="jobResponsibilities" rows="3" placeholder="Menjual pelbagai jenis kereta terpakai secara online & offline&#10;Melayan prospek pelanggan melalui WhatsApp" required></textarea>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="jobRequirements">Syarat Kelayakan / Requirements (1 per line) *</label>
+            <textarea id="jobRequirements" rows="3" placeholder="Lelaki / Perempuan berumur 22 hingga 45 tahun&#10;Mempunyai lesen memandu yang sah (Kelas D / DA)" required></textarea>
+          </div>
+
+          <div class="form-group form-full">
+            <label for="jobWaMsg">Pre-filled WhatsApp Application Message</label>
+            <input type="text" id="jobWaMsg" placeholder="Halo Xpress Auto, saya berminat memohon jawatan ini.">
+          </div>
+        </div>
+
+        <button type="submit" id="careerSubmitBtn" class="btn-submit-publish">🚀 Save Job Vacancy</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 4: SHOWROOM WHATSAPP SETTINGS        -->
+  <!-- ========================================== -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-window" style="max-width: 480px;">
+      <button type="button" class="modal-close-btn" onclick="closeSettingsModal()">&times;</button>
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.25rem;">⚙️ Showroom WhatsApp Settings</h2>
+      <p style="font-size: 0.85rem; color: #64748b;">Update the main WhatsApp number for bookings, inquiries & job applications.</p>
+
+      <form onsubmit="handleSaveSettings(event)">
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+          <div class="form-group">
+            <label for="settingSalesPhone1">Primary Sales & Booking WhatsApp (Include 60) *</label>
+            <input type="text" id="settingSalesPhone1" placeholder="60163360198" required>
+          </div>
+          <div class="form-group">
+            <label for="settingSalesPhone2">Secondary Office Phone (Include 60)</label>
+            <input type="text" id="settingSalesPhone2" placeholder="60162300198">
+          </div>
+        </div>
+        <button type="submit" class="btn-submit-publish">💾 Save Showroom Numbers</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Local Fallback Scripts -->
   <script src="cars.js"></script>
+  <script src="plates.js"></script>
+  <script src="careers.js"></script>
 
   <script>
     const ADMIN_PIN = "8888";
@@ -652,16 +1078,20 @@
 
     let db = null;
     let allCloudCars = [];
+    let allCloudPlates = [];
+    let allCloudCareers = [];
+    let showroomSettings = {
+      salesPhone1: "60163360198",
+      salesPhone2: "60162300198"
+    };
 
-    function extractUrls(str) {
-      if (!str) return [];
-      return str
-        .replace(/(https?:\/\/)/gi, "\n$1")
-        .split(/\s+/)
-        .map(u => u.trim())
-        .filter(u => u.startsWith("http"));
-    }
+    let editingCarDocId = null;
+    let editingPlateDocId = null;
+    let editingCareerDocId = null;
 
+    // ==========================================
+    // 1. AUTH & INITIALIZATION
+    // ==========================================
     function verifyPin() {
       const entered = document.getElementById("pinCodeInput").value.trim();
       if (entered === ADMIN_PIN) {
@@ -692,122 +1122,153 @@
           firebase.initializeApp(firebaseConfig);
         }
         db = firebase.firestore();
-        startRealTimeSync();
+        startAllListeners();
       } catch (err) {
         console.error("Firebase Init Error:", err);
       }
     }
 
-    function createCarSlug(title) {
-      return "car_" + title.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+    function createSlug(prefix, text) {
+      return prefix + "_" + (text || "item").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
     }
 
-    function previewLiveImage(val) {
-      const urls = extractUrls(val);
-      const box = document.getElementById("imagePreviewBox");
-      if (box && urls.length > 0) {
-        box.src = urls[0];
-      }
+    function extractUrls(str) {
+      if (!str) return [];
+      return str
+        .replace(/(https?:\/\/)/gi, "\n$1")
+        .split(/\s+/)
+        .map(u => u.trim())
+        .filter(u => u.startsWith("http"));
     }
 
-    function updateGalleryCount(val) {
-      const urls = extractUrls(val);
-      const badge = document.getElementById("galleryCountBadge");
-      if (badge) {
-        badge.innerText = urls.length > 0 ? `(${urls.length} photos detected)` : "";
-      }
-    }
-
-    function startRealTimeSync() {
+    // ==========================================
+    // 2. REAL-TIME LISTENERS (READ-ONLY ON LOAD)
+    // ==========================================
+    function startAllListeners() {
       if (!db) return;
-      
+
+      // Settings listener
+      db.collection("settings").doc("general").onSnapshot((doc) => {
+        if (doc.exists) {
+          showroomSettings = { ...showroomSettings, ...doc.data() };
+        }
+      });
+
+      // Cars listener
       db.collection("cars").onSnapshot((snapshot) => {
         allCloudCars = [];
         snapshot.forEach((doc) => {
           allCloudCars.push({ docId: doc.id, ...doc.data() });
         });
+        sortByOrderIndex(allCloudCars);
+        document.getElementById("tabBadgeCars").innerText = allCloudCars.length;
+        filterAdminList();
+      });
 
-        allCloudCars.sort((a, b) => {
-          const orderA = a.orderIndex !== undefined ? a.orderIndex : 9999;
-          const orderB = b.orderIndex !== undefined ? b.orderIndex : 9999;
-          if (orderA !== orderB) return orderA - orderB;
-          if (a.createdAt && b.createdAt) return b.createdAt.toMillis() - a.createdAt.toMillis();
-          return 0;
+      // Plates listener
+      db.collection("plates").onSnapshot((snapshot) => {
+        allCloudPlates = [];
+        snapshot.forEach((doc) => {
+          allCloudPlates.push({ docId: doc.id, ...doc.data() });
         });
+        sortByOrderIndex(allCloudPlates);
+        document.getElementById("tabBadgePlates").innerText = allCloudPlates.length;
+        filterPlatesList();
+      });
 
-        renderAdminCars(allCloudCars);
-      }, (error) => {
-        console.error("Firestore Error:", error);
+      // Careers listener
+      db.collection("careers").onSnapshot((snapshot) => {
+        allCloudCareers = [];
+        snapshot.forEach((doc) => {
+          allCloudCareers.push({ docId: doc.id, ...doc.data() });
+        });
+        sortByOrderIndex(allCloudCareers);
+        document.getElementById("tabBadgeCareers").innerText = allCloudCareers.length;
+        renderAdminCareers(allCloudCareers);
       });
     }
 
-    async function safeSyncFromLocalFile() {
-      if (typeof carsData === "undefined" || !Array.isArray(carsData)) {
-        alert("cars.js was not loaded properly.");
-        return;
+    function sortByOrderIndex(arr) {
+      arr.sort((a, b) => {
+        const orderA = a.orderIndex !== undefined ? a.orderIndex : 9999;
+        const orderB = b.orderIndex !== undefined ? b.orderIndex : 9999;
+        if (orderA !== orderB) return orderA - orderB;
+        if (a.createdAt && b.createdAt) return b.createdAt.toMillis() - a.createdAt.toMillis();
+        return 0;
+      });
+    }
+
+    // ==========================================
+    // 3. TAB SWITCHER
+    // ==========================================
+    function switchAdminTab(tab) {
+      document.getElementById("adminTabCars").classList.toggle("active", tab === "cars");
+      document.getElementById("adminTabPlates").classList.toggle("active", tab === "plates");
+      document.getElementById("adminTabCareers").classList.toggle("active", tab === "careers");
+
+      document.getElementById("tabSectionCars").classList.toggle("hidden", tab !== "cars");
+      document.getElementById("tabSectionPlates").classList.toggle("hidden", tab !== "plates");
+      document.getElementById("tabSectionCareers").classList.toggle("hidden", tab !== "careers");
+    }
+
+    // ==========================================
+    // 4. GENERIC RE-ORDERING (UP, DOWN, TOP, BOTTOM)
+    // ==========================================
+    async function moveItemOrder(collectionName, listArray, docId, direction) {
+      const index = listArray.findIndex(item => item.docId === docId);
+      if (index === -1) return;
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= listArray.length) return;
+
+      const updatedList = [...listArray];
+      const temp = updatedList[index];
+      updatedList[index] = updatedList[targetIndex];
+      updatedList[targetIndex] = temp;
+
+      await commitOrderBatch(collectionName, updatedList);
+    }
+
+    async function moveItemToExtreme(collectionName, listArray, docId, position) {
+      const index = listArray.findIndex(item => item.docId === docId);
+      if (index === -1) return;
+      if (position === "top" && index === 0) return;
+      if (position === "bottom" && index === listArray.length - 1) return;
+
+      const updatedList = [...listArray];
+      const [item] = updatedList.splice(index, 1);
+      if (position === "top") {
+        updatedList.unshift(item);
+      } else {
+        updatedList.push(item);
       }
 
-      const inputPin = prompt(`⚠️ CLEAN SYNC TO DATABASE\n\nThis will reset the cloud database to the exact ${carsData.length} cars in cars.js in order.\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
-      if (inputPin !== ADMIN_PIN) {
-        if (inputPin !== null) alert("❌ Incorrect PIN. Sync cancelled.");
-        return;
-      }
+      await commitOrderBatch(collectionName, updatedList);
+    }
 
+    async function commitOrderBatch(collectionName, orderedList) {
+      const batch = db.batch();
+      orderedList.forEach((item, idx) => {
+        if (item.orderIndex !== idx) {
+          batch.update(db.collection(collectionName).doc(item.docId), { orderIndex: idx });
+        }
+      });
       try {
-        const existingStatusMap = {};
-        allCloudCars.forEach(c => {
-          existingStatusMap[createCarSlug(c.title)] = c.status;
-        });
-
-        const snapshot = await db.collection("cars").get();
-        const deleteBatch = db.batch();
-        snapshot.docs.forEach(doc => deleteBatch.delete(doc.ref));
-        await deleteBatch.commit();
-
-        const insertBatch = db.batch();
-        carsData.forEach((car, index) => {
-          const docId = createCarSlug(car.title || "untitled");
-          const docRef = db.collection("cars").doc(docId);
-          const preservedStatus = existingStatusMap[docId] || car.status || "Available";
-
-          insertBatch.set(docRef, {
-            orderIndex: index,
-            title: car.title || "Untitled Vehicle",
-            brand: car.brand || "Other",
-            bodyType: car.bodyType || "Sedan",
-            price: Number(car.price) || 0,
-            salesPhone: car.salesPhone || "60163360198",
-            year: Number(car.year) || 2020,
-            mileage: car.mileage || "N/A",
-            engine: car.engine || "Standard",
-            transmission: car.transmission || "Automatic",
-            fuel: car.fuel || "Petrol",
-            seats: Number(car.seats) || 5,
-            status: preservedStatus,
-            badge: car.badge || "",
-            mainImage: car.mainImage || "",
-            gallery: Array.isArray(car.gallery) && car.gallery.length > 0 ? car.gallery : [car.mainImage || ""],
-            description: car.description || "Puspakom inspected and test-drive ready.",
-            highlights: Array.isArray(car.highlights) && car.highlights.length > 0 ? car.highlights : ["100% Flood Free Guaranteed"],
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-        });
-
-        await insertBatch.commit();
-        alert(`🎉 Clean sync complete! Showroom inventory reset to exactly ${carsData.length} cars in correct order.`);
+        await batch.commit();
       } catch (err) {
-        alert("Sync failed: " + err.message);
+        alert("Failed to update order: " + err.message);
       }
     }
 
+    // ==========================================
+    // 5. CARS MANAGEMENT (RENDER, ADD, EDIT, PASTE)
+    // ==========================================
     function renderAdminCars(carList) {
       const container = document.getElementById("adminCarList");
-      const countDisplay = document.getElementById("totalCarsCount");
+      document.getElementById("totalCarsCount").innerText = carList.length;
       container.innerHTML = "";
-      countDisplay.innerText = carList.length;
 
-      const availableList = carList.filter(c => !c.status || c.status.toLowerCase() !== "sold");
-      const soldList = carList.filter(c => c.status && c.status.toLowerCase() === "sold");
+      const availableList = allCloudCars.filter(c => !c.status || c.status.toLowerCase() !== "sold");
+      const soldList = allCloudCars.filter(c => c.status && c.status.toLowerCase() === "sold");
       const totalAvailableValue = availableList.reduce((acc, c) => acc + (Number(c.price) || 0), 0);
 
       document.getElementById("kpiAvailable").innerText = `${availableList.length} Units`;
@@ -815,19 +1276,18 @@
       document.getElementById("kpiValue").innerText = `RM ${totalAvailableValue.toLocaleString()}`;
 
       if (carList.length === 0) {
-        container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b;"><p>No vehicles found.</p></div>`;
+        container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b;">No vehicles found.</div>`;
         return;
       }
 
       carList.forEach((car) => {
         const isSold = car.status && car.status.toLowerCase() === "sold";
         const safeTitle = (car.title || "Vehicle").replace(/'/g, "\\'");
-        
         const trueIndex = allCloudCars.findIndex(c => c.docId === car.docId);
         const isFirst = trueIndex === 0;
         const isLast = trueIndex === allCloudCars.length - 1;
         const photoCount = Array.isArray(car.gallery) ? car.gallery.length : 1;
-        
+
         const row = document.createElement("div");
         row.className = `car-row ${isSold ? "is-sold-row" : ""}`;
         row.innerHTML = `
@@ -837,52 +1297,272 @@
               <h3>${car.title}</h3>
               <div class="car-meta-price-row">
                 <span class="car-meta-price">RM ${parseInt(car.price || 0).toLocaleString()}</span>
-                <button type="button" class="btn-edit-price" onclick="editCarPrice('${car.docId}', ${car.price || 0}, '${safeTitle}')" title="Edit Vehicle Price">
-                  ✏️ Edit Price
+                <button type="button" class="btn-edit-inline" onclick="editCarPrice('${car.docId}', ${car.price || 0}, '${safeTitle}')">
+                  💰 Quick Price
                 </button>
               </div>
-              <div class="car-meta-sub">📅 ${car.year} • 🛣️ ${car.mileage} • 📷 ${photoCount} Photos • 📞 ${car.salesPhone || 'Default'}</div>
+              <div class="car-meta-sub">📅 ${car.year} • 🛣️ ${car.mileage} • 📷 ${photoCount} Photos • 📞 ${car.salesPhone || showroomSettings.salesPhone1}</div>
             </div>
           </div>
 
           <div class="car-right-actions">
             <div class="order-btn-group">
-              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveCarOrder('${car.docId}', -1)" title="Move Up">▲</button>
-              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveCarOrder('${car.docId}', 1)" title="Move Down">▼</button>
-              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="bumpCarToTop('${car.docId}', '${safeTitle}')" title="Bump to Top of Showroom">🔝 Top</button>
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveItemOrder('cars', allCloudCars, '${car.docId}', -1)" title="Move Up">▲</button>
+              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveItemOrder('cars', allCloudCars, '${car.docId}', 1)" title="Move Down">▼</button>
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveItemToExtreme('cars', allCloudCars, '${car.docId}', 'top')" title="Move to Top">🔝 Top</button>
+              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveItemToExtreme('cars', allCloudCars, '${car.docId}', 'bottom')" title="Move to Bottom">🔻 Bottom</button>
             </div>
 
-            <button type="button" 
-                    class="btn-toggle-status ${isSold ? 'state-sold' : 'state-available'}" 
-                    onclick="toggleStatus('${car.docId}', '${car.status}')">
+            <button type="button" class="btn-edit-full" onclick="openEditCarModal('${car.docId}')">✏️ Edit</button>
+
+            <button type="button" class="btn-toggle-status ${isSold ? 'state-sold' : 'state-available'}" onclick="toggleCarStatus('${car.docId}', '${car.status}')">
               ${isSold ? '🔴 SOLD (Relist)' : '🟢 AVAILABLE'}
             </button>
 
-            <button type="button" 
-                    class="btn-delete-item" 
-                    onclick="removeCarWithPin('${car.docId}', '${safeTitle}')" 
-                    title="Delete Listing (PIN Protected)">
-              🗑️
-            </button>
+            <button type="button" class="btn-delete-item" onclick="deleteDocWithPin('cars', '${car.docId}', '${safeTitle}')" title="Delete Listing">🗑️</button>
           </div>
         `;
         container.appendChild(row);
       });
     }
 
-    async function editCarPrice(docId, currentPrice, carTitle) {
-      const input = prompt(
-        `✏️️ UPDATE SELLING PRICE\n\nVehicle:\n"${carTitle}"\n\nCurrent Price: RM ${parseInt(currentPrice || 0).toLocaleString()}\n\nEnter new selling price in RM:`,
-        currentPrice
+    function filterAdminList() {
+      const q = document.getElementById("adminSearchInput").value.toLowerCase().trim();
+      const filtered = allCloudCars.filter(c =>
+        (c.title && c.title.toLowerCase().includes(q)) ||
+        (c.brand && c.brand.toLowerCase().includes(q)) ||
+        (c.year && c.year.toString().includes(q))
       );
+      renderAdminCars(filtered);
+    }
 
-      if (input === null) return;
-      const cleanNum = parseFloat(input.replace(/[^0-9.]/g, ''));
-      if (isNaN(cleanNum) || cleanNum <= 0) {
-        alert("❌ Invalid price entered. Please enter numbers only.");
+    function switchCarEntryMode(mode) {
+      document.getElementById("modeEasyBtn").classList.toggle("active", mode === "easy");
+      document.getElementById("modeCodeBtn").classList.toggle("active", mode === "code");
+      document.getElementById("addCarForm").classList.toggle("hidden", mode !== "easy");
+      document.getElementById("quickCodePasteSection").classList.toggle("hidden", mode !== "code");
+    }
+
+    function openAddCarModal() {
+      editingCarDocId = null;
+      document.getElementById("carModalHeading").innerText = "Add New Vehicle Listing";
+      document.getElementById("carModalSub").innerText = "Choose between the guided form or quick code paste.";
+      document.getElementById("carSubmitBtn").innerText = "🚀 Publish Vehicle to Live Website";
+      document.getElementById("carEntryModeTabs").classList.remove("hidden");
+      switchCarEntryMode("easy");
+
+      document.getElementById("addCarForm").reset();
+      document.getElementById("carTrans").value = "Automatic";
+      document.getElementById("imagePreviewBox").src = "assets/brand/logo.png";
+      document.getElementById("galleryCountBadge").innerText = "";
+      document.getElementById("carJsonInput").value = "";
+      document.getElementById("addCarModal").style.display = "flex";
+    }
+
+    function openEditCarModal(docId) {
+      const car = allCloudCars.find(c => c.docId === docId);
+      if (!car) return;
+
+      editingCarDocId = docId;
+      document.getElementById("carModalHeading").innerText = "Edit Vehicle Details";
+      document.getElementById("carModalSub").innerText = "Modify any detail below and save changes directly to the live website.";
+      document.getElementById("carSubmitBtn").innerText = "💾 Save Vehicle Changes";
+      document.getElementById("carEntryModeTabs").classList.add("hidden");
+      switchCarEntryMode("easy");
+
+      document.getElementById("carTitle").value = car.title || "";
+      document.getElementById("carBrand").value = car.brand || "";
+      document.getElementById("carBody").value = car.bodyType || "Sedan";
+      document.getElementById("carPrice").value = car.price || "";
+      document.getElementById("carYear").value = car.year || "";
+      document.getElementById("carMileage").value = car.mileage || "";
+      document.getElementById("carEngine").value = car.engine || "";
+      document.getElementById("carBadge").value = car.badge || "";
+      document.getElementById("carTrans").value = car.transmission || "Automatic";
+      document.getElementById("carSalesPhone").value = car.salesPhone || "";
+      document.getElementById("carImage").value = car.mainImage || "";
+      previewLiveImage(car.mainImage || "");
+
+      const galleryArr = Array.isArray(car.gallery) ? car.gallery : [];
+      document.getElementById("carGallery").value = galleryArr.join("\n");
+      updateGalleryCount(galleryArr.join("\n"));
+
+      const highlightsArr = Array.isArray(car.highlights) ? car.highlights : [];
+      document.getElementById("carHighlights").value = highlightsArr.join("\n");
+      document.getElementById("carDesc").value = car.description || "";
+
+      document.getElementById("addCarModal").style.display = "flex";
+    }
+
+    function closeAddCarModal() {
+      document.getElementById("addCarModal").style.display = "none";
+      editingCarDocId = null;
+    }
+
+    function previewLiveImage(val) {
+      const urls = extractUrls(val);
+      const box = document.getElementById("imagePreviewBox");
+      if (box && urls.length > 0) box.src = urls[0];
+    }
+
+    function updateGalleryCount(val) {
+      const urls = extractUrls(val);
+      const badge = document.getElementById("galleryCountBadge");
+      if (badge) badge.innerText = urls.length > 0 ? `(${urls.length} photos detected)` : "";
+    }
+
+    async function handleSaveCar(e) {
+      e.preventDefault();
+      if (!db) return;
+
+      const title = document.getElementById("carTitle").value.trim();
+      const docId = editingCarDocId || createSlug("car", title);
+      const rawMainUrls = extractUrls(document.getElementById("carImage").value);
+      const gallery = extractUrls(document.getElementById("carGallery").value);
+
+      let mainImg = rawMainUrls.length > 0 ? rawMainUrls[0] : "";
+      if (!mainImg && gallery.length > 0) mainImg = gallery[0];
+      if (mainImg && !gallery.includes(mainImg)) gallery.unshift(mainImg);
+
+      if (!mainImg) {
+        alert("Please provide at least one valid image URL.");
         return;
       }
 
+      const rawHighlights = document.getElementById("carHighlights").value.split("\n").map(h => h.trim()).filter(Boolean);
+      const highlights = rawHighlights.length > 0 ? rawHighlights : ["100% Non-Flooded & Accident-Free"];
+
+      const payload = {
+        title: title,
+        brand: document.getElementById("carBrand").value.trim(),
+        bodyType: document.getElementById("carBody").value,
+        price: parseFloat(document.getElementById("carPrice").value) || 0,
+        salesPhone: document.getElementById("carSalesPhone").value.trim() || showroomSettings.salesPhone1,
+        year: parseInt(document.getElementById("carYear").value) || 2020,
+        mileage: document.getElementById("carMileage").value.trim() || "N/A",
+        engine: document.getElementById("carEngine").value.trim() || "N/A",
+        transmission: document.getElementById("carTrans").value.trim() || "Automatic",
+        badge: document.getElementById("carBadge").value.trim(),
+        mainImage: mainImg,
+        gallery: gallery,
+        description: document.getElementById("carDesc").value.trim() || "Puspakom inspected & 100% flood-free guaranteed.",
+        highlights: highlights
+      };
+
+      if (!editingCarDocId) {
+        payload.orderIndex = -1;
+        payload.fuel = "Petrol";
+        payload.seats = 5;
+        payload.status = "Available";
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      }
+
+      try {
+        await db.collection("cars").doc(docId).set(payload, { merge: true });
+        closeAddCarModal();
+        alert(editingCarDocId ? "✅ Vehicle updated successfully!" : "✅ Listing published to the top of your showroom!");
+      } catch (err) {
+        alert("Failed to save vehicle: " + err.message);
+      }
+    }
+
+    function fillSampleCarJson() {
+      document.getElementById("carJsonInput").value = JSON.stringify({
+        title: "2024 Honda CITY HATCHBACK 1.5 V MY21 GN5 (A)",
+        brand: "Honda",
+        bodyType: "Hatchback",
+        price: 67800,
+        salesPhone: "60163360198",
+        year: 2024,
+        mileage: "30,000 - 34,000 km",
+        engine: "1.5L DOHC i-VTEC",
+        transmission: "Automatic",
+        fuel: "Petrol",
+        seats: 5,
+        status: "Available",
+        badge: "Near New 2024",
+        description: "1st Owner unit in pristine condition with original paint. 100% accident & flood free guaranteed.",
+        highlights: ["1st Careful Owner (100% Accident Free)", "100% Non-Flooded Vehicle"],
+        mainImage: "https://cdn.rnudah.com/image_hd/plain/47638dad0aa30c0490b8da0d2732a69d-3001632000059761988.jpg",
+        gallery: ["https://cdn.rnudah.com/image_hd/plain/47638dad0aa30c0490b8da0d2732a69d-3001632000059761988.jpg"]
+      }, null, 2);
+    }
+
+    async function handleQuickPastePublish() {
+      const raw = document.getElementById("carJsonInput").value.trim();
+      if (!raw) {
+        alert("Please paste the car JSON code first.");
+        return;
+      }
+
+      let parsedCars = [];
+      try {
+        // Strip trailing commas before closing braces/brackets so copied JS snippets work seamlessly
+        const cleaned = raw.replace(/,\s*([}\]])/g, "$1");
+        let parsed;
+        if (cleaned.startsWith("[")) {
+          parsed = JSON.parse(cleaned);
+        } else {
+          // Wrap one or multiple comma-separated objects in an array
+          parsed = JSON.parse("[" + cleaned + "]");
+        }
+        parsedCars = Array.isArray(parsed) ? parsed : [parsed];
+      } catch (err) {
+        alert("❌ Format Error: Could not read the pasted code.\n\nMake sure curly braces { } and quotes \" \" match properly.\nDetails: " + err.message);
+        return;
+      }
+
+      if (parsedCars.length === 0 || !parsedCars[0].title) {
+        alert("❌ Missing 'title' field in pasted data.");
+        return;
+      }
+
+      try {
+        const batch = db.batch();
+        parsedCars.forEach((car, idx) => {
+          const docId = createSlug("car", car.title);
+          const docRef = db.collection("cars").doc(docId);
+          const gallery = Array.isArray(car.gallery) && car.gallery.length > 0 ? car.gallery : [car.mainImage || ""];
+
+          batch.set(docRef, {
+            orderIndex: -1 - idx,
+            title: car.title || "Untitled Vehicle",
+            brand: car.brand || "Other",
+            bodyType: car.bodyType || "Sedan",
+            price: Number(car.price) || 0,
+            salesPhone: car.salesPhone || showroomSettings.salesPhone1,
+            year: Number(car.year) || 2020,
+            mileage: car.mileage || "N/A",
+            engine: car.engine || "Standard",
+            transmission: car.transmission || "Automatic",
+            fuel: car.fuel || "Petrol",
+            seats: Number(car.seats) || 5,
+            status: car.status || "Available",
+            badge: car.badge || "",
+            mainImage: car.mainImage || gallery[0] || "",
+            gallery: gallery,
+            description: car.description || "Puspakom inspected & 100% flood-free guaranteed.",
+            highlights: Array.isArray(car.highlights) && car.highlights.length > 0 ? car.highlights : ["100% Flood Free Guaranteed"],
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+        });
+
+        await batch.commit();
+        closeAddCarModal();
+        alert(`✅ Successfully imported & published ${parsedCars.length} vehicle(s) to the top of your showroom!`);
+      } catch (err) {
+        alert("Import failed: " + err.message);
+      }
+    }
+
+    async function editCarPrice(docId, currentPrice, carTitle) {
+      const input = prompt(`✏️ UPDATE SELLING PRICE\n\nVehicle: "${carTitle}"\nCurrent Price: RM ${parseInt(currentPrice || 0).toLocaleString()}\n\nEnter new selling price in RM:`, currentPrice);
+      if (input === null) return;
+      const cleanNum = parseFloat(input.replace(/[^0-9.]/g, ""));
+      if (isNaN(cleanNum) || cleanNum <= 0) {
+        alert("❌ Invalid price entered.");
+        return;
+      }
       try {
         await db.collection("cars").doc(docId).update({ price: cleanNum });
       } catch (err) {
@@ -890,57 +1570,7 @@
       }
     }
 
-    async function moveCarOrder(docId, direction) {
-      const index = allCloudCars.findIndex(c => c.docId === docId);
-      if (index === -1) return;
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= allCloudCars.length) return;
-
-      const currentList = [...allCloudCars];
-      const temp = currentList[index];
-      currentList[index] = currentList[targetIndex];
-      currentList[targetIndex] = temp;
-
-      const batch = db.batch();
-      currentList.forEach((c, idx) => {
-        if (c.orderIndex !== idx) {
-          batch.update(db.collection("cars").doc(c.docId), { orderIndex: idx });
-        }
-      });
-
-      try {
-        await batch.commit();
-      } catch (err) {
-        alert("Failed to re-order: " + err.message);
-      }
-    }
-
-    async function bumpCarToTop(docId, carTitle) {
-      const index = allCloudCars.findIndex(c => c.docId === docId);
-      if (index <= 0) return;
-
-      if (!confirm(`Bring "${carTitle}" to the very top of your showroom inventory?`)) return;
-
-      const currentList = [...allCloudCars];
-      const [item] = currentList.splice(index, 1);
-      currentList.unshift(item);
-
-      const batch = db.batch();
-      currentList.forEach((c, idx) => {
-        if (c.orderIndex !== idx) {
-          batch.update(db.collection("cars").doc(c.docId), { orderIndex: idx });
-        }
-      });
-
-      try {
-        await batch.commit();
-      } catch (err) {
-        alert("Failed to bump car to top: " + err.message);
-      }
-    }
-
-    async function toggleStatus(docId, currentStatus) {
-      if (!db) return;
+    async function toggleCarStatus(docId, currentStatus) {
       const newStatus = (currentStatus && currentStatus.toLowerCase() === "sold") ? "Available" : "Sold";
       try {
         await db.collection("cars").doc(docId).update({ status: newStatus });
@@ -949,90 +1579,427 @@
       }
     }
 
-    async function handleSaveCar(e) {
-      e.preventDefault();
-      if (!db) return;
+    // ==========================================
+    // 6. VIP NUMBER PLATES MANAGEMENT
+    // ==========================================
+    function renderAdminPlates(plateList) {
+      const container = document.getElementById("adminPlateList");
+      document.getElementById("totalPlatesCount").innerText = plateList.length;
+      container.innerHTML = "";
 
-      const title = document.getElementById("carTitle").value.trim();
-      const docId = createCarSlug(title);
-      
-      const rawMainUrls = extractUrls(document.getElementById("carImage").value);
-      const gallery = extractUrls(document.getElementById("carGallery").value);
-      
-      let mainImg = rawMainUrls.length > 0 ? rawMainUrls[0] : "";
-      if (!mainImg && gallery.length > 0) mainImg = gallery[0];
-      if (mainImg && !gallery.includes(mainImg)) gallery.unshift(mainImg);
-
-      if (!mainImg) {
-        alert("Please provide at least one valid image URL for the car.");
+      if (plateList.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b;">No VIP plates found. Click "⚡ Sync plates.js" or "➕ Add New Plate".</div>`;
         return;
       }
-      
-      const rawHighlights = document.getElementById("carHighlights").value.split("\n").map(h => h.trim()).filter(Boolean);
-      const highlights = rawHighlights.length > 0 ? rawHighlights : ["100% Non-Flooded & Accident-Free"];
 
-      const newCar = {
-        orderIndex: -1,
-        title: title,
-        brand: document.getElementById("carBrand").value.trim(),
-        bodyType: document.getElementById("carBody").value,
-        price: parseFloat(document.getElementById("carPrice").value) || 0,
-        salesPhone: document.getElementById("carSalesPhone").value.trim() || "60163360198",
-        year: parseInt(document.getElementById("carYear").value) || 2020,
-        mileage: document.getElementById("carMileage").value.trim() || "N/A",
-        engine: document.getElementById("carEngine").value.trim() || "N/A",
-        transmission: document.getElementById("carTrans").value.trim() || "Automatic",
-        fuel: "Petrol",
-        seats: 5,
-        status: "Available",
-        badge: document.getElementById("carBadge").value.trim(),
-        mainImage: mainImg,
-        gallery: gallery,
-        description: document.getElementById("carDesc").value.trim() || "Puspakom inspected & 100% flood-free guaranteed.",
-        highlights: highlights,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      plateList.forEach((p) => {
+        const isSold = p.status && p.status.toLowerCase() === "sold";
+        const safePlate = (p.plate || "Plate").replace(/'/g, "\\'");
+        const trueIndex = allCloudPlates.findIndex(item => item.docId === p.docId);
+        const isFirst = trueIndex === 0;
+        const isLast = trueIndex === allCloudPlates.length - 1;
+
+        const row = document.createElement("div");
+        row.className = `car-row ${isSold ? "is-sold-row" : ""}`;
+        row.innerHTML = `
+          <div class="car-left-details">
+            <div class="plate-mini-badge">${p.plate}</div>
+            <div class="car-meta-details">
+              <h3>${p.plate} • ${p.type || "VIP Number Plate"}</h3>
+              <div class="car-meta-price-row">
+                <span class="car-meta-price">RM ${parseInt(p.price || 0).toLocaleString()}</span>
+                ${p.badge ? `<span style="background:#fef3c7;color:#92400e;font-size:0.72rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:6px;">${p.badge}</span>` : ""}
+              </div>
+              <div class="car-meta-sub">📦 ${p.package || "Plate Number Only"}</div>
+            </div>
+          </div>
+
+          <div class="car-right-actions">
+            <div class="order-btn-group">
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveItemOrder('plates', allCloudPlates, '${p.docId}', -1)" title="Move Up">▲</button>
+              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveItemOrder('plates', allCloudPlates, '${p.docId}', 1)" title="Move Down">▼</button>
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveItemToExtreme('plates', allCloudPlates, '${p.docId}', 'top')" title="Move to Top">🔝 Top</button>
+              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveItemToExtreme('plates', allCloudPlates, '${p.docId}', 'bottom')" title="Move to Bottom">🔻 Bottom</button>
+            </div>
+
+            <button type="button" class="btn-edit-full" onclick="openPlateModal('${p.docId}')">✏️ Edit</button>
+
+            <button type="button" class="btn-toggle-status ${isSold ? 'state-sold' : 'state-available'}" onclick="togglePlateStatus('${p.docId}', '${p.status}')">
+              ${isSold ? '🔴 SOLD' : '🟢 AVAILABLE'}
+            </button>
+
+            <button type="button" class="btn-delete-item" onclick="deleteDocWithPin('plates', '${p.docId}', '${safePlate}')" title="Delete Plate">🗑️</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function filterPlatesList() {
+      const q = document.getElementById("plateSearchInput").value.toLowerCase().trim();
+      const filtered = allCloudPlates.filter(p =>
+        (p.plate && p.plate.toLowerCase().includes(q)) ||
+        (p.type && p.type.toLowerCase().includes(q)) ||
+        (p.package && p.package.toLowerCase().includes(q))
+      );
+      renderAdminPlates(filtered);
+    }
+
+    function openPlateModal(docId = null) {
+      editingPlateDocId = docId;
+      if (docId) {
+        const p = allCloudPlates.find(item => item.docId === docId);
+        if (!p) return;
+        document.getElementById("plateModalHeading").innerText = `Edit Plate: ${p.plate}`;
+        document.getElementById("plateSubmitBtn").innerText = "💾 Save Plate Changes";
+        document.getElementById("plateNumber").value = p.plate || "";
+        document.getElementById("platePrice").value = p.price || "";
+        document.getElementById("plateType").value = p.type || "";
+        document.getElementById("plateBadge").value = p.badge || "";
+        document.getElementById("platePackage").value = p.package || "";
+        document.getElementById("plateDesc").value = p.description || "";
+      } else {
+        document.getElementById("plateModalHeading").innerText = "Add VIP Number Plate";
+        document.getElementById("plateSubmitBtn").innerText = "🚀 Publish VIP Plate";
+        document.getElementById("plateForm").reset();
+      }
+      document.getElementById("plateModal").style.display = "flex";
+    }
+
+    function closePlateModal() {
+      document.getElementById("plateModal").style.display = "none";
+      editingPlateDocId = null;
+    }
+
+    async function handleSavePlate(e) {
+      e.preventDefault();
+      const plateStr = document.getElementById("plateNumber").value.trim().toUpperCase();
+      const docId = editingPlateDocId || createSlug("plate", plateStr);
+
+      const payload = {
+        plate: plateStr,
+        price: parseFloat(document.getElementById("platePrice").value) || 0,
+        type: document.getElementById("plateType").value.trim(),
+        badge: document.getElementById("plateBadge").value.trim(),
+        package: document.getElementById("platePackage").value.trim(),
+        description: document.getElementById("plateDesc").value.trim()
       };
 
+      if (!editingPlateDocId) {
+        payload.orderIndex = -1;
+        payload.status = "Available";
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      }
+
       try {
-        await db.collection("cars").doc(docId).set(newCar, { merge: true });
-        document.getElementById("addCarForm").reset();
-        document.getElementById("imagePreviewBox").src = "assets/brand/logo.png";
-        document.getElementById("galleryCountBadge").innerText = "";
-        closeAddCarModal();
-        alert("✅ Listing published to the top of your showroom!");
+        await db.collection("plates").doc(docId).set(payload, { merge: true });
+        closePlateModal();
+        alert(editingPlateDocId ? "✅ VIP Plate updated!" : "✅ VIP Plate added to showroom!");
       } catch (err) {
-        alert("Failed to add car: " + err.message);
+        alert("Failed to save plate: " + err.message);
       }
     }
 
-    async function removeCarWithPin(docId, carTitle) {
-      if (!db) return;
-      
-      const inputPin = prompt(
-        `⚠️ PERMANENT DELETE CONFIRMATION\n\nAre you sure you want to delete:\n"${carTitle}"?\n\nEnter the 4-digit Admin PIN (${ADMIN_PIN}) to confirm:`
-      );
+    async function togglePlateStatus(docId, currentStatus) {
+      const newStatus = (currentStatus && currentStatus.toLowerCase() === "sold") ? "Available" : "Sold";
+      try {
+        await db.collection("plates").doc(docId).update({ status: newStatus });
+      } catch (err) {
+        alert("Failed to update status: " + err.message);
+      }
+    }
 
+    // ==========================================
+    // 7. CAREERS / JAWATAN KOSONG MANAGEMENT
+    // ==========================================
+    function renderAdminCareers(careerList) {
+      const container = document.getElementById("adminCareerList");
+      document.getElementById("totalCareersCount").innerText = careerList.length;
+      container.innerHTML = "";
+
+      if (careerList.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b;">No job listings found. Click "⚡ Sync careers.js" or "➕ Add New Job".</div>`;
+        return;
+      }
+
+      careerList.forEach((job) => {
+        const isClosed = job.status && job.status.toLowerCase() === "closed";
+        const safeTitle = (job.title || "Job").replace(/'/g, "\\'");
+        const trueIndex = allCloudCareers.findIndex(item => item.docId === job.docId);
+        const isFirst = trueIndex === 0;
+        const isLast = trueIndex === allCloudCareers.length - 1;
+
+        const row = document.createElement("div");
+        row.className = `car-row ${isClosed ? "is-sold-row" : ""}`;
+        row.innerHTML = `
+          <div class="car-left-details">
+            <div class="job-mini-badge">💼</div>
+            <div class="car-meta-details">
+              <h3>${job.title}</h3>
+              <div class="car-meta-price-row">
+                <span class="car-meta-price" style="color: #15803d;">💰 ${job.salary}</span>
+              </div>
+              <div class="car-meta-sub">🕒 ${job.type || "Full-Time"} • ${isClosed ? "Hidden from website" : "Visible in Careers popup"}</div>
+            </div>
+          </div>
+
+          <div class="car-right-actions">
+            <div class="order-btn-group">
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveItemOrder('careers', allCloudCareers, '${job.docId}', -1)" title="Move Up">▲</button>
+              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveItemOrder('careers', allCloudCareers, '${job.docId}', 1)" title="Move Down">▼</button>
+              <button type="button" class="btn-order-action" ${isFirst ? "disabled" : ""} onclick="moveItemToExtreme('careers', allCloudCareers, '${job.docId}', 'top')" title="Move to Top">🔝 Top</button>
+              <button type="button" class="btn-order-action" ${isLast ? "disabled" : ""} onclick="moveItemToExtreme('careers', allCloudCareers, '${job.docId}', 'bottom')" title="Move to Bottom">🔻 Bottom</button>
+            </div>
+
+            <button type="button" class="btn-edit-full" onclick="openCareerAdminModal('${job.docId}')">✏️ Edit Job & Salary</button>
+
+            <button type="button" class="btn-toggle-status ${isClosed ? 'state-sold' : 'state-available'}" onclick="toggleCareerStatus('${job.docId}', '${job.status}')">
+              ${isClosed ? '🔴 CLOSED' : '🟢 HIRING'}
+            </button>
+
+            <button type="button" class="btn-delete-item" onclick="deleteDocWithPin('careers', '${job.docId}', '${safeTitle}')" title="Delete Job">🗑️</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function openCareerAdminModal(docId = null) {
+      editingCareerDocId = docId;
+      if (docId) {
+        const job = allCloudCareers.find(item => item.docId === docId);
+        if (!job) return;
+        document.getElementById("careerModalHeading").innerText = "Edit Job Vacancy";
+        document.getElementById("careerSubmitBtn").innerText = "💾 Save Job Changes";
+        document.getElementById("jobTitle").value = job.title || "";
+        document.getElementById("jobType").value = job.type || "Full-Time (Sepenuh Masa)";
+        document.getElementById("jobStatus").value = job.status || "Hiring";
+        document.getElementById("jobSalary").value = job.salary || "";
+        document.getElementById("jobBenefits").value = (job.benefits || []).join("\n");
+        document.getElementById("jobResponsibilities").value = (job.responsibilities || []).join("\n");
+        document.getElementById("jobRequirements").value = (job.requirements || []).join("\n");
+        document.getElementById("jobWaMsg").value = job.waMessage || "";
+      } else {
+        document.getElementById("careerModalHeading").innerText = "Add New Job Vacancy";
+        document.getElementById("careerSubmitBtn").innerText = "🚀 Publish Job Vacancy";
+        document.getElementById("careerForm").reset();
+        document.getElementById("jobType").value = "Full-Time (Sepenuh Masa)";
+      }
+      document.getElementById("careerAdminModal").style.display = "flex";
+    }
+
+    function closeCareerAdminModal() {
+      document.getElementById("careerAdminModal").style.display = "none";
+      editingCareerDocId = null;
+    }
+
+    async function handleSaveCareer(e) {
+      e.preventDefault();
+      const title = document.getElementById("jobTitle").value.trim();
+      const docId = editingCareerDocId || createSlug("job", title);
+
+      const payload = {
+        title: title,
+        type: document.getElementById("jobType").value.trim(),
+        status: document.getElementById("jobStatus").value,
+        salary: document.getElementById("jobSalary").value.trim(),
+        benefits: document.getElementById("jobBenefits").value.split("\n").map(s => s.trim()).filter(Boolean),
+        responsibilities: document.getElementById("jobResponsibilities").value.split("\n").map(s => s.trim()).filter(Boolean),
+        requirements: document.getElementById("jobRequirements").value.split("\n").map(s => s.trim()).filter(Boolean),
+        waMessage: document.getElementById("jobWaMsg").value.trim() || `Halo Xpress Auto, saya berminat memohon jawatan ${title}.`
+      };
+
+      if (!editingCareerDocId) {
+        payload.orderIndex = -1;
+        payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      }
+
+      try {
+        await db.collection("careers").doc(docId).set(payload, { merge: true });
+        closeCareerAdminModal();
+        alert(editingCareerDocId ? "✅ Job listing updated!" : "✅ New job listing published!");
+      } catch (err) {
+        alert("Failed to save job: " + err.message);
+      }
+    }
+
+    async function toggleCareerStatus(docId, currentStatus) {
+      const newStatus = (currentStatus && currentStatus.toLowerCase() === "closed") ? "Hiring" : "Closed";
+      try {
+        await db.collection("careers").doc(docId).update({ status: newStatus });
+      } catch (err) {
+        alert("Failed to update status: " + err.message);
+      }
+    }
+
+    // ==========================================
+    // 8. SHOWROOM SETTINGS (WHATSAPP NUMBERS)
+    // ==========================================
+    function openSettingsModal() {
+      document.getElementById("settingSalesPhone1").value = showroomSettings.salesPhone1 || "60163360198";
+      document.getElementById("settingSalesPhone2").value = showroomSettings.salesPhone2 || "60162300198";
+      document.getElementById("settingsModal").style.display = "flex";
+    }
+
+    function closeSettingsModal() {
+      document.getElementById("settingsModal").style.display = "none";
+    }
+
+    async function handleSaveSettings(e) {
+      e.preventDefault();
+      const phone1 = document.getElementById("settingSalesPhone1").value.replace(/[^0-9]/g, "");
+      const phone2 = document.getElementById("settingSalesPhone2").value.replace(/[^0-9]/g, "");
+
+      if (!phone1) {
+        alert("Please enter a valid primary WhatsApp number.");
+        return;
+      }
+
+      try {
+        await db.collection("settings").doc("general").set({
+          salesPhone1: phone1,
+          salesPhone2: phone2
+        }, { merge: true });
+        closeSettingsModal();
+        alert("✅ Showroom WhatsApp numbers updated live!");
+      } catch (err) {
+        alert("Failed to save settings: " + err.message);
+      }
+    }
+
+    // ==========================================
+    // 9. PIN-PROTECTED DELETE
+    // ==========================================
+    async function deleteDocWithPin(collectionName, docId, label) {
+      const inputPin = prompt(`⚠️ PERMANENT DELETE CONFIRMATION\n\nDelete "${label}"?\n\nEnter 4-digit Admin PIN (${ADMIN_PIN}) to confirm:`);
       if (inputPin === null) return;
       if (inputPin.trim() !== ADMIN_PIN) {
         alert("❌ Incorrect PIN. Deletion cancelled.");
         return;
       }
-
       try {
-        await db.collection("cars").doc(docId).delete();
-        alert(`✅ "${carTitle}" was permanently deleted.`);
+        await db.collection(collectionName).doc(docId).delete();
+        alert(`✅ "${label}" was permanently deleted.`);
       } catch (err) {
-        alert("Failed to delete from database: " + err.message);
+        alert("Delete failed: " + err.message);
       }
     }
 
-    function exportCloudData() {
-      if (allCloudCars.length === 0) {
-        alert("No vehicle records found in database to export.");
+    // ==========================================
+    // 10. SYNC FROM LOCAL .JS FILES (PIN GATED)
+    // ==========================================
+    async function syncCarsFromLocal() {
+      if (typeof carsData === "undefined" || !Array.isArray(carsData)) {
+        alert("cars.js was not loaded.");
         return;
       }
+      const inputPin = prompt(`⚠️ SYNC CARS DATABASE\n\nOverwrite cloud cars with the ${carsData.length} cars in cars.js?\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
+      if (inputPin !== ADMIN_PIN) return;
 
-      const cleanData = allCloudCars.map((c) => ({
+      try {
+        const snapshot = await db.collection("cars").get();
+        const delBatch = db.batch();
+        snapshot.docs.forEach(d => delBatch.delete(d.ref));
+        await delBatch.commit();
+
+        const insBatch = db.batch();
+        carsData.forEach((car, idx) => {
+          const docId = createSlug("car", car.title);
+          insBatch.set(db.collection("cars").doc(docId), {
+            ...car,
+            orderIndex: idx,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        });
+        await insBatch.commit();
+        alert(`🎉 Synced ${carsData.length} cars from cars.js!`);
+      } catch (err) {
+        alert("Sync failed: " + err.message);
+      }
+    }
+
+    async function syncPlatesFromLocal() {
+      if (typeof numberPlatesData === "undefined" || !Array.isArray(numberPlatesData)) {
+        alert("plates.js was not loaded.");
+        return;
+      }
+      const inputPin = prompt(`⚠️ SYNC VIP PLATES DATABASE\n\nOverwrite cloud plates with the ${numberPlatesData.length} plates in plates.js?\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
+      if (inputPin !== ADMIN_PIN) return;
+
+      try {
+        const snapshot = await db.collection("plates").get();
+        const delBatch = db.batch();
+        snapshot.docs.forEach(d => delBatch.delete(d.ref));
+        await delBatch.commit();
+
+        const insBatch = db.batch();
+        numberPlatesData.forEach((p, idx) => {
+          const docId = p.id || createSlug("plate", p.plate);
+          insBatch.set(db.collection("plates").doc(docId), {
+            ...p,
+            status: p.status || "Available",
+            orderIndex: idx,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        });
+        await insBatch.commit();
+        alert(`🎉 Synced ${numberPlatesData.length} VIP plates from plates.js!`);
+      } catch (err) {
+        alert("Sync failed: " + err.message);
+      }
+    }
+
+    async function syncCareersFromLocal() {
+      const sourceJobs = typeof careersData !== "undefined" ? careersData : (typeof hiringJobsData !== "undefined" ? hiringJobsData : null);
+      if (!sourceJobs || !Array.isArray(sourceJobs)) {
+        alert("careers.js was not loaded.");
+        return;
+      }
+      const inputPin = prompt(`⚠️ SYNC CAREERS DATABASE\n\nOverwrite cloud jobs with the ${sourceJobs.length} listings in careers.js?\n\nEnter PIN (${ADMIN_PIN}) to confirm:`);
+      if (inputPin !== ADMIN_PIN) return;
+
+      try {
+        const snapshot = await db.collection("careers").get();
+        const delBatch = db.batch();
+        snapshot.docs.forEach(d => delBatch.delete(d.ref));
+        await delBatch.commit();
+
+        const insBatch = db.batch();
+        sourceJobs.forEach((j, idx) => {
+          const docId = j.id || createSlug("job", j.title);
+          insBatch.set(db.collection("careers").doc(docId), {
+            ...j,
+            status: j.status || "Hiring",
+            orderIndex: idx,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        });
+        await insBatch.commit();
+        alert(`🎉 Synced ${sourceJobs.length} job vacancies from careers.js!`);
+      } catch (err) {
+        alert("Sync failed: " + err.message);
+      }
+    }
+
+    // ==========================================
+    // 11. BACKUP EXPORTS (INDIVIDUAL & ALL)
+    // ==========================================
+    function triggerFileDownload(filename, contentStr) {
+      const blob = new Blob([contentStr], { type: "text/javascript" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportCarsBackup() {
+      if (allCloudCars.length === 0) {
+        alert("No car records in database to export.");
+        return;
+      }
+      const cleanCars = allCloudCars.map((c) => ({
         title: c.title || "",
         brand: c.brand || "",
         bodyType: c.bodyType || "Sedan",
@@ -1052,33 +2019,71 @@
         gallery: Array.isArray(c.gallery) ? c.gallery : []
       }));
 
-      const dataStr =
+      const content =
         "// =======================================================\n" +
         "// XPRESS AUTO ENTERPRISE - SHOWROOM CAR DATABASE\n" +
         "// =======================================================\n\n" +
-        "const carsData = " + JSON.stringify(cleanData, null, 2) + ";\n";
+        "const carsData = " + JSON.stringify(cleanCars, null, 2) + ";\n";
 
-      const blob = new Blob([dataStr], { type: "text/javascript" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "cars.js";
-      a.click();
-      URL.revokeObjectURL(url);
+      triggerFileDownload("cars.js", content);
     }
 
-    function filterAdminList() {
-      const q = document.getElementById("adminSearchInput").value.toLowerCase().trim();
-      const filtered = allCloudCars.filter(c => 
-        (c.title && c.title.toLowerCase().includes(q)) || 
-        (c.brand && c.brand.toLowerCase().includes(q)) || 
-        (c.year && c.year.toString().includes(q))
-      );
-      renderAdminCars(filtered);
+    function exportPlatesBackup() {
+      if (allCloudPlates.length === 0) {
+        alert("No VIP plate records in database to export.");
+        return;
+      }
+      const cleanPlates = allCloudPlates.map((p) => ({
+        id: p.docId,
+        plate: p.plate || "",
+        price: Number(p.price) || 0,
+        type: p.type || "",
+        package: p.package || "",
+        badge: p.badge || "",
+        status: p.status || "Available",
+        description: p.description || ""
+      }));
+
+      const content =
+        "// =======================================================\n" +
+        "// XPRESS AUTO ENTERPRISE - VIP NUMBER PLATES DATABASE\n" +
+        "// =======================================================\n\n" +
+        "const numberPlatesData = " + JSON.stringify(cleanPlates, null, 2) + ";\n";
+
+      triggerFileDownload("plates.js", content);
     }
 
-    function openAddCarModal() { document.getElementById("addCarModal").style.display = "flex"; }
-    function closeAddCarModal() { document.getElementById("addCarModal").style.display = "none"; }
+    function exportCareersBackup() {
+      if (allCloudCareers.length === 0) {
+        alert("No career records in database to export.");
+        return;
+      }
+      const cleanCareers = allCloudCareers.map((j) => ({
+        id: j.docId,
+        title: j.title || "",
+        salary: j.salary || "",
+        type: j.type || "Full-Time (Sepenuh Masa)",
+        status: j.status || "Hiring",
+        benefits: Array.isArray(j.benefits) ? j.benefits : [],
+        responsibilities: Array.isArray(j.responsibilities) ? j.responsibilities : [],
+        requirements: Array.isArray(j.requirements) ? j.requirements : [],
+        waMessage: j.waMessage || ""
+      }));
+
+      const content =
+        "// =======================================================\n" +
+        "// XPRESS AUTO ENTERPRISE - CAREERS & JOB VACANCIES\n" +
+        "// =======================================================\n\n" +
+        "const careersData = " + JSON.stringify(cleanCareers, null, 2) + ";\n";
+
+      triggerFileDownload("careers.js", content);
+    }
+
+    function exportAllBackups() {
+      if (allCloudCars.length > 0) exportCarsBackup();
+      setTimeout(() => { if (allCloudPlates.length > 0) exportPlatesBackup(); }, 350);
+      setTimeout(() => { if (allCloudCareers.length > 0) exportCareersBackup(); }, 700);
+    }
 
     document.addEventListener("DOMContentLoaded", checkExistingAuth);
   </script>
