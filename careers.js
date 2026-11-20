@@ -1,60 +1,16 @@
 // =======================================================
-// XPRESS AUTO & GOLDEN HOUSE - CAREERS & JOB VACANCIES
+// XPRESS AUTO ENTERPRISE - CAREERS & JOB VACANCIES
 // =======================================================
 
 const careersData = [
   {
-    id: "runner-ops-2026",
-    title: "Pembantu Operasi / Runner",
-    department: "Logistics & Operations",
-    location: "Bandar Bukit Raja / Shah Alam, Selangor",
-    type: "Full-Time (Non-Executive)",
-    salary: "RM 1,800 - RM 2,000 / month",
-    allowance: "+ RM50 Elaun Katering/Acara + OT",
-    workingHours: "Isnin – Sabtu (8:00 AM – 5:30 PM)",
-    minEducation: "SPM",
-    license: "Lesen Memandu Kelas D Sah",
-    experience: "< 1 Tahun / Pengalaman Pemandu/Runner Dialu-alukan",
-    badge: "Hiring Immediately",
-    summary: "Membantu operasi harian penghantaran kenderaan terpakai, pembelian barang syarikat, serta penghantaran & persediaan katering.",
-    responsibilities: [
-      "Membeli bahan mentah, barangan runcit dan keperluan operasi syarikat.",
-      "Menghantar dan mengambil kenderaan bagi urusan jual beli kereta terpakai.",
-      "Membantu penghantaran makanan katering, penyediaan buffet & pemasangan peralatan di lokasi pelanggan.",
-      "Mengutip semula peralatan katering selepas majlis selesai dan membantu pembungkusan.",
-      "Menghantar atau mengambil kakitangan syarikat, pelanggan atau Pengarah apabila diperlukan.",
-      "Memastikan kenderaan syarikat sentiasa bersih, selamat dan dalam keadaan baik.",
-      "Membantu menyusun stok, menjaga kebersihan stor dan kawasan kerja operasi."
-    ],
-    requirements: [
-      "Warganegara Malaysia (Lelaki, berumur 21–40 tahun).",
-      "Mempunyai Lesen Memandu Malaysia (Kelas D) yang sah.",
-      "Rajin, jujur, bertanggungjawab, berdisiplin dan menepati masa.",
-      "Sihat tubuh badan serta berkemampuan mengangkat barang & peralatan katering.",
-      "Boleh bekerja lebih masa (OT) atau hujung minggu sekiranya diperlukan.",
-      "Pengalaman sebagai pemandu, runner atau dalam bidang katering adalah satu kelebihan."
-    ],
-    benefits: [
-      "Gaji Asas: RM 1,800 - RM 2,000",
-      "Elaun Katering RM50 bagi setiap acara",
-      "Bayaran Kerja Lebih Masa (OT)",
-      "Caruman wajib KWSP (EPF), PERKESO (SOCSO) & EIS",
-      "Cuti Tahunan & Cuti Sakit bergaji",
-      "Bonus tahunan berdasarkan prestasi syarikat"
-    ],
-    applyWhatsapp: "60163360198",
-    applyMessage: "Halo Xpress Auto / Golden House, saya berminat untuk memohon jawatan Pembantu Operasi / Runner (Bandar Bukit Raja / Shah Alam)."
-  }
-];
-
-const hiringJobsData = [
-  {
     id: "job-sales",
     title: "Used Car Sales Executive (Salesman / Salesgirl)",
-    salary: "RM 1,700 - RM 10,000+ / month (Basic + Commission + Incentives)",
+    salary: "RM 2,000 - RM 10,000+ / month (Basic + Commission + Incentives)",
     type: "Full-Time (Sepenuh Masa)",
+    status: "Hiring",
     benefits: [
-      "Gaji Pokok RM1,700 + Komisen Jualan Lumayan + Insentif Bulanan (RM3,000++ hingga RM10,000++)",
+      "Gaji Pokok RM2,000 + Komisen Jualan Lumayan + Insentif Bulanan (RM3,000++ hingga RM10,000++)",
       "Caruman lengkap: KWSP (EPF), PERKESO (SOCSO) & EIS",
       "Latihan intensif disediakan (Tiada pengalaman dialu-alukan)"
     ],
@@ -76,6 +32,7 @@ const hiringJobsData = [
     title: "Pembantu Operasi / Showroom Runner",
     salary: "RM 1,800 - RM 2,000 / month",
     type: "Full-Time (Sepenuh Masa)",
+    status: "Hiring",
     benefits: [
       "Gaji Bulanan Tetap RM1,800 - RM2,000",
       "Caruman KWSP (EPF), PERKESO (SOCSO) & EIS",
@@ -95,46 +52,73 @@ const hiringJobsData = [
   }
 ];
 
+let liveCareersList = [...careersData];
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    if (typeof db !== "undefined" && db) {
+      db.collection("careers").onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          liveCareersList = [];
+          snapshot.forEach((doc) => {
+            liveCareersList.push({ docId: doc.id, ...doc.data() });
+          });
+          liveCareersList.sort((a, b) => {
+            const orderA = a.orderIndex !== undefined ? a.orderIndex : 9999;
+            const orderB = b.orderIndex !== undefined ? b.orderIndex : 9999;
+            return orderA - orderB;
+          });
+        }
+      });
+    }
+  }, 600);
+});
+
 function openCareerModal() {
   const modal = document.getElementById("careerModal");
   const content = document.getElementById("careerModalContent");
   if (!modal || !content) return;
 
-  const jobsHTML = hiringJobsData.map((job) => {
-    const waLink = `https://wa.me/60163360198?text=${encodeURIComponent(job.waMessage)}`;
-    return `
-      <div class="job-listing-card">
-        <span class="badge-career">💼 ${job.type}</span>
-        <h3 style="color: var(--accent); font-size: 1.15rem; margin-top: 0.2rem;">${job.title}</h3>
-        <div class="career-salary-box">💰 ${job.salary}</div>
+  const salesPhone = (typeof CONFIG !== "undefined" && CONFIG.salesPhone1) ? CONFIG.salesPhone1 : "60163360198";
+  const activeJobs = liveCareersList.filter(j => !j.status || j.status.toLowerCase() !== "closed");
 
-        <div class="career-section">
-          <h4>✨ Keistimewaan & Faedah:</h4>
-          <ul>
-            ${job.benefits.map(b => `<li>${b}</li>`).join("")}
-          </ul>
-        </div>
+  const jobsHTML = activeJobs.length === 0
+    ? `<p style="color: var(--text-muted); text-align: center; padding: 1.5rem 0;">Tiada kekosongan jawatan buat masa ini. Sila hubungi kami melalui WhatsApp untuk pertanyaan lanjut.</p>`
+    : activeJobs.map((job) => {
+        const waLink = `https://wa.me/${salesPhone}?text=${encodeURIComponent(job.waMessage || `Halo Xpress Auto, saya berminat memohon jawatan ${job.title}.`)}`;
+        return `
+          <div class="job-listing-card">
+            <span class="badge-career">💼 ${job.type || "Full-Time"}</span>
+            <h3 style="color: var(--accent); font-size: 1.15rem; margin-top: 0.2rem;">${job.title}</h3>
+            <div class="career-salary-box">💰 ${job.salary}</div>
 
-        <div class="career-section">
-          <h4>📋 Skop Kerja:</h4>
-          <ul>
-            ${job.responsibilities.map(r => `<li>${r}</li>`).join("")}
-          </ul>
-        </div>
+            <div class="career-section">
+              <h4>✨ Keistimewaan & Faedah:</h4>
+              <ul>
+                ${(job.benefits || []).map(b => `<li>${b}</li>`).join("")}
+              </ul>
+            </div>
 
-        <div class="career-section">
-          <h4>🎯 Syarat Kelayakan:</h4>
-          <ul>
-            ${job.requirements.map(req => `<li>${req}</li>`).join("")}
-          </ul>
-        </div>
+            <div class="career-section">
+              <h4>📋 Skop Kerja:</h4>
+              <ul>
+                ${(job.responsibilities || []).map(r => `<li>${r}</li>`).join("")}
+              </ul>
+            </div>
 
-        <a href="${waLink}" target="_blank" rel="noopener" class="btn-career-apply">
-          💬 Mohon Jawatan Ini via WhatsApp
-        </a>
-      </div>
-    `;
-  }).join("");
+            <div class="career-section">
+              <h4>🎯 Syarat Kelayakan:</h4>
+              <ul>
+                ${(job.requirements || []).map(req => `<li>${req}</li>`).join("")}
+              </ul>
+            </div>
+
+            <a href="${waLink}" target="_blank" rel="noopener" class="btn-career-apply">
+              💬 Mohon Jawatan Ini via WhatsApp
+            </a>
+          </div>
+        `;
+      }).join("");
 
   content.innerHTML = `
     <h2 style="color: var(--accent); font-size: 1.35rem; margin-bottom: 0.4rem;">Jawatan Kosong / We Are Hiring!</h2>
