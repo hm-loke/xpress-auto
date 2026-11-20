@@ -1,0 +1,9 @@
+#### File B: `.gitignore`
+Create a new file named `.gitignore` on GitHub so OS junk files never clutter your commits:
+
+```gitignore
+.DS_Store
+Thumbs.db
+.vscode/
+node_modules/
+*.log
