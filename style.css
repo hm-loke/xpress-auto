@@ -1750,3 +1750,26 @@ html, body {
     font-size: 0.85rem;
   }
 }
+
+/* ============================================= */
+/* 18. MOBILE PAGINATION SLIDING BAR FIX         */
+/* ============================================= */
+@media (max-width: 768px) {
+  .pagination-container {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.4rem 0.25rem 0.75rem 0.25rem;
+    gap: 0.4rem;
+    max-width: 100%;
+    scrollbar-width: thin;
+  }
+
+  .pagination-container .page-btn {
+    flex: 0 0 auto;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.84rem;
+    white-space: nowrap;
+  }
+}
