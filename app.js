@@ -449,6 +449,8 @@ function renderPaginationControls(totalItems) {
     }
   };
   container.appendChild(nextBtn);
+  const activeBtn = container.querySelector(".page-btn.active");
+  if (activeBtn) activeBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 }
 
 // ==========================================
