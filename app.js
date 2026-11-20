@@ -35,14 +35,13 @@ let activeGalleryIndex = 0;
 // 1. DATA INITIALIZATION & REAL-TIME LISTENER
 // ==========================================
 function initializeData() {
-  // 1. Load VIP Number Plates
+  // Load fallback VIP Plates first
   if (typeof numberPlatesData !== "undefined" && Array.isArray(numberPlatesData)) {
     allPlates = [...numberPlatesData];
-    const plateCountEl = document.getElementById("countPlatesBadge");
-    if (plateCountEl) plateCountEl.innerText = allPlates.length;
+    updatePlateCounters();
   }
 
-  // 2. Initialize Firebase Real-Time Firestore
+  // Initialize Firebase Real-Time Firestore
   if (typeof firebase !== "undefined" && firebaseConfig.apiKey !== "YOUR_API_KEY") {
     try {
       if (!firebase.apps.length) {
@@ -50,17 +49,24 @@ function initializeData() {
       }
       db = firebase.firestore();
 
+      // 1. Live Showroom Phone Settings
+      db.collection("settings").doc("general").onSnapshot((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.salesPhone1) CONFIG.salesPhone1 = data.salesPhone1;
+          if (data.salesPhone2) CONFIG.salesPhone2 = data.salesPhone2;
+          applyDynamicPhones();
+        }
+      });
+
+      // 2. Live Cars Inventory
       db.collection("cars").onSnapshot((snapshot) => {
         if (!snapshot.empty) {
           allCars = [];
           snapshot.forEach((doc) => {
-            allCars.push({
-              docId: doc.id,
-              ...doc.data()
-            });
+            allCars.push({ docId: doc.id, ...doc.data() });
           });
 
-          // Sort strictly by orderIndex (cars.js top-to-bottom order)
           allCars.sort((a, b) => {
             const orderA = a.orderIndex !== undefined ? a.orderIndex : 9999;
             const orderB = b.orderIndex !== undefined ? b.orderIndex : 9999;
@@ -71,22 +77,68 @@ function initializeData() {
 
           allCars.forEach((car, i) => { car.id = i + 1; });
 
+          populateBrandDropdown();
           updateCarCounters();
           handleFilterChange();
         } else {
           loadFallbackCars();
         }
       }, (err) => {
-        console.warn("Firestore listener failed, using cars.js fallback:", err);
+        console.warn("Firestore cars listener failed, using cars.js fallback:", err);
         loadFallbackCars();
       });
+
+      // 3. Live VIP Number Plates
+      db.collection("plates").onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          allPlates = [];
+          snapshot.forEach((doc) => {
+            allPlates.push({ docId: doc.id, ...doc.data() });
+          });
+
+          allPlates.sort((a, b) => {
+            const orderA = a.orderIndex !== undefined ? a.orderIndex : 9999;
+            const orderB = b.orderIndex !== undefined ? b.orderIndex : 9999;
+            if (orderA !== orderB) return orderA - orderB;
+            return 0;
+          });
+
+          updatePlateCounters();
+          if (currentView === "plates") renderPlatesGrid();
+        }
+      });
+
       return;
     } catch (e) {
-      console.warn("Firebase init error, using cars.js fallback:", e);
+      console.warn("Firebase init error, using local fallback:", e);
     }
   }
 
   loadFallbackCars();
+}
+
+function formatMalaysiaPhoneDisplay(raw) {
+  if (!raw) return "";
+  const local = raw.startsWith("60") ? "0" + raw.slice(2) : raw;
+  return local.length >= 10 ? `${local.slice(0, 3)}-${local.slice(3, 6)} ${local.slice(6)}` : local;
+}
+
+function applyDynamicPhones() {
+  document.querySelectorAll("[data-sales-wa]").forEach(el => {
+    el.href = `https://wa.me/${CONFIG.salesPhone1}`;
+  });
+  document.querySelectorAll("[data-sales-tel]").forEach(el => {
+    el.href = `tel:+${CONFIG.salesPhone1}`;
+    if (el.innerText.includes("(Sales)")) {
+      el.innerText = `📞 ${formatMalaysiaPhoneDisplay(CONFIG.salesPhone1)} (Sales)`;
+    }
+  });
+  document.querySelectorAll("[data-office-tel]").forEach(el => {
+    el.href = `tel:+${CONFIG.salesPhone2}`;
+    if (el.innerText.includes("(Office)")) {
+      el.innerText = `📞 ${formatMalaysiaPhoneDisplay(CONFIG.salesPhone2)} (Office)`;
+    }
+  });
 }
 
 function loadFallbackCars() {
@@ -96,9 +148,24 @@ function loadFallbackCars() {
       ...car
     }));
   }
+  populateBrandDropdown();
   updateCarCounters();
   currentFilteredCars = [...allCars];
   renderInventoryPage(1);
+}
+
+function populateBrandDropdown() {
+  const brandSelect = document.getElementById("brandFilter");
+  if (!brandSelect) return;
+  const previousVal = brandSelect.value || "All";
+
+  const brands = [...new Set(allCars.map(c => c.brand).filter(Boolean))].sort();
+  brandSelect.innerHTML = `<option value="All">All Brands</option>` +
+    brands.map(b => `<option value="${b}">${b}</option>`).join("");
+
+  if (brands.includes(previousVal)) {
+    brandSelect.value = previousVal;
+  }
 }
 
 function updateCarCounters() {
@@ -113,12 +180,19 @@ function updateCarCounters() {
   if (heroCountEl) heroCountEl.innerText = `${availableCars.length}+`;
 }
 
+function updatePlateCounters() {
+  const availablePlates = allPlates.filter(
+    (p) => !p.status || p.status.toLowerCase() !== "sold"
+  );
+  const plateCountEl = document.getElementById("countPlatesBadge");
+  if (plateCountEl) plateCountEl.innerText = availablePlates.length;
+}
+
 // ==========================================
 // 2. SOCIAL SHARING HANDLER
 // ==========================================
 function shareShowroom(platform) {
   const shareURL = window.location.href;
-  const shareTitle = "Xpress Auto Enterprise - Verified Used Cars & VIP Plates in Shah Alam";
   const shareText = "Check out quality 100% flood-free used cars & VIP number plates at Xpress Auto Enterprise (Auto City Seksyen 15, Shah Alam):";
 
   switch (platform) {
@@ -127,18 +201,6 @@ function shareShowroom(platform) {
       break;
     case "facebook":
       window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareURL)}`, "_blank");
-      break;
-    case "twitter":
-      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareURL)}&text=${encodeURIComponent(shareText)}`, "_blank");
-      break;
-    case "telegram":
-      window.open(`https://t.me/share/url?url=${encodeURIComponent(shareURL)}&text=${encodeURIComponent(shareText)}`, "_blank");
-      break;
-    case "line":
-      window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareURL)}`, "_blank");
-      break;
-    case "email":
-      window.location.href = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(shareText + "\n\n" + shareURL)}`;
       break;
   }
 }
@@ -149,9 +211,7 @@ function copyShowroomLink() {
     const toast = document.getElementById("copyToast");
     if (toast) {
       toast.classList.remove("hidden");
-      setTimeout(() => {
-        toast.classList.add("hidden");
-      }, 2000);
+      setTimeout(() => toast.classList.add("hidden"), 2000);
     }
   });
 }
@@ -311,24 +371,33 @@ function renderPlatesGrid() {
   grid.innerHTML = "";
 
   allPlates.forEach((p) => {
+    const isSold = p.status && p.status.toLowerCase() === "sold";
     const waText = encodeURIComponent(
-      `Hi Xpress Auto Sales Team, I am interested in purchasing the VIP Number Plate ${p.plate} (RM ${Number(p.price || 0).toLocaleString()}). Please advise on JPJ interchange transfer.`
+      isSold
+        ? `Hi Xpress Auto Sales Team, I saw VIP Plate ${p.plate} was sold on your website. Do you have other similar 2-digit plates?`
+        : `Hi Xpress Auto Sales Team, I am interested in purchasing the VIP Number Plate ${p.plate} (RM ${Number(p.price || 0).toLocaleString()}). Please advise on JPJ interchange transfer.`
     );
 
     const card = document.createElement("div");
-    card.className = "plate-card";
+    card.className = `plate-card ${isSold ? "is-sold-plate" : ""}`;
     card.innerHTML = `
       <div>
-        <div class="plate-type">${p.type}</div>
+        <div class="plate-type">${p.type || "VIP Number Plate"}</div>
         <div class="plate-badge-box">
           <div class="plate-text">${p.plate}</div>
         </div>
-        <div class="plate-package">${p.package}</div>
-        <div class="plate-price">RM ${Number(p.price || 0).toLocaleString()}</div>
-        <div class="plate-desc">${p.description}</div>
+        <div class="plate-package">${p.package || "Plate Number Only"}</div>
+        <div class="plate-price">
+          ${
+            isSold
+              ? `<span style="text-decoration: line-through; color: #64748b; font-size: 1.1rem;">RM ${Number(p.price || 0).toLocaleString()}</span> <span style="color: #ef4444; font-size: 1.15rem;">[SOLD]</span>`
+              : `RM ${Number(p.price || 0).toLocaleString()}`
+          }
+        </div>
+        <div class="plate-desc">${p.description || ""}</div>
       </div>
-      <a href="https://wa.me/${CONFIG.salesPhone1}?text=${waText}" target="_blank" rel="noopener" class="btn-plate-wa">
-        💬 WhatsApp for ${p.plate}
+      <a href="https://wa.me/${CONFIG.salesPhone1}?text=${waText}" target="_blank" rel="noopener" class="btn-plate-wa" style="${isSold ? 'background:#475569;' : ''}">
+        ${isSold ? `🚫 Sold (Ask Similar Plates)` : `💬 WhatsApp for ${p.plate}`}
       </a>
     `;
     grid.appendChild(card);
@@ -436,7 +505,7 @@ function resetAllFilters() {
 }
 
 // ==========================================
-// 8. LIGHTBOX DETAIL MODAL (WITH ARROWS)
+// 8. LIGHTBOX DETAIL MODAL (WITH BOOKING CTA)
 // ==========================================
 function openCarModal(id) {
   const car = allCars.find((c) => c.id === id);
@@ -447,11 +516,12 @@ function openCarModal(id) {
   const isSold = car.status && car.status.toLowerCase() === "sold";
   const carPhone = car.salesPhone || CONFIG.salesPhone1;
   const galleryList = Array.isArray(car.gallery) && car.gallery.length > 0 ? car.gallery : [car.mainImage || "assets/brand/logo.png"];
+  const safeVehicleTitle = (car.title || "").replace(/'/g, "\\'");
 
   const waText = encodeURIComponent(
     isSold
       ? `Hi Xpress Auto Sales Team, I saw the ${car.title} was sold on your website. Do you have any similar cars in showroom stock?`
-      : `Hi Xpress Auto Sales Team, I would like to arrange a viewing and test drive for the ${car.title} (RM ${Number(car.price || 0).toLocaleString()}).`
+      : `Hi Xpress Auto Sales Team, I would like to inquire about the ${car.title} (RM ${Number(car.price || 0).toLocaleString()}).`
   );
   const content = document.getElementById("modalContent");
 
@@ -514,12 +584,15 @@ function openCarModal(id) {
           ? `<a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-modal-wa" style="background: #475569;">
                💬 WhatsApp Sales Team (Ask for Similar Cars)
              </a>`
-          : `<a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-modal-wa">
-               💬 WhatsApp Sales Team for Viewing
+          : `<button type="button" onclick="closeCarModal(); openBookingModal('${safeVehicleTitle}');" class="btn-modal-book">
+               📅 Book Test Drive
+             </button>
+             <a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-modal-wa">
+               💬 Quick WhatsApp
              </a>`
       }
       <a href="#calculator" onclick="prefillCalculator(${car.price || 0})" class="btn-modal-calc">
-        📊 Calculate Loan
+        📊 Loan Calc
       </a>
     </div>
   `;
@@ -554,17 +627,71 @@ function closeCarModal() {
   document.getElementById("detailModal").style.display = "none";
 }
 
+// ==========================================
+// 8B. TEST DRIVE & APPOINTMENT BOOKING MODAL
+// ==========================================
+function openBookingModal(prefillVehicle = "") {
+  const modal = document.getElementById("bookingModal");
+  if (!modal) return;
+
+  const dateInput = document.getElementById("bookDate");
+  if (dateInput && !dateInput.value) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    dateInput.value = tomorrow.toISOString().split("T")[0];
+    dateInput.min = new Date().toISOString().split("T")[0];
+  }
+
+  const vehicleInput = document.getElementById("bookVehicle");
+  if (vehicleInput && prefillVehicle) {
+    vehicleInput.value = prefillVehicle;
+  }
+
+  modal.style.display = "flex";
+}
+
+function closeBookingModal() {
+  const modal = document.getElementById("bookingModal");
+  if (modal) modal.style.display = "none";
+}
+
+function submitBooking(e) {
+  e.preventDefault();
+  const purpose = document.getElementById("bookPurpose").value;
+  const vehicle = document.getElementById("bookVehicle").value.trim() || "General Showroom Visit";
+  const rawDate = document.getElementById("bookDate").value;
+  const time = document.getElementById("bookTime").value;
+  const name = document.getElementById("bookName").value.trim();
+
+  const formattedDate = rawDate ? new Date(rawDate).toLocaleDateString("en-MY", { weekday: "short", day: "numeric", month: "short", year: "numeric" }) : rawDate;
+
+  const message =
+    `Hi Xpress Auto Sales Team, I would like to book an appointment:\n\n` +
+    `• *Name:* ${name}\n` +
+    `• *Purpose:* ${purpose}\n` +
+    `• *Vehicle / Plate:* ${vehicle}\n` +
+    `• *Date:* ${formattedDate}\n` +
+    `• *Time:* ${time}\n\n` +
+    `Please confirm if this slot is available. Thank you!`;
+
+  closeBookingModal();
+  window.open(`https://wa.me/${CONFIG.salesPhone1}?text=${encodeURIComponent(message)}`, "_blank");
+}
+
 window.onclick = function (e) {
   const detailModal = document.getElementById("detailModal");
   const careerModal = document.getElementById("careerModal");
+  const bookingModal = document.getElementById("bookingModal");
   if (e.target === detailModal) closeCarModal();
   if (e.target === careerModal) closeCareerModal();
+  if (e.target === bookingModal) closeBookingModal();
 };
 
 window.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     closeCarModal();
     closeCareerModal();
+    closeBookingModal();
   }
   const detailModal = document.getElementById("detailModal");
   if (detailModal && detailModal.style.display === "flex") {
