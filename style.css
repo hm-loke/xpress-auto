@@ -638,14 +638,26 @@ nav a:hover {
 }
 
 .car-card-meta {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.35rem;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 0.45rem 0;
+  padding: 0.6rem 0;
   margin: 0.5rem 0 1rem;
+}
+
+.car-card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: #475569;
 }
 
 .card-btns {
