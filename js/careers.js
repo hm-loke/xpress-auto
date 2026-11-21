@@ -1,5 +1,5 @@
 // =======================================================
-// XPRESS AUTO ENTERPRISE - CAREERS & JOB VACANCIES
+// XPRESS AUTO SDN BHD - CAREERS & JOB VACANCIES
 // =======================================================
 
 const careersData = [
@@ -25,7 +25,7 @@ const careersData = [
       "Berkeyakinan bercakap di depan kamera (Host TikTok/FB)",
       "Punctual, jujur, beretika, dan komited bekerja"
     ],
-    waMessage: "Halo Xpress Auto, saya berminat memohon jawatan Sales Executive (Salesman/Salesgirl)."
+    waMessage: "Halo Xpress Auto Sdn Bhd, saya berminat memohon jawatan Sales Executive (Salesman/Salesgirl)."
   },
   {
     id: "job-runner",
@@ -48,7 +48,7 @@ const careersData = [
       "Mempunyai disiplin masa dan amanah tinggi",
       "Biasa dengan jalan sekitar Shah Alam, Klang, dan Petaling Jaya"
     ],
-    waMessage: "Halo Xpress Auto, saya berminat memohon jawatan Pembantu Operasi / Runner."
+    waMessage: "Halo Xpress Auto Sdn Bhd, saya berminat memohon jawatan Pembantu Operasi / Runner."
   }
 ];
 
@@ -80,12 +80,19 @@ function openCareerModal() {
   if (!modal || !content) return;
 
   const salesPhone = (typeof CONFIG !== "undefined" && CONFIG.salesPhone1) ? CONFIG.salesPhone1 : "60163360198";
+  const salesEmail = (typeof CONFIG !== "undefined" && CONFIG.salesEmail) ? CONFIG.salesEmail : "xpressusedcar600198@gmail.com";
   const activeJobs = liveCareersList.filter(j => !j.status || j.status.toLowerCase() !== "closed");
 
   const jobsHTML = activeJobs.length === 0
-    ? `<p style="color: var(--text-muted); text-align: center; padding: 1.5rem 0;">Tiada kekosongan jawatan buat masa ini. Sila hubungi kami melalui WhatsApp untuk pertanyaan lanjut.</p>`
+    ? `<p style="color: var(--text-muted); text-align: center; padding: 1.5rem 0;">Tiada kekosongan jawatan buat masa ini. Sila hubungi kami melalui WhatsApp atau Email untuk pertanyaan lanjut.</p>`
     : activeJobs.map((job) => {
-        const waLink = `https://wa.me/${salesPhone}?text=${encodeURIComponent(job.waMessage || `Halo Xpress Auto, saya berminat memohon jawatan ${job.title}.`)}`;
+        const waLink = `https://wa.me/${salesPhone}?text=${encodeURIComponent(job.waMessage || `Halo Xpress Auto Sdn Bhd, saya berminat memohon jawatan ${job.title}.`)}`;
+        const emailSubject = encodeURIComponent(`Permohonan Jawatan: ${job.title} - Xpress Auto Sdn Bhd`);
+        const emailBody = encodeURIComponent(
+          `Halo Admin Xpress Auto Sdn Bhd,\n\nSaya berminat untuk memohon jawatan ${job.title}.\n\n• Nama Penuh:\n• No. Telefon:\n• Umur:\n• Pengalaman Kerja:\n\nSila maklumkan sekiranya terdapat sesi temuduga. Terima kasih!`
+        );
+        const mailLink = `mailto:${salesEmail}?subject=${emailSubject}&body=${emailBody}`;
+
         return `
           <div class="job-listing-card">
             <span class="badge-career">💼 ${job.type || "Full-Time"}</span>
@@ -113,9 +120,14 @@ function openCareerModal() {
               </ul>
             </div>
 
-            <a href="${waLink}" target="_blank" rel="noopener" class="btn-career-apply">
-              💬 Mohon Jawatan Ini via WhatsApp
-            </a>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.9rem;">
+              <a href="${waLink}" target="_blank" rel="noopener" class="btn-career-apply" style="margin-top: 0;">
+                💬 Mohon via WhatsApp
+              </a>
+              <a href="${mailLink}" class="btn-career-apply" style="margin-top: 0; background: var(--accent);">
+                ✉️ Mohon via Email
+              </a>
+            </div>
           </div>
         `;
       }).join("");
@@ -123,7 +135,7 @@ function openCareerModal() {
   content.innerHTML = `
     <h2 style="color: var(--accent); font-size: 1.35rem; margin-bottom: 0.4rem;">Jawatan Kosong / We Are Hiring!</h2>
     <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">
-      Sertai pasukan <strong>Xpress Auto Enterprise</strong> di Auto City Seksyen 15, Shah Alam.
+      Sertai pasukan <strong>Xpress Auto Sdn Bhd</strong> di Auto City Seksyen 15, Shah Alam.
     </p>
     ${jobsHTML}
   `;
