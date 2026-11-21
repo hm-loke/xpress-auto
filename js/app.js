@@ -1,12 +1,13 @@
 // =======================================================
-// XPRESS AUTO ENTERPRISE - MAIN CONTROLLER ENGINE
+// XPRESS AUTO SDN BHD - MAIN CONTROLLER ENGINE
 // =======================================================
 
 const CONFIG = {
   salesPhone1: "60163360198",
   salesPhone2: "60162300198",
-  businessName: "Xpress Auto Enterprise",
-  ssm: "001793213-V",
+  salesEmail: "xpressusedcar600198@gmail.com",
+  businessName: "Xpress Auto Sdn Bhd",
+  incorporationDate: "2022-04-15",
   itemsPerPage: 6
 };
 
@@ -26,6 +27,7 @@ let currentView = "cars";
 let currentPage = 1;
 let currentFilteredCars = [];
 let db = null;
+let deepLinkHandled = false;
 
 // Lightbox state
 let activeModalCar = null;
@@ -34,14 +36,32 @@ let activeGalleryIndex = 0;
 // ==========================================
 // 1. DATA INITIALIZATION & REAL-TIME LISTENER
 // ==========================================
+function updateDynamicYearsInBusiness() {
+  const start = new Date(CONFIG.incorporationDate);
+  const now = new Date();
+  const diffYears = Math.max(1, Math.floor((now - start) / (365.25 * 24 * 60 * 60 * 1000)));
+  const yearsEl = document.getElementById("heroYearsCount");
+  if (yearsEl) {
+    yearsEl.innerText = `${diffYears}+`;
+  }
+}
+
+function getAvailableCarsOnly() {
+  return allCars.filter((car) => !car.status || car.status.toLowerCase() !== "sold");
+}
+
+function createSlugFromTitle(title) {
+  return (title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
 function initializeData() {
-  // Load fallback VIP Plates first
+  updateDynamicYearsInBusiness();
+
   if (typeof numberPlatesData !== "undefined" && Array.isArray(numberPlatesData)) {
     allPlates = [...numberPlatesData];
     updatePlateCounters();
   }
 
-  // Initialize Firebase Real-Time Firestore
   if (typeof firebase !== "undefined" && firebaseConfig.apiKey !== "YOUR_API_KEY") {
     try {
       if (!firebase.apps.length) {
@@ -49,13 +69,14 @@ function initializeData() {
       }
       db = firebase.firestore();
 
-      // 1. Live Showroom Phone Settings
+      // 1. Live Showroom Phone & Email Settings
       db.collection("settings").doc("general").onSnapshot((doc) => {
         if (doc.exists) {
           const data = doc.data();
           if (data.salesPhone1) CONFIG.salesPhone1 = data.salesPhone1;
           if (data.salesPhone2) CONFIG.salesPhone2 = data.salesPhone2;
-          applyDynamicPhones();
+          if (data.salesEmail) CONFIG.salesEmail = data.salesEmail;
+          applyDynamicContacts();
         }
       });
 
@@ -80,6 +101,7 @@ function initializeData() {
           populateBrandDropdown();
           updateCarCounters();
           handleFilterChange();
+          checkDeepLinkCar();
         } else {
           loadFallbackCars();
         }
@@ -123,7 +145,7 @@ function formatMalaysiaPhoneDisplay(raw) {
   return local.length >= 10 ? `${local.slice(0, 3)}-${local.slice(3, 6)} ${local.slice(6)}` : local;
 }
 
-function applyDynamicPhones() {
+function applyDynamicContacts() {
   document.querySelectorAll("[data-sales-wa]").forEach(el => {
     el.href = `https://wa.me/${CONFIG.salesPhone1}`;
   });
@@ -139,6 +161,14 @@ function applyDynamicPhones() {
       el.innerText = `📞 ${formatMalaysiaPhoneDisplay(CONFIG.salesPhone2)} (Office)`;
     }
   });
+  document.querySelectorAll("[data-sales-email]").forEach(el => {
+    if (el.href && el.href.includes("?")) {
+      const queryPart = el.href.split("?")[1];
+      el.href = `mailto:${CONFIG.salesEmail}?${queryPart}`;
+    } else {
+      el.href = `mailto:${CONFIG.salesEmail}`;
+    }
+  });
 }
 
 function loadFallbackCars() {
@@ -150,8 +180,23 @@ function loadFallbackCars() {
   }
   populateBrandDropdown();
   updateCarCounters();
-  currentFilteredCars = [...allCars];
+  currentFilteredCars = getAvailableCarsOnly();
   renderInventoryPage(1);
+  checkDeepLinkCar();
+}
+
+function checkDeepLinkCar() {
+  if (deepLinkHandled) return;
+  const params = new URLSearchParams(window.location.search);
+  const carSlug = params.get("car");
+  if (!carSlug) return;
+
+  const available = getAvailableCarsOnly();
+  const matched = available.find(c => createSlugFromTitle(c.title) === carSlug);
+  if (matched) {
+    deepLinkHandled = true;
+    openCarModal(matched.id);
+  }
 }
 
 function populateBrandDropdown() {
@@ -159,7 +204,8 @@ function populateBrandDropdown() {
   if (!brandSelect) return;
   const previousVal = brandSelect.value || "All";
 
-  const brands = [...new Set(allCars.map(c => c.brand).filter(Boolean))].sort();
+  const available = getAvailableCarsOnly();
+  const brands = [...new Set(available.map(c => c.brand).filter(Boolean))].sort();
   brandSelect.innerHTML = `<option value="All">All Brands</option>` +
     brands.map(b => `<option value="${b}">${b}</option>`).join("");
 
@@ -169,9 +215,7 @@ function populateBrandDropdown() {
 }
 
 function updateCarCounters() {
-  const availableCars = allCars.filter(
-    (car) => !car.status || car.status.toLowerCase() !== "sold"
-  );
+  const availableCars = getAvailableCarsOnly();
 
   const carCountEl = document.getElementById("countCarsBadge");
   const heroCountEl = document.getElementById("heroCarCount");
@@ -192,8 +236,8 @@ function updatePlateCounters() {
 // 2. SOCIAL SHARING HANDLER
 // ==========================================
 function shareShowroom(platform) {
-  const shareURL = window.location.href;
-  const shareText = "Check out quality 100% flood-free used cars & VIP number plates at Xpress Auto Enterprise (Auto City Seksyen 15, Shah Alam):";
+  const shareURL = window.location.origin + window.location.pathname;
+  const shareText = "Check out quality 100% flood-free used cars & VIP number plates at Xpress Auto Sdn Bhd (Auto City Seksyen 15, Shah Alam):";
 
   switch (platform) {
     case "whatsapp":
@@ -205,14 +249,27 @@ function shareShowroom(platform) {
   }
 }
 
+function showToastMessage(msg) {
+  const toast = document.getElementById("copyToast");
+  if (toast) {
+    toast.innerText = msg;
+    toast.classList.remove("hidden");
+    setTimeout(() => toast.classList.add("hidden"), 2200);
+  }
+}
+
 function copyShowroomLink() {
-  const shareURL = window.location.href;
+  const shareURL = window.location.origin + window.location.pathname;
   navigator.clipboard.writeText(shareURL).then(() => {
-    const toast = document.getElementById("copyToast");
-    if (toast) {
-      toast.classList.remove("hidden");
-      setTimeout(() => toast.classList.add("hidden"), 2000);
-    }
+    showToastMessage("Showroom link copied to clipboard!");
+  });
+}
+
+function copySpecificCarLink(carTitle) {
+  const slug = createSlugFromTitle(carTitle);
+  const deepUrl = `${window.location.origin}${window.location.pathname}?car=${encodeURIComponent(slug)}`;
+  navigator.clipboard.writeText(deepUrl).then(() => {
+    showToastMessage(`Direct link copied for ${carTitle}!`);
   });
 }
 
@@ -251,7 +308,7 @@ function switchViewCategory(category) {
 }
 
 // ==========================================
-// 4. CAR INVENTORY RENDERING
+// 4. CAR INVENTORY RENDERING (AVAILABLE ONLY)
 // ==========================================
 function getDynamicBadgeClass(badge) {
   if (!badge) return "badge-blue";
@@ -273,13 +330,13 @@ function renderInventoryPage(page = 1) {
 
   const countDisplay = document.getElementById("resultsCount");
   if (countDisplay) {
-    countDisplay.innerText = `Showing ${totalResults} vehicles in stock (Page ${currentPage} of ${totalPages})`;
+    countDisplay.innerText = `Showing ${totalResults} available vehicles in stock (Page ${currentPage} of ${totalPages})`;
   }
 
   if (totalResults === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 3rem 1rem;">
-        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No vehicles found matching your selected criteria.</p>
+        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No available vehicles found matching your selected criteria.</p>
         <button class="btn-reset-filters" onclick="resetAllFilters()">Reset All Filters</button>
       </div>
     `;
@@ -291,29 +348,25 @@ function renderInventoryPage(page = 1) {
   const pageItems = currentFilteredCars.slice(startIndex, startIndex + CONFIG.itemsPerPage);
 
   pageItems.forEach((car) => {
-    const isSold = car.status && car.status.toLowerCase() === "sold";
     const hasVideo = Boolean(car.videoPreview);
     const badgeClass = getDynamicBadgeClass(car.badge);
     const carPhone = car.salesPhone || CONFIG.salesPhone1;
+    const priceFormatted = Number(car.price || 0).toLocaleString();
 
     const waText = encodeURIComponent(
-      isSold
-        ? `Hi Xpress Auto Sales Team, I saw the ${car.title} was sold on your website. Do you have any other similar units available?`
-        : `Hi Xpress Auto Sales Team, I saw the ${car.title} (RM ${Number(car.price || 0).toLocaleString()}) on your website. Is it available for a viewing/test drive?`
+      `Hi Xpress Auto Sdn Bhd Sales Team, I saw the ${car.title} (RM ${priceFormatted}) on your website. Is it available for a viewing/test drive?`
+    );
+    const emailSubject = encodeURIComponent(`Vehicle Inquiry: ${car.title}`);
+    const emailBody = encodeURIComponent(
+      `Hi Xpress Auto Sdn Bhd Sales Admin,\n\nI saw the ${car.title} (RM ${priceFormatted}) on your website and would like to inquire about availability, loan options, and viewing.\n\nThank you.`
     );
 
     const card = document.createElement("div");
-    card.className = `car-card ${isSold ? "is-sold" : ""}`;
+    card.className = "car-card";
     card.innerHTML = `
       <div class="card-img-wrapper">
         <span class="badge-tag">${car.bodyType || 'Sedan'}</span>
-        ${
-          isSold
-            ? `<span class="badge-sold-ribbon">TELAH DIJUAL / SOLD</span>`
-            : car.badge
-            ? `<span class="badge-promo ${badgeClass}">${car.badge}</span>`
-            : ""
-        }
+        ${car.badge ? `<span class="badge-promo ${badgeClass}">${car.badge}</span>` : ""}
         <img src="${car.mainImage || 'assets/brand/logo.png'}" alt="${car.title}" class="car-card-img" onclick="openCarModal(${car.id})" loading="lazy" onerror="this.src='assets/brand/logo.png'">
         ${
           hasVideo
@@ -326,13 +379,7 @@ function renderInventoryPage(page = 1) {
       </div>
       <div class="car-card-body">
         <div class="car-card-title">${car.title}</div>
-        <div class="car-card-price">
-          ${
-            isSold
-              ? `<span style="text-decoration: line-through; color: #94a3b8; font-size: 1.05rem;">RM ${Number(car.price || 0).toLocaleString()}</span> <span style="color: #dc2626; font-size: 1.1rem; font-weight: 900;">[SOLD]</span>`
-              : `RM ${Number(car.price || 0).toLocaleString()}`
-          }
-        </div>
+        <div class="car-card-price">RM ${priceFormatted}</div>
         <div class="car-card-meta">
           <span>📅 ${car.year || 'N/A'}</span>
           <span>🛣️ ${car.mileage || 'N/A'}</span>
@@ -340,11 +387,8 @@ function renderInventoryPage(page = 1) {
         </div>
         <div class="card-btns">
           <button class="btn-card-details" onclick="openCarModal(${car.id})">Full Specs</button>
-          ${
-            isSold
-              ? `<a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-card-sold">🚫 Sold (Ask Similar)</a>`
-              : `<a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-card-wa">💬 WhatsApp</a>`
-          }
+          <a href="mailto:${CONFIG.salesEmail}?subject=${emailSubject}&body=${emailBody}" class="btn-card-email" title="Inquire via Email">✉️</a>
+          <a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-card-wa">💬 WhatsApp</a>
         </div>
       </div>
     `;
@@ -362,24 +406,27 @@ function renderInventoryPage(page = 1) {
 }
 
 // ==========================================
-// 5. VIP NUMBER PLATES RENDERING
+// 5. VIP NUMBER PLATES RENDERING (AVAILABLE ONLY)
 // ==========================================
 function renderPlatesGrid() {
   const grid = document.getElementById("platesGrid");
   if (!grid) return;
 
   grid.innerHTML = "";
+  const availablePlates = allPlates.filter((p) => !p.status || p.status.toLowerCase() !== "sold");
 
-  allPlates.forEach((p) => {
-    const isSold = p.status && p.status.toLowerCase() === "sold";
+  availablePlates.forEach((p) => {
+    const priceFormatted = Number(p.price || 0).toLocaleString();
     const waText = encodeURIComponent(
-      isSold
-        ? `Hi Xpress Auto Sales Team, I saw VIP Plate ${p.plate} was sold on your website. Do you have other similar 2-digit plates?`
-        : `Hi Xpress Auto Sales Team, I am interested in purchasing the VIP Number Plate ${p.plate} (RM ${Number(p.price || 0).toLocaleString()}). Please advise on JPJ interchange transfer.`
+      `Hi Xpress Auto Sdn Bhd Sales Team, I am interested in purchasing the VIP Number Plate ${p.plate} (RM ${priceFormatted}). Please advise on JPJ interchange transfer.`
+    );
+    const emailSubject = encodeURIComponent(`VIP Plate Inquiry: ${p.plate}`);
+    const emailBody = encodeURIComponent(
+      `Hi Xpress Auto Sdn Bhd Sales Admin,\n\nI am interested in the VIP Number Plate ${p.plate} (RM ${priceFormatted}). Please advise on availability and JPJ interchange transfer procedure.\n\nThank you.`
     );
 
     const card = document.createElement("div");
-    card.className = `plate-card ${isSold ? "is-sold-plate" : ""}`;
+    card.className = "plate-card";
     card.innerHTML = `
       <div>
         <div class="plate-type">${p.type || "VIP Number Plate"}</div>
@@ -387,18 +434,17 @@ function renderPlatesGrid() {
           <div class="plate-text">${p.plate}</div>
         </div>
         <div class="plate-package">${p.package || "Plate Number Only"}</div>
-        <div class="plate-price">
-          ${
-            isSold
-              ? `<span style="text-decoration: line-through; color: #64748b; font-size: 1.1rem;">RM ${Number(p.price || 0).toLocaleString()}</span> <span style="color: #ef4444; font-size: 1.15rem;">[SOLD]</span>`
-              : `RM ${Number(p.price || 0).toLocaleString()}`
-          }
-        </div>
+        <div class="plate-price">RM ${priceFormatted}</div>
         <div class="plate-desc">${p.description || ""}</div>
       </div>
-      <a href="https://wa.me/${CONFIG.salesPhone1}?text=${waText}" target="_blank" rel="noopener" class="btn-plate-wa" style="${isSold ? 'background:#475569;' : ''}">
-        ${isSold ? `🚫 Sold (Ask Similar Plates)` : `💬 WhatsApp for ${p.plate}`}
-      </a>
+      <div style="display: flex; gap: 0.5rem;">
+        <a href="https://wa.me/${CONFIG.salesPhone1}?text=${waText}" target="_blank" rel="noopener" class="btn-plate-wa" style="flex: 2;">
+          💬 WhatsApp
+        </a>
+        <a href="mailto:${CONFIG.salesEmail}?subject=${emailSubject}&body=${emailBody}" class="btn-plate-email" style="flex: 1;">
+          ✉️ Email
+        </a>
+      </div>
     `;
     grid.appendChild(card);
   });
@@ -449,6 +495,7 @@ function renderPaginationControls(totalItems) {
     }
   };
   container.appendChild(nextBtn);
+
   const activeBtn = container.querySelector(".page-btn.active");
   if (activeBtn) activeBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
 }
@@ -460,19 +507,18 @@ function handleFilterChange() {
   const searchInput = document.getElementById("searchInput");
   const brandInput = document.getElementById("brandFilter");
   const bodyInput = document.getElementById("bodyFilter");
-  const statusInput = document.getElementById("statusFilter");
   const budgetInput = document.getElementById("budgetFilter");
 
   const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : "";
   const brandVal = brandInput ? brandInput.value : "All";
   const bodyVal = bodyInput ? bodyInput.value : "All";
-  const statusVal = statusInput ? statusInput.value : "All";
   const maxPrice = budgetInput ? parseInt(budgetInput.value) : 180000;
 
   const budgetDisplay = document.getElementById("budgetValue");
   if (budgetDisplay) budgetDisplay.innerText = maxPrice.toLocaleString();
 
-  currentFilteredCars = allCars.filter((car) => {
+  // Always exclude sold vehicles from customer-facing results
+  currentFilteredCars = getAvailableCarsOnly().filter((car) => {
     const matchesSearch =
       (car.title && car.title.toLowerCase().includes(searchVal)) ||
       (car.description && car.description.toLowerCase().includes(searchVal)) ||
@@ -480,18 +526,9 @@ function handleFilterChange() {
     
     const matchesBrand = brandVal === "All" || car.brand === brandVal;
     const matchesBody = bodyVal === "All" || car.bodyType === bodyVal;
-    
-    const isCarSold = car.status && car.status.toLowerCase() === "sold";
-    let matchesStatus = true;
-    if (statusVal === "Available") {
-      matchesStatus = !isCarSold;
-    } else if (statusVal === "Sold") {
-      matchesStatus = isCarSold;
-    }
-
     const matchesPrice = Number(car.price || 0) <= maxPrice;
 
-    return matchesSearch && matchesBrand && matchesBody && matchesStatus && matchesPrice;
+    return matchesSearch && matchesBrand && matchesBody && matchesPrice;
   });
 
   renderInventoryPage(1);
@@ -501,30 +538,33 @@ function resetAllFilters() {
   if (document.getElementById("searchInput")) document.getElementById("searchInput").value = "";
   if (document.getElementById("brandFilter")) document.getElementById("brandFilter").value = "All";
   if (document.getElementById("bodyFilter")) document.getElementById("bodyFilter").value = "All";
-  if (document.getElementById("statusFilter")) document.getElementById("statusFilter").value = "All";
   if (document.getElementById("budgetFilter")) document.getElementById("budgetFilter").value = 180000;
   handleFilterChange();
 }
 
 // ==========================================
-// 8. LIGHTBOX DETAIL MODAL (WITH BOOKING CTA)
+// 8. LIGHTBOX DETAIL MODAL (WITH EMAIL & SHARE)
 // ==========================================
 function openCarModal(id) {
-  const car = allCars.find((c) => c.id === id);
+  const car = getAvailableCarsOnly().find((c) => c.id === id);
   if (!car) return;
 
   activeModalCar = car;
   activeGalleryIndex = 0;
-  const isSold = car.status && car.status.toLowerCase() === "sold";
   const carPhone = car.salesPhone || CONFIG.salesPhone1;
+  const priceFormatted = Number(car.price || 0).toLocaleString();
   const galleryList = Array.isArray(car.gallery) && car.gallery.length > 0 ? car.gallery : [car.mainImage || "assets/brand/logo.png"];
-  const safeVehicleTitle = (car.title || "").replace(/'/g, "\\'");
+  const safeVehicleTitle = `${car.title} (RM ${priceFormatted})`.replace(/'/g, "\\'");
+  const safeRawTitle = (car.title || "").replace(/'/g, "\\'");
 
   const waText = encodeURIComponent(
-    isSold
-      ? `Hi Xpress Auto Sales Team, I saw the ${car.title} was sold on your website. Do you have any similar cars in showroom stock?`
-      : `Hi Xpress Auto Sales Team, I would like to inquire about the ${car.title} (RM ${Number(car.price || 0).toLocaleString()}).`
+    `Hi Xpress Auto Sdn Bhd Sales Team, I would like to inquire about the ${car.title} (RM ${priceFormatted}).`
   );
+  const emailSubject = encodeURIComponent(`Vehicle Inquiry: ${car.title}`);
+  const emailBody = encodeURIComponent(
+    `Hi Xpress Auto Sdn Bhd Sales Admin,\n\nI would like to inquire about the following vehicle:\n• Model: ${car.title}\n• Price: RM ${priceFormatted}\n• Year: ${car.year || 'N/A'}\n• Mileage: ${car.mileage || 'N/A'}\n\nPlease advise on availability and loan options.\n\nThank you.`
+  );
+
   const content = document.getElementById("modalContent");
 
   const thumbsHTML = galleryList.map((img, index) =>
@@ -543,14 +583,15 @@ function openCarModal(id) {
     : "";
 
   content.innerHTML = `
-    <h2 style="color: var(--accent); font-size: 1.35rem; margin-bottom: 0.3rem;">${car.title}</h2>
-    <h3 style="color: ${isSold ? "#dc2626" : "var(--gold)"}; font-size: 1.5rem; margin-bottom: 0.8rem;">
-      ${
-        isSold
-          ? `<span style="text-decoration: line-through; color: #94a3b8; font-size: 1.2rem;">RM ${Number(car.price || 0).toLocaleString()}</span> [TELAH DIJUAL / SOLD]`
-          : `RM ${Number(car.price || 0).toLocaleString()}`
-      }
-    </h3>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem; padding-right: 1.8rem;">
+      <div>
+        <h2 style="color: var(--accent); font-size: 1.35rem; margin-bottom: 0.3rem;">${car.title}</h2>
+        <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 0.8rem;">RM ${priceFormatted}</h3>
+      </div>
+      <button type="button" onclick="copySpecificCarLink('${safeRawTitle}')" class="btn-share-car-link" title="Copy direct link to this car">
+        🔗 Share Car
+      </button>
+    </div>
     
     <div class="modal-main-img-wrapper">
       <img id="mainModalImg" src="${galleryList[0]}" class="modal-main-img" alt="${car.title}" onerror="this.src='assets/brand/logo.png'">
@@ -577,22 +618,19 @@ function openCarModal(id) {
       <div><strong>Engine Spec:</strong> ${car.engine || 'Standard'}</div>
       <div><strong>Transmission:</strong> ${car.transmission || 'Automatic'}</div>
       <div><strong>Fuel Type:</strong> ${car.fuel || "Petrol"}</div>
-      <div><strong>Status:</strong> <span style="font-weight: 800; color: ${isSold ? "#dc2626" : "#16a34a"};">${isSold ? "SOLD" : "AVAILABLE"}</span></div>
+      <div><strong>Status:</strong> <span style="font-weight: 800; color: #16a34a;">AVAILABLE</span></div>
     </div>
 
     <div class="modal-action-buttons">
-      ${
-        isSold
-          ? `<a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-modal-wa" style="background: #475569;">
-               💬 WhatsApp Sales Team (Ask for Similar Cars)
-             </a>`
-          : `<button type="button" onclick="closeCarModal(); openBookingModal('${safeVehicleTitle}');" class="btn-modal-book">
-               📅 Book Test Drive
-             </button>
-             <a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-modal-wa">
-               💬 Quick WhatsApp
-             </a>`
-      }
+      <button type="button" onclick="closeCarModal(); openBookingModal('${safeVehicleTitle}');" class="btn-modal-book">
+        📅 Book Test Drive
+      </button>
+      <a href="https://wa.me/${carPhone}?text=${waText}" target="_blank" rel="noopener" class="btn-modal-wa">
+        💬 WhatsApp
+      </a>
+      <a href="mailto:${CONFIG.salesEmail}?subject=${emailSubject}&body=${emailBody}" class="btn-modal-email">
+        ✉️ Email Admin
+      </a>
       <a href="#calculator" onclick="prefillCalculator(${car.price || 0})" class="btn-modal-calc">
         📊 Loan Calc
       </a>
@@ -632,6 +670,63 @@ function closeCarModal() {
 // ==========================================
 // 8B. TEST DRIVE & APPOINTMENT BOOKING MODAL
 // ==========================================
+function populateBookingVehicleDropdown(filterQuery = "", preselectValue = "") {
+  const selectEl = document.getElementById("bookVehicle");
+  if (!selectEl) return;
+
+  const q = filterQuery.toLowerCase().trim();
+  const availableCars = getAvailableCarsOnly();
+  const availablePlates = allPlates.filter(p => !p.status || p.status.toLowerCase() !== "sold");
+
+  const filteredCars = availableCars.filter(c =>
+    !q ||
+    (c.title && c.title.toLowerCase().includes(q)) ||
+    (c.brand && c.brand.toLowerCase().includes(q)) ||
+    (c.year && c.year.toString().includes(q))
+  );
+
+  const filteredPlates = availablePlates.filter(p =>
+    !q ||
+    (p.plate && p.plate.toLowerCase().includes(q)) ||
+    (p.type && p.type.toLowerCase().includes(q))
+  );
+
+  let html = `<option value="General Showroom Visit / Browse All Stock">General Showroom Visit / Browse All Stock</option>`;
+
+  if (filteredCars.length > 0) {
+    html += `<optgroup label="🚗 Available Showroom Cars (${filteredCars.length})">`;
+    filteredCars.forEach(c => {
+      const label = `${c.title} (RM ${Number(c.price || 0).toLocaleString()})`;
+      html += `<option value="${label}">${label}</option>`;
+    });
+    html += `</optgroup>`;
+  }
+
+  if (filteredPlates.length > 0) {
+    html += `<optgroup label="🔢 Available VIP Number Plates (${filteredPlates.length})">`;
+    filteredPlates.forEach(p => {
+      const label = `VIP Plate: ${p.plate} (RM ${Number(p.price || 0).toLocaleString()})`;
+      html += `<option value="${label}">${label}</option>`;
+    });
+    html += `</optgroup>`;
+  }
+
+  selectEl.innerHTML = html;
+
+  if (preselectValue) {
+    const matchOption = Array.from(selectEl.options).find(opt => opt.value === preselectValue);
+    if (matchOption) {
+      selectEl.value = preselectValue;
+    }
+  } else if (q && filteredCars.length > 0) {
+    selectEl.selectedIndex = 1;
+  }
+}
+
+function filterBookingVehicleOptions(query) {
+  populateBookingVehicleDropdown(query);
+}
+
 function openBookingModal(prefillVehicle = "") {
   const modal = document.getElementById("bookingModal");
   if (!modal) return;
@@ -644,11 +739,10 @@ function openBookingModal(prefillVehicle = "") {
     dateInput.min = new Date().toISOString().split("T")[0];
   }
 
-  const vehicleInput = document.getElementById("bookVehicle");
-  if (vehicleInput && prefillVehicle) {
-    vehicleInput.value = prefillVehicle;
-  }
+  const searchInput = document.getElementById("bookVehicleSearch");
+  if (searchInput) searchInput.value = "";
 
+  populateBookingVehicleDropdown("", prefillVehicle);
   modal.style.display = "flex";
 }
 
@@ -657,18 +751,26 @@ function closeBookingModal() {
   if (modal) modal.style.display = "none";
 }
 
-function submitBooking(e) {
-  e.preventDefault();
+function buildBookingDetails() {
   const purpose = document.getElementById("bookPurpose").value;
-  const vehicle = document.getElementById("bookVehicle").value.trim() || "General Showroom Visit";
+  const vehicle = document.getElementById("bookVehicle").value || "General Showroom Visit";
   const rawDate = document.getElementById("bookDate").value;
   const time = document.getElementById("bookTime").value;
   const name = document.getElementById("bookName").value.trim();
 
-  const formattedDate = rawDate ? new Date(rawDate).toLocaleDateString("en-MY", { weekday: "short", day: "numeric", month: "short", year: "numeric" }) : rawDate;
+  const formattedDate = rawDate
+    ? new Date(rawDate).toLocaleDateString("en-MY", { weekday: "short", day: "numeric", month: "short", year: "numeric" })
+    : rawDate;
+
+  return { purpose, vehicle, formattedDate, time, name };
+}
+
+function submitBooking(e) {
+  e.preventDefault();
+  const { purpose, vehicle, formattedDate, time, name } = buildBookingDetails();
 
   const message =
-    `Hi Xpress Auto Sales Team, I would like to book an appointment:\n\n` +
+    `Hi Xpress Auto Sdn Bhd Sales Team, I would like to book an appointment:\n\n` +
     `• *Name:* ${name}\n` +
     `• *Purpose:* ${purpose}\n` +
     `• *Vehicle / Plate:* ${vehicle}\n` +
@@ -678,6 +780,26 @@ function submitBooking(e) {
 
   closeBookingModal();
   window.open(`https://wa.me/${CONFIG.salesPhone1}?text=${encodeURIComponent(message)}`, "_blank");
+}
+
+function submitBookingEmail() {
+  const form = document.querySelector("#bookingModal form");
+  if (form && !form.reportValidity()) return;
+
+  const { purpose, vehicle, formattedDate, time, name } = buildBookingDetails();
+  const subject = `Appointment Booking: ${purpose} (${name})`;
+  const body =
+    `Hi Xpress Auto Sdn Bhd Sales Admin,\n\n` +
+    `I would like to book a showroom appointment:\n\n` +
+    `• Name: ${name}\n` +
+    `• Purpose: ${purpose}\n` +
+    `• Vehicle / Plate: ${vehicle}\n` +
+    `• Preferred Date: ${formattedDate}\n` +
+    `• Preferred Time: ${time}\n\n` +
+    `Please confirm if this slot is available.\n\nThank you!`;
+
+  closeBookingModal();
+  window.location.href = `mailto:${CONFIG.salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 window.onclick = function (e) {
@@ -739,7 +861,7 @@ function prefillCalculator(price) {
 }
 
 // ==========================================
-// 10. TRADE-IN LEAD FORM
+// 10. TRADE-IN LEAD FORM (WHATSAPP & EMAIL)
 // ==========================================
 function submitTradeIn(e) {
   e.preventDefault();
@@ -749,9 +871,31 @@ function submitTradeIn(e) {
   const income = document.getElementById("monthlyIncome").value;
 
   const msg = encodeURIComponent(
-    `Hi Xpress Auto Sales Team, my name is ${name} (${phone}). I would like to get a trade-in quote for my ${model}. My salary bracket is ${income}.`
+    `Hi Xpress Auto Sdn Bhd Sales Team, my name is ${name} (${phone}). I would like to get a trade-in quote for my ${model}. My salary bracket is ${income}.`
   );
   window.open(`https://wa.me/${CONFIG.salesPhone1}?text=${msg}`, "_blank");
+}
+
+function submitTradeInEmail() {
+  const form = document.querySelector("#tradein form");
+  if (form && !form.reportValidity()) return;
+
+  const name = document.getElementById("custName").value;
+  const phone = document.getElementById("custPhone").value;
+  const model = document.getElementById("tradeModel").value;
+  const income = document.getElementById("monthlyIncome").value;
+
+  const subject = `Trade-In Valuation Request: ${model} (${name})`;
+  const body =
+    `Hi Xpress Auto Sdn Bhd Sales Admin,\n\n` +
+    `I would like to request a trade-in appraisal & loan pre-check:\n\n` +
+    `• Name: ${name}\n` +
+    `• Contact Number: ${phone}\n` +
+    `• Current Car Model: ${model}\n` +
+    `• Monthly Salary Bracket: ${income}\n\n` +
+    `Thank you!`;
+
+  window.location.href = `mailto:${CONFIG.salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 // ==========================================
