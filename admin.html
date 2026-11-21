@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xpress Auto | Showroom Stock Manager</title>
+  <title>Xpress Auto Sdn Bhd | Showroom Stock Manager</title>
   
   <style>
     * {
@@ -812,7 +812,7 @@
     <!-- TOP HEADER -->
     <header class="admin-header-card">
       <div class="admin-title-box">
-        <h1>Xpress Auto • Showroom Manager</h1>
+        <h1>Xpress Auto Sdn Bhd • Showroom Manager</h1>
         <p id="signedInUserLabel">Live Cloud Control for Cars, VIP Plates & Careers</p>
       </div>
       <div class="header-actions">
@@ -1172,7 +1172,7 @@
 
           <div class="form-group form-full">
             <label for="jobWaMsg">Pre-filled WhatsApp Application Message</label>
-            <input type="text" id="jobWaMsg" placeholder="Halo Xpress Auto, saya berminat memohon jawatan ini.">
+            <input type="text" id="jobWaMsg" placeholder="Halo Xpress Auto Sdn Bhd, saya berminat memohon jawatan ini.">
           </div>
         </div>
 
@@ -1207,9 +1207,9 @@
   </div>
 
   <!-- Local Fallback Scripts -->
-  <script src="cars.js"></script>
-  <script src="plates.js"></script>
-  <script src="careers.js"></script>
+  <script src="js/cars.js"></script>
+  <script src="js/plates.js"></script>
+  <script src="js/careers.js"></script>
 
   <script>
     const firebaseConfig = {
@@ -1962,7 +1962,7 @@
         benefits: document.getElementById("jobBenefits").value.split("\n").map(s => s.trim()).filter(Boolean),
         responsibilities: document.getElementById("jobResponsibilities").value.split("\n").map(s => s.trim()).filter(Boolean),
         requirements: document.getElementById("jobRequirements").value.split("\n").map(s => s.trim()).filter(Boolean),
-        waMessage: document.getElementById("jobWaMsg").value.trim() || `Halo Xpress Auto, saya berminat memohon jawatan ${title}.`
+        waMessage: document.getElementById("jobWaMsg").value.trim() || `Halo Xpress Auto Sdn Bhd, saya berminat memohon jawatan ${title}.`
       };
 
       if (!editingCareerDocId) {
@@ -2169,7 +2169,7 @@
 
       const content =
         "// =======================================================\n" +
-        "// XPRESS AUTO ENTERPRISE - SHOWROOM CAR DATABASE\n" +
+        "// XPRESS AUTO Sdn Bhd - SHOWROOM CAR DATABASE\n" +
         "// =======================================================\n\n" +
         "const carsData = " + JSON.stringify(cleanCars, null, 2) + ";\n";
 
@@ -2194,7 +2194,7 @@
 
       const content =
         "// =======================================================\n" +
-        "// XPRESS AUTO ENTERPRISE - VIP NUMBER PLATES DATABASE\n" +
+        "// XPRESS AUTO SDN BHD - VIP NUMBER PLATES DATABASE\n" +
         "// =======================================================\n\n" +
         "const numberPlatesData = " + JSON.stringify(cleanPlates, null, 2) + ";\n";
 
@@ -2220,7 +2220,7 @@
 
       const content =
         "// =======================================================\n" +
-        "// XPRESS AUTO ENTERPRISE - CAREERS & JOB VACANCIES\n" +
+        "// XPRESS AUTO SDN BHD - CAREERS & JOB VACANCIES\n" +
         "// =======================================================\n\n" +
         "const careersData = " + JSON.stringify(cleanCareers, null, 2) + ";\n";
 
